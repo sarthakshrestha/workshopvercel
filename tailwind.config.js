@@ -51,6 +51,13 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        joinButton:{
+          DEFAULT: "#A1A172"
+        },
+        navBar:{
+          DEFAULT:"#2F3C3A",
+          foreground:"#FFFFFF"
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
