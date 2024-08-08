@@ -1,3 +1,5 @@
+const { hover } = require('@testing-library/user-event/dist/hover');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -52,7 +54,15 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         joinButton:{
-          DEFAULT: "#A1A172"
+          DEFAULT: "#A1A172",
+          hover: "#8F8F5E"
+        },
+        homeText:{
+          DEFAULT: "#3E5148",
+          hover: "#8F8F5E"
+        },
+        sectionBackground:{
+          DEFAULT: "#EEEAE4"
         },
         navBar:{
           DEFAULT:"#2F3C3A",

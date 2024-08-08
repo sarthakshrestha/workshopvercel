@@ -1,86 +1,72 @@
 import React from 'react';
-import { Users, Video, BookOpen, Award, Menu } from 'lucide-react';
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import MotionCard from '@/components/ui/motionCard';
+import { Users, Video, BookOpen, Award } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import logo from "gallery/images/logo.png";
+import homepage from "gallery/images/homepage.png";
+
 
 const LandingPage = () => {
   return (
     <div className="font-sans">
       {/* Header */}
       <header className="flex justify-between items-center p-4 bg-navBar">
-        <div className="text-2xl font-bold text-navBar-foreground">Digital Horizon</div>
+        <div className="flex text-2xl font-bold text-navBar-foreground">
+          <img src={logo} alt="Logo" className='h-14 w-full'/>
+        </div>
         <nav className="hidden md:block">
           <ul className="flex space-x-[5rem] text-navBar-foreground text-m">
-            <li>About</li>
-            <li>Courses</li>
-            <li>Team</li>
-            <li>Testimonials</li>
+            <li className='cursor-pointer'>About</li>
+            <li className='cursor-pointer'>Courses</li>
+            <li className='cursor-pointer'>Team</li>
+            <li className='cursor-pointer'>Testimonials</li>
           </ul>
         </nav>
         <div className="flex items-center space-x-4">
-          <Button className='bg-joinButton rounded-full px-5'>Join Us</Button>
+          <Button className='bg-joinButton hover:bg-joinButton-hover rounded-full px-5'>Join Us</Button>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="flex flex-col md:flex-row justify-between items-center p-8 bg-secondary">
-        <div className="w-full md:w-1/2 mb-8 md:mb-0">
-          <h1 className="text-4xl font-bold mb-4">Best Digital Online Courses</h1>
-          <p className="mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <Button size="lg">Get Started</Button>
+      <section className="flex flex-col md:flex-row justify-between items-center p-12 bg-white relative min-h-screen overflow-hidden">
+        <div className="w-full md:w-1/2 mb-12 md:mb-0 z-10 p-8">
+          <div className='flex space-x-8'>
+            <h1 className="text-6xl font-extrabold mb-6 text-homeText">Best</h1>
+            <h1 className="text-6xl font-extrabold mb-6 text-joinButton">Digital</h1>
+          </div>
+          <h1 className="text-6xl font-extrabold mb-6 text-homeText">Online Courses</h1>
+          <p className="mb-6 text-lg text-gray-700">Unlock your potential with our comprehensive online courses designed to help you succeed in your career and personal growth.</p>
+          <Button size="lg" className="bg-homeText text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-homeText-hover transition duration-300">Get Started</Button>
         </div>
-        <div className="w-full md:w-1/2">
-          <img src="/api/placeholder/400/300" alt="Student studying" className="rounded-lg w-full" />
+        <div className="w-full md:w-1/2 md:absolute md:right-0 md:top-0 md:bottom-0 h-full z-20">
+          <img 
+            src={homepage} 
+            alt="Student studying" 
+            className="w-full h-full object-cover"
+          />
         </div>
       </section>
-
       {/* Stats Section */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 p-8 bg-background">
-        {[
-          { icon: Video, title: "100+", description: "Video Courses" },
-          { icon: Users, title: "500+", description: "Students" },
-          { icon: BookOpen, title: "50+", description: "Subjects" },
-          { icon: Award, title: "100%", description: "Satisfaction" },
-        ].map((stat, index) => (
-          <Card key={index}>
-            <CardHeader>
-              <stat.icon className="h-8 w-8 mb-2" />
-              <CardTitle>{stat.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p>{stat.description}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </section>
-
-      {/* Popular Courses Section */}
-      <section className="p-8 bg-secondary">
-        <h2 className="text-3xl font-bold mb-6">Most Popular Courses</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[1, 2, 3].map((course) => (
-            <Card key={course}>
-              <CardHeader>
-                <img src={`/api/placeholder/300/200?text=Course ${course}`} alt={`Course ${course}`} className="w-full mb-4 rounded" />
-                <CardTitle>Course Title {course}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Brief description of the course goes here.</p>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline">Learn More</Button>
-              </CardFooter>
-            </Card>
+      <section className="p-8 bg-sectionBackground">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: Video, title: "100+", description: "Video Courses" },
+            { icon: Users, title: "500+", description: "Students" },
+            { icon: BookOpen, title: "50+", description: "Subjects" },
+            { icon: Award, title: "100%", description: "Satisfaction" },
+          ].map((stat, index) => (
+            <MotionCard 
+              key={index}
+              icon={stat.icon}
+              title={stat.title}
+              description={stat.description}
+              index={index}
+            />
           ))}
         </div>
       </section>
+
 
       {/* Commitment Section */}
       <section className="flex flex-col md:flex-row justify-between items-center p-8 bg-background">
