@@ -27,6 +27,7 @@ import Student from "gallery/images/student.png"
 import Teaching from "gallery/images/teaching-810.jpg"
 import Blur from "gallery/images/blur.jpg"
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 const Counter = ({ endValue }) => {
   const [count, setCount] = useState(0);
 
@@ -58,6 +59,11 @@ const LandingPage = () => {
 
   const [count, setCount] = useState(0);
 
+  const navigate = useNavigate();
+
+  const handleJoinUsClick = () => {
+    navigate('/admin'); // This will navigate to the admin dashboard
+  };
 
 
   const CustomPrevArrow = ({ onClick }) => (
@@ -135,7 +141,7 @@ const LandingPage = () => {
           </ul>
         </nav>
         <div className="flex items-center space-x-4">
-          <Button className='bg-joinButton hover:bg-joinButton-hover rounded-full px-8 font-bold py-5'>Join Us</Button>
+          <Button className='bg-joinButton hover:bg-joinButton-hover rounded-full px-8 font-bold py-5' onClick={handleJoinUsClick}>Join Us</Button>
         </div>
       </header>
 
