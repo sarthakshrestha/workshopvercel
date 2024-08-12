@@ -77,22 +77,21 @@ const AdminDashboard = () => {
           
         // Static data for school course registration
 
-        // setSchoolCourseData([
-        //   { "schoolName": "School A", "Python": 50, "Java": 30, "HTML": 20, "React": 15, "Node": 10 },
-        //   { "schoolName": "School B", "Python": 40, "Java": 35, "HTML": 25, "React": 20, "Node": 15 },
-        //   { "schoolName": "School C", "Python": 60, "Java": 25, "HTML": 15, "React": 30, "Node": 20 },
-        //   { "schoolName": "School D", "Python": 45, "Java": 40, "HTML": 30, "React": 25, "Node": 15 },
-        //   { "schoolName": "School E", "Python": 55, "Java": 20, "HTML": 35, "React": 15, "Node": 25 },
-        // ]);
+        setSchoolCourseData([
+          { "schoolName": "School A", "Python": 50, "Java": 30, "HTML": 20, "React": 15, "Node": 10 },
+          { "schoolName": "School B", "Python": 40, "Java": 35, "HTML": 25, "React": 20, "Node": 15 },
+          { "schoolName": "School C", "Python": 60, "Java": 25, "HTML": 15, "React": 30, "Node": 20 },
+          { "schoolName": "School D", "Python": 45, "Java": 40, "HTML": 30, "React": 25, "Node": 15 },
+        ]);
 
         // Static data for popular courses
-        // setPopularCourses([
-        //   { "courseName": 'Python', "students": 250, color: '#3B82F6' },
-        //   { "courseName": 'Java', "students": 150, color: '#10B981' },
-        //   { "courseName": 'HTML', "students": 125, color: '#F59E0B' },
-        //   { "courseName": 'React', "students": 100, color: '#6366F1' },
-        //   { "courseName": 'Node.js', "students": 75, color: '#14B8A6' },
-        // ]);
+        setPopularCourses([
+          { "courseName": 'Python', "students": 250, color: '#3B82F6' },
+          { "courseName": 'Java', "students": 150, color: '#10B981' },
+          { "courseName": 'HTML', "students": 125, color: '#F59E0B' },
+          { "courseName": 'React', "students": 100, color: '#6366F1' },
+          { "courseName": 'Node.js', "students": 75, color: '#14B8A6' },
+        ]);
 
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -164,7 +163,7 @@ const AdminDashboard = () => {
                     <Tooltip content={<CustomTooltip />} />
                     <Legend />
                     {courseNames.map((course, index) => (
-                      <Line 
+                      <Line
                         key={course}
                         type="monotone" 
                         dataKey={course} 

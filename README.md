@@ -16,7 +16,7 @@ To get started with this project, clone the repository and install the dependenc
 
 ```bash
 git clone <repository-url>
-cd workshop_frontend
+cd svi_frontend
 npm install
 ```
 
