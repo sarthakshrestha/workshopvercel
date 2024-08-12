@@ -61,16 +61,17 @@ const AdminDashboard = () => {
           && schoolCourseDataResponse.data.status === 'success'
           
         ) {
-          setTotalStudents(studentsResponse.data.data.length);
-          setTotalSchools(schoolsResponse.data.data.length);
-          setSchoolCourseData(schoolCourseDataResponse.data.data);
+          setTotalStudents(studentsResponse.data.data ? studentsResponse.data.data.length : 0);
+          setTotalSchools(schoolsResponse.data.data ? schoolsResponse.data.data.length : 0);
+          // setSchoolCourseData(schoolCourseDataResponse.data.data);
 
-          const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
-          const coloredPopularCourses = popularCourseResponse.data.data.map((course, index) => ({
-                      ...course,
-                      color: colors[index % colors.length]
-                    }));
-                    setPopularCourses(coloredPopularCourses);
+          // const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+          // const coloredPopularCourses = popularCourseResponse.data.data.map((course, index) => ({
+          //             ...course,
+          //             color: colors[index % colors.length]
+          //           }));
+          //           setPopularCourses(coloredPopularCourses);
+
                   } else {
                     console.error('Error fetching data');
                   }
