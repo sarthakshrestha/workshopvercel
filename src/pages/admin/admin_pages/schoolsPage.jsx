@@ -1,33 +1,160 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../adminSidebar';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
 } from "@/components/ui/dialog";
 import apiClient from 'config/apiClient';
-import FileDisplay from '@/components/ui/fileDisplay';
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster"
-
+import { ChevronDown, Users, BookOpen, GraduationCap, Send } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
+import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { useSchoolContext } from 'context/SchoolContext';
+import { useNavigate } from 'react-router-dom';
 
 const initialSchoolState = {
-  school_name: '',
-  email: '',
-  password: '',
-  address: '',
-  banner: null,
-  logo: null,
-  course_id: []
+    school_name: '',
+    email: '',
+    password: '',
+    address: ''
+};
+
+const InfoIcon = ({ text }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <TooltipProvider>
+            <Tooltip open={isOpen} onOpenChange={setIsOpen}>
+                <TooltipTrigger asChild>
+                    <HelpCircle
+                        className="w-5 h-5 text-gray-500 cursor-help"
+                        onClick={() => setIsOpen(!isOpen)}
+                    />
+                </TooltipTrigger>
+                <TooltipContent>
+                    {text}
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
 };
 
 
+const SchoolCard = ({ school }) => {
+    const [showDetails, setShowDetails] = useState(false);
+    const [totalClass, setTotalClass] = useState(0);
+    const [totalStudent, setTotalStudent] = useState(0);
+    const [totalCourse, setTotalCourse] = useState(0);
+    const { schoolId, setSchoolId } = useSchoolContext();
+    // const [setSchoolId] = useSchoolContext();
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        setSchoolId(school.id);
+        console.log("id", school.id)
+        navigate('/admin/schools/overview');
+    };
+
+
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const classResponse = await apiClient.get(`/class/school/${school.id}`);
+                const studentsResponse = await apiClient.get(`/student/school/${school.id}`);
+                // const courseResponse = await apiClient.get('/student_per_course');
+
+                if (classResponse.data.status === 'success'
+                    && studentsResponse.data.status === 'success'
+                ) {
+                    setTotalClass(classResponse.data.data ? classResponse.data.data.length : 0);
+                    setTotalStudent(studentsResponse.data.data ? studentsResponse.data.data.length : 0);
+                } else {
+                    console.error('Error fetching data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    })
+
+
+
+    const bannerImageUrl = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&h=400&q=80";
+    const logoImageUrl = "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&h=200&q=80";
+
+    return (
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl w-full max-w-3xl mx-auto">            <div className="relative">
+            <img
+                src={bannerImageUrl}
+                alt="School Banner"
+                className="w-full h-48 object-cover"
+            />
+            <div className="absolute -bottom-10 left-4">
+                <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg" style={{ boxShadow: '0 0 0 2px black' }}>
+                    <img
+                        src={logoImageUrl}
+                        alt="School Logo"
+                        className="w-full h-full object-cover"
+                    />
+                </div>
+            </div>
+        </div>
+
+            <div className="pt-12 px-6 pb-6 cursor-pointer" onClick={() => setShowDetails(!showDetails)}>
+                <div className="flex justify-between items-center">
+                    <h3 className="text-2xl font-bold text-gray-800">{school.school_name}</h3>
+                    <div className='flex'>
+                        <button
+                            onClick={handleClick}
+                        >
+                            <Send className="w-7 h-7 text-gray" />
+                        </button>
+                        <InfoIcon text="Click on the icon to go to the dashboard." />
+                    </div>
+                </div>
+                <p className="text-gray-600 mt-2">{school.email}</p>
+                {/* <p className="text-gray-600 mt-2">{school.id}</p> */}
+                <p className="text-gray-600">{school.address}</p>
+
+                <div
+                    className="mt-4 flex items-center justify-center text-blue-500 hover:text-blue-700 cursor-pointer transition-colors duration-200"
+
+                >
+                    <span className="mr-2 font-semibold">{showDetails ? 'Hide Details' : 'View Details'}</span>
+                    <ChevronDown className={`w-5 h-5 transform transition-transform duration-200 ${showDetails ? 'rotate-180' : ''}`} />
+                </div>
+
+                {showDetails && (
+                    <div className="grid grid-cols-3 gap-4 mt-6">
+                        <InfoCard icon={<BookOpen className="text-green-500" />} title="Classes" value={totalClass} />
+                        <InfoCard icon={<Users className="text-blue-500" />} title="Students" value={totalStudent} />
+                        <InfoCard icon={<GraduationCap className="text-purple-500" />} title="Courses" value="10" />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+const InfoCard = ({ icon, title, value }) => (
+    <div className="bg-gray-100 p-4 rounded-lg text-center shadow-md hover:shadow-lg transition-shadow duration-200">
+        <div className="flex justify-center mb-2">{icon}</div>
+        <h4 className="font-semibold text-gray-700">{title}</h4>
+        <p className="text-lg font-bold text-gray-900">{value}</p>
+    </div>
+);
 const SchoolsPage = () => {
     const { toast } = useToast();
     const [schoolData, setSchoolData] = useState([]);
@@ -40,11 +167,11 @@ const SchoolsPage = () => {
 
     const fetchSchools = async () => {
         try {
-        const response = await apiClient.get('/school');
-        console.log(response);
-        setSchoolData(response.data.data);
+            const response = await apiClient.get('/school');
+            console.log(response);
+            setSchoolData(response.data.data);
         } catch (error) {
-        console.error('Error fetching schools:', error);
+            console.error('Error fetching schools:', error);
         }
     };
 
@@ -53,241 +180,154 @@ const SchoolsPage = () => {
         setNewSchool(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        console.log(files);
-        setNewSchool(prev => ({ ...prev, [name]: files[0] }));
-    };
-
     const validateSchoolData = (schoolData) => {
         const requiredFields = ['school_name', 'email', 'password', 'address'];
         for (let field of requiredFields) {
-        if (!schoolData[field]) {
-            return `${field.replace('_', ' ')} is required`;
-        }
+            if (!schoolData[field]) {
+                return `${field.replace('_', ' ')} is required`;
+            }
         }
         return null; // No errors
-    };
-    
-
-    const uploadFile = async (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        
-        try {
-        const response = await apiClient.post('/file/upload', formData, {
-            headers: {
-            'Content-Type': 'multipart/form-data',
-            },
-        });
-        console.log(response);
-        if (response.data.status === "success") {
-            return response.data.message.file_id;
-        } else {
-            console.error('Failed to upload file:', response.data.message.message);
-            return null;
-        }
-        } catch (error) {
-        console.error('Error uploading file:', error);
-        return null;
-        }
-    };
-
-    const uploadBannerAndLogo = async () => {
-        let bannerId = null;
-        let logoId = null;
-
-        if (newSchool.banner) {
-        bannerId = await uploadFile(newSchool.banner);
-        }
-        if (newSchool.logo) {
-        logoId = await uploadFile(newSchool.logo);
-        }
-
-        return { bannerId, logoId };
     };
 
     const addSchool = async () => {
         const validationError = validateSchoolData(newSchool);
         if (validationError) {
-        toast({
-            title: "Validation Error",
-            description: validationError,
-            variant: "destructive",
-        });
-        return;
+            toast({
+                title: "Validation Error",
+                description: validationError,
+                variant: "destructive",
+            });
+            return;
         }
-    
-        const { bannerId, logoId } = await uploadBannerAndLogo();
-    
-        const schoolData = {
-        ...newSchool,
-        banner: bannerId,
-        logo: logoId,
-        };
-    
+
+        setIsAddDialogOpen(false);
+
+        toast({
+            title: "Processing",
+            description: "Adding school...",
+        });
+
         try {
-        const response = await apiClient.post('/school', schoolData);
-        
-        if (response.data.status === "success") {
-            setSchoolData(prev => [...prev, response.data.data]);
-            setNewSchool(initialSchoolState);
-            setIsAddDialogOpen(false);
-            fetchSchools(); // Refresh the school list
-            toast({
-            title: "Success",
-            description: "School added successfully",
-            });
-        } else {
-            console.error('Failed to add school:', response.data.message);
-            toast({
-            title: "Error",
-            description: "Failed to add school. Please try again.",
-            variant: "destructive",
-            });
-        }
+            apiClient.post('/school', newSchool)
+                .then(response => {
+                    if (response.data.status === "success") {
+                        setNewSchool(initialSchoolState);
+                        fetchSchools();
+                        toast({
+                            title: "Success",
+                            description: "School added successfully",
+                        });
+                    } else {
+                        console.error('Failed to add school:', response.data.message);
+                        toast({
+                            title: "Error",
+                            description: "Failed to add school. Please try again.",
+                            variant: "destructive",
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error adding school:', error);
+                    toast({
+                        title: "Error",
+                        description: "An error occurred while adding the school. Please try again.",
+                        variant: "destructive",
+                    });
+                });
         } catch (error) {
-        console.error('Error adding school:', error);
-        toast({
-            title: "Error",
-            description: "An error occurred while adding the school. Please try again.",
-            variant: "destructive",
-        });
+            console.error('Error sending request:', error);
+            toast({
+                title: "Error",
+                description: "An error occurred while sending the request. Please try again.",
+                variant: "destructive",
+            });
         }
     };
-    
-
-    
 
     return (
         <div className="flex h-screen">
-        <AdminSidebar />
-        <div className="flex-1 overflow-auto">
-            <main className="p-6 ml-56">
-            <h1 className="text-2xl font-bold mb-6">School Management</h1>
-            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-                <DialogTrigger asChild>
-                <Button className="mb-4" onClick={() => setIsAddDialogOpen(true)}>
-                    Add School
-                </Button>
-                </DialogTrigger>
-                <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>Add New School</DialogTitle>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="school_name" className="text-right">
-                        School Name
-                    </Label>
-                    <Input
-                        id="school_name"
-                        name="school_name"
-                        value={newSchool.school_name}
-                        onChange={handleInputChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="email" className="text-right">
-                        Email
-                    </Label>
-                    <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={newSchool.email}
-                        onChange={handleInputChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="password" className="text-right">
-                        Password
-                    </Label>
-                    <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={newSchool.password}
-                        onChange={handleInputChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="address" className="text-right">
-                        Address
-                    </Label>
-                    <Input
-                        id="address"
-                        name="address"
-                        value={newSchool.address}
-                        onChange={handleInputChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="banner" className="text-right">
-                        Banner
-                    </Label>
-                    <Input
-                        id="banner"
-                        name="banner"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="logo" className="text-right">
-                        Logo
-                    </Label>
-                    <Input
-                        id="logo"
-                        name="logo"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        className="col-span-3"
-                    />
-                    </div>
-                </div>
-                <DialogFooter>
-                    <Button onClick={addSchool}>Save School</Button>
-                </DialogFooter>
-                </DialogContent>
-            </Dialog>
+            <AdminSidebar />
+            <div className="flex-1 overflow-auto">
+                <main className="p-6 ml-56">
+                    <h1 className="text-2xl font-bold mb-6">School Management</h1>
+                    <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+                        <DialogTrigger asChild>
+                            <Button className="mb-4" onClick={() => setIsAddDialogOpen(true)}>
+                                Add School
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Add New School</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="school_name" className="text-right">
+                                        School Name
+                                    </Label>
+                                    <Input
+                                        id="school_name"
+                                        name="school_name"
+                                        value={newSchool.school_name}
+                                        onChange={handleInputChange}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="email" className="text-right">
+                                        Email
+                                    </Label>
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        value={newSchool.email}
+                                        onChange={handleInputChange}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="password" className="text-right">
+                                        Password
+                                    </Label>
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        value={newSchool.password}
+                                        onChange={handleInputChange}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label htmlFor="address" className="text-right">
+                                        Address
+                                    </Label>
+                                    <Input
+                                        id="address"
+                                        name="address"
+                                        value={newSchool.address}
+                                        onChange={handleInputChange}
+                                        className="col-span-3"
+                                    />
+                                </div>
+                            </div>
+                            <DialogFooter>
+                                <Button onClick={addSchool}>Save School</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
 
-            
-            {/* Display schools */}
-            <div className="mt-8">
-                <h2 className="text-xl font-semibold mb-4">School List</h2>
-                {schoolData.map((school, index) => (
-                <div key={index} className="bg-white shadow rounded-lg p-4 mb-4">
-                    <h3 className="font-bold">{school.school_name}</h3>
-                    <p>{school.email}</p>
-                    <p>{school.address}</p>
-                    <div className="mt-2">
-                    <h4 className="font-semibold">Banner:</h4>
-                    <FileDisplay 
-                        fileId={school.banner} 
-                        altText={`${school.school_name} banner`}
-                    />
+                    {/* Display schools */}
+                    <div className="mt-8 space-y-8">
+                        {schoolData && schoolData.map((school, index) => (
+                            <SchoolCard key={index} school={school} />
+                        ))}
                     </div>
-                    <div className="mt-2">
-                    <h4 className="font-semibold">Logo:</h4>
-                    <FileDisplay 
-                        fileId={school.logo} 
-                        altText={`${school.school_name} logo`}
-                    />
-                    </div>
-                </div>
-                ))}
+                </main>
             </div>
-            </main>
-        </div>
-        <Toaster duration={1000}/>
+            <Toaster duration={1000} />
         </div>
     );
 };

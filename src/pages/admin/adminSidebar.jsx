@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
-import { Home, School, Users, Book, Calendar } from 'lucide-react';
+import { Home, School, Users, Book, Calendar,GraduationCap } from 'lucide-react';
 import logo from 'gallery/images/logo.png';
 import { useNavigate } from 'react-router-dom';
 
@@ -49,7 +49,7 @@ const AdminSidebar = () => {
             className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
             onClick={(e) => (courses())}
           >
-            <Book className="mr-2 h-5 w-5" />
+            <GraduationCap className="mr-2 h-5 w-5" />
             Courses
           </Button>
           <Button
