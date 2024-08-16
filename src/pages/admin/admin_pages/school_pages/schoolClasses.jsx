@@ -193,7 +193,7 @@ const SchoolClasses = () => {
                     )}
                 </main>
             </div>
-            <Toaster />
+            <Toaster duration={1000} />
         </div>
     )
 }
