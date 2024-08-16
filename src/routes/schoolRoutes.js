@@ -5,6 +5,7 @@ import { SchoolContextProvider } from "context/SchoolContext";
 import SchoolsPage from "pages/admin/admin_pages/schoolsPage";
 import SchoolClasses from 'pages/admin/admin_pages/school_pages/schoolClasses';
 import SchoolCourses from 'pages/admin/admin_pages/school_pages/schoolCourses';
+import ClassDetails from 'pages/admin/class_details/classDetails';
 
 const SchoolRoutes = (
   <SchoolContextProvider>
@@ -12,6 +13,7 @@ const SchoolRoutes = (
       <Route path="/admin/schools" element={<SchoolsPage />} />
       <Route path="/admin/schools/overview" element={<SchoolOverview />} />
       <Route path="/admin/schools/classes" element={<SchoolClasses />} />
+      <Route path="/admin/schools/classes/:classId" element={<ClassDetails />} />
       <Route path="/admin/schools/courses" element={<SchoolCourses />} />
       <Route path="/admin/schools/calendar" element={<SchoolOverview />} />
       <Route path="/admin/schools/profile" element={<SchoolProfile />} />

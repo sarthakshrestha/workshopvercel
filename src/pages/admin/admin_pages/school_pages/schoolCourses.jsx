@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-
+import { FaSpinner } from 'react-icons/fa';
+import LoadingSpinner from '@/components/ui/loadingSpinner';
 
 const CourseCard = ({ course, isAssigned, onToggle }) => {
     return (
@@ -30,7 +31,9 @@ const SchoolCourses = () => {
     const [allCourses, setAllCourses] = useState([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedCourses, setSelectedCourses] = useState([]);
-    const[currentSchoolData, setCurrentSchoolData] = useState();
+    const [currentSchoolData, setCurrentSchoolData] = useState();
+    const [isLoading, setIsLoading] = useState(true);
+    const [isAssigning, setIsAssigning] = useState(false);
     const { toast } = useToast();
 
     const initialSchoolState = {
@@ -46,6 +49,7 @@ const SchoolCourses = () => {
     }, [schoolId]);
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
             const schoolResponse = await apiClient.get(`/school/${schoolId}`);
             const courseResponse = await apiClient.get('/course');
@@ -60,6 +64,8 @@ const SchoolCourses = () => {
                 description: "Failed to fetch courses. Please try again.",
                 variant: "destructive",
             });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -72,9 +78,8 @@ const SchoolCourses = () => {
     };
 
     const assignCourses = async () => {
+        setIsAssigning(true);
         try {
-    
-            // Create an updated school object, spreading the current data and updating course_id
             const updatedSchoolData = {
                 ...initialSchoolState,
                 ...currentSchoolData,
@@ -82,10 +87,9 @@ const SchoolCourses = () => {
             };
 
             delete updatedSchoolData.id;
-    
-            // Send the PUT request with the full updated school data
+
             const response = await apiClient.put(`/school/${schoolId}`, updatedSchoolData);
-    
+
             if (response.data.status === "success") {
                 toast({
                     title: "Success",
@@ -102,9 +106,10 @@ const SchoolCourses = () => {
                 description: "Failed to update courses. Please try again.",
                 variant: "destructive",
             });
+        } finally {
+            setIsAssigning(false);
         }
     };
-    
 
     return (
         <div className="flex h-screen">
@@ -112,7 +117,7 @@ const SchoolCourses = () => {
             <div className="flex-1 overflow-auto">
                 <main className="p-6 ml-56">
                     <h1 className="text-2xl font-bold mb-6">Course Management</h1>
-                    <Button onClick={() => setIsDialogOpen(true)}>Manage Courses</Button>
+                    <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading}>Manage Courses</Button>
 
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                         <DialogContent className="max-w-3xl">
@@ -130,22 +135,35 @@ const SchoolCourses = () => {
                                 ))}
                             </div>
                             <DialogFooter>
-                                <Button onClick={assignCourses}>Save Changes</Button>
+                                <Button onClick={assignCourses} disabled={isAssigning}>
+                                    {isAssigning ? (
+                                        <>
+                                            <FaSpinner className="animate-spin mr-2" />
+                                            Saving...
+                                        </>
+                                    ) : 'Save Changes'}
+                                </Button>
                             </DialogFooter>
                         </DialogContent>
                     </Dialog>
 
                     <div className="mt-8">
                         <h2 className="text-xl font-semibold mb-4">Assigned Courses</h2>
-                        {courseList.map(courseId => {
-                            const course = allCourses.find(c => c.id === courseId);
-                            return course ? (
-                                <div key={courseId} className="p-4 border rounded-lg mb-4">
-                                    <h3 className="text-lg font-semibold">{course.course_name}</h3>
-                                    <p className="text-sm text-gray-600">{course.description}</p>
-                                </div>
-                            ) : null;
-                        })}
+                        {isLoading ? (
+                            <LoadingSpinner/>
+                        ) : courseList.length > 0 ? (
+                            courseList.map(courseId => {
+                                const course = allCourses.find(c => c.id === courseId);
+                                return course ? (
+                                    <div key={courseId} className="p-4 border rounded-lg mb-4">
+                                        <h3 className="text-lg font-semibold">{course.course_name}</h3>
+                                        <p className="text-sm text-gray-600">{course.description}</p>
+                                    </div>
+                                ) : null;
+                            })
+                        ) : (
+                            <p className="text-gray-600">No courses assigned yet.</p>
+                        )}
                     </div>
                 </main>
             </div>

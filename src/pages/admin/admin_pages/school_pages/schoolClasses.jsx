@@ -7,6 +7,8 @@ import SchoolSidebar from './schoolSidebar';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from 'react-router-dom';
+
 import {
     Dialog,
     DialogContent,
@@ -23,6 +25,7 @@ const initialClassState = {
 }
 
 const DisplayClassCard = ({ classes }) => {
+    const navigate = useNavigate();
     const [classData, setClassData] = useState([]);
     const [totalStudent, setTotalStudent] = useState(0);
     const [totalCourse, setTotalCourse] = useState(0);
@@ -47,10 +50,14 @@ const DisplayClassCard = ({ classes }) => {
         fetchClassData();
     }, [classes.id]);
 
+    const handleNavigateToClass = () => {
+        navigate(`/admin/schools/classes/${classes.id}`);
+    };
+
     return (
         <div className="bg-white rounded-lg shadow-lg p-6 transform transition duration-500 hover:scale-105">
             <h3 className="text-2xl font-bold mb-4 text-indigo-600">{classData.class_name}</h3>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-4 mb-4">
                 <div className="flex items-center space-x-2 bg-blue-100 p-3 rounded-md">
                     <FaUserGraduate className="text-blue-500 text-2xl" />
                     <div>
@@ -73,9 +80,16 @@ const DisplayClassCard = ({ classes }) => {
                     </div>
                 </div>
             </div>
+            <Button 
+                onClick={handleNavigateToClass}
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+            >
+                View Class Details
+            </Button>
         </div>
     );
 };
+
 
 const SchoolClasses = () => {
     const { schoolId } = useSchoolContext();
