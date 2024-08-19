@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react';
 import SchoolSidebar from './schoolSidebar';
 import { useSchoolContext } from 'context/SchoolContext';
 import apiClient from 'config/apiClient';
-import { FaSpinner, FaEdit, FaSave } from 'react-icons/fa';
+import { FaSpinner, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
 import LoadingSpinner from '@/components/ui/loadingSpinner';
+import { useNavigate } from 'react-router-dom';
 
 const SchoolProfile = () => {
+    const navigate = useNavigate();
     const { schoolId } = useSchoolContext();
     const [schoolData, setSchoolData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
     const [editedData, setEditedData] = useState({
         school_name: '',
         email: '',
         password: '',
-        address: ''
+        address: '',
+        course_id:[]
     });
 
     useEffect(() => {
@@ -27,7 +31,8 @@ const SchoolProfile = () => {
                     school_name: response.data.data.school_name,
                     email: response.data.data.email,
                     address: response.data.data.address,
-                    password: ''
+                    password: response.data.data.password,
+                    course_id: response.data.data.course_id
                 });
                 setLoading(false);
             } catch (err) {
@@ -35,11 +40,12 @@ const SchoolProfile = () => {
                 setLoading(false);
             }
         };
-
+    
         if (schoolId) {
             fetchSchoolData();
         }
     }, [schoolId]);
+    
 
     const handleEdit = () => {
         setIsEditing(!isEditing);
@@ -53,23 +59,69 @@ const SchoolProfile = () => {
         setEditedData(prev => ({ ...prev, [name]: value }));
     };
 
+    const handleDeleteClick = () => {
+        setShowDeleteConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        setLoading(true);
+        try {
+            await apiClient.delete(`/school/${schoolId}`);
+            navigate('/admin/schools');
+        } catch (err) {
+            console.error("Error deleting school:", err);
+            setError('Failed to delete school');
+        } finally {
+            setLoading(false);
+            setShowDeleteConfirmation(false);
+        }
+    };
+
+    const handleDeleteCancel = () => {
+        setShowDeleteConfirmation(false);
+    };
+
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            const updatedData = Object.fromEntries(
-                Object.entries(editedData).filter(([_, value]) => value !== '')
-            );
-            
-            await apiClient.put(`/school/${schoolId}`, updatedData);
-            const response = await apiClient.get(`/school/${schoolId}`);
-            setSchoolData(response.data.data);
+            // Compare editedData with schoolData to find changes
+            const updatedData = Object.entries(editedData).reduce((acc, [key, value]) => {
+                if (value !== schoolData[key]) {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {});
+    
+            // Only proceed with update if there are changes
+            if (Object.keys(updatedData).length > 0) {
+                console.log("Data being sent to API:", updatedData);
+                const putResponse = await apiClient.put(`/school/${schoolId}`, updatedData);
+                console.log("Response from PUT request:", putResponse);
+    
+                // Update schoolData with the new values
+                setSchoolData(prevData => ({
+                    ...prevData,
+                    ...updatedData
+                }));
+    
+                console.log("Updated school data:", {
+                    ...schoolData,
+                    ...updatedData
+                });
+            } else {
+                console.log("No changes detected, skipping update.");
+            }
+    
             setIsEditing(false);
         } catch (err) {
+            console.error("Error updating school data:", err);
             setError('Failed to update school data');
         } finally {
             setLoading(false);
         }
     };
+    
+
 
     if (error) return (
         <div className="flex items-center justify-center h-screen bg-red-50">
@@ -88,7 +140,7 @@ const SchoolProfile = () => {
                     <h1 className="text-4xl font-bold mb-8 text-gray-800">School Profile</h1>
                     <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl w-full max-w-3xl mx-auto mb-8">
                         {loading ? (
-                           <LoadingSpinner/>
+                            <LoadingSpinner />
                         ) : schoolData ? (
                             <>
                                 <div className="relative">
@@ -139,13 +191,14 @@ const SchoolProfile = () => {
                                             </div>
                                         )}
                                     </div>
-                                    <button 
+                                    <div className='flex justify-between mt-6'>
+                                    <button
                                         onClick={handleEdit}
                                         className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto"
                                         disabled={loading}
                                     >
                                         {loading ? (
-                                            <LoadingSpinner/>
+                                            <LoadingSpinner />
                                         ) : isEditing ? (
                                             <>
                                                 <FaSave className="mr-2" />
@@ -158,6 +211,15 @@ const SchoolProfile = () => {
                                             </>
                                         )}
                                     </button>
+                                    <button
+                                    onClick={handleDeleteClick}
+                                    className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 ease-in-out flex items-center justify-center  w-full sm:w-auto"
+                                    disabled={loading}
+                                >
+                                    <FaTrash className="mr-2" />
+                                    Delete School
+                                </button>
+                                </div>
                                 </div>
                             </>
                         ) : (
@@ -168,6 +230,28 @@ const SchoolProfile = () => {
                     </div>
                 </main>
             </div>
+            {showDeleteConfirmation && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-6 rounded-lg">
+                        <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
+                        <p className="mb-4">Are you sure you want to delete this school? This action cannot be undone.</p>
+                        <div className="flex justify-end">
+                            <button
+                                onClick={handleDeleteCancel}
+                                className="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteConfirm}
+                                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

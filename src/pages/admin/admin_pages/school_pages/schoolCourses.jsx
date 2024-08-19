@@ -36,14 +36,6 @@ const SchoolCourses = () => {
     const [isAssigning, setIsAssigning] = useState(false);
     const { toast } = useToast();
 
-    const initialSchoolState = {
-        school_name: '',
-        email: '',
-        password: '',
-        address: '',
-        course_id: []
-    };
-
     useEffect(() => {
         fetchData();
     }, [schoolId]);
@@ -81,12 +73,12 @@ const SchoolCourses = () => {
         setIsAssigning(true);
         try {
             const updatedSchoolData = {
-                ...initialSchoolState,
                 ...currentSchoolData,
                 course_id: selectedCourses
             };
 
             delete updatedSchoolData.id;
+            console.log(updatedSchoolData);
 
             const response = await apiClient.put(`/school/${schoolId}`, updatedSchoolData);
 
