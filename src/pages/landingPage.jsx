@@ -1,5 +1,4 @@
 import React from 'react';
-import MotionCard from '@/components/ui/motionCard';
 import { Video, Book } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

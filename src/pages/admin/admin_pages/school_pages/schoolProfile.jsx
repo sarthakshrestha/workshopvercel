@@ -3,7 +3,7 @@ import SchoolSidebar from './schoolSidebar';
 import { useSchoolContext } from 'context/SchoolContext';
 import apiClient from 'config/apiClient';
 import { FaSpinner, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
-import LoadingSpinner from '@/components/ui/loadingSpinner';
+import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinner';
 import { useNavigate } from 'react-router-dom';
 
 const SchoolProfile = () => {

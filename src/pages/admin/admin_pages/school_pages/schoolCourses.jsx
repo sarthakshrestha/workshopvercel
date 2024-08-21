@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { FaSpinner } from 'react-icons/fa';
-import LoadingSpinner from '@/components/ui/loadingSpinner';
+import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinner';
 
 const CourseCard = ({ course, isAssigned, onToggle }) => {
     return (

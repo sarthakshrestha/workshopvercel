@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import SchoolSidebar from '../admin_pages/school_pages/schoolSidebar';
 import apiClient from 'config/apiClient';
-import LoadingSpinner from '@/components/ui/loadingSpinner';
+import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinner';
 
 const ClassDetails = () => {
     const { classId } = useParams();
