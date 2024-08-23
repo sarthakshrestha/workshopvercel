@@ -8,6 +8,7 @@ import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinne
 import StudentList from './displayStudent';
 import AddStudentButton from './addStudentButton';
 import AssignCoursesButton from './assignCoursesButton';
+import {Users, GraduationCap, BookOpen} from 'lucide-react';
 
 
 const ClassDetails = () => {
@@ -179,30 +180,42 @@ const ClassDetails = () => {
         <div className="flex h-screen bg-gray-100">
             <SchoolSidebar />
             <div className="flex-1 overflow-auto">
-                <main className="p-8 ml-56">
+                <main className="p-8">
                     {isLoading ? (
                         <LoadingSpinner />
                     ) : classData ? (
                         <>
                             <h1 className="text-3xl font-bold mb-6">{classData.class_name}</h1>
 
-                            <div className="grid grid-cols-3 gap-4 mb-8">
-                                <div className="bg-white p-4 rounded shadow">
-                                    <h2 className="text-xl font-semibold mb-2">Students</h2>
-                                    <p className="text-3xl font-bold">{totalStudent}</p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
+                                    <div className="flex items-center justify-between ">
+                                        <h2 className="text-lg font-semibold text-gray-700">Students</h2>
+                                        <Users className="text-gray-600" size={28} />
+                                    </div>
+                                    <p className="text-2xl font-bold text-gray-800">{totalStudent}</p>
+                                    <p className='text-gray-600'>Total Students studing in the school</p>
                                 </div>
-                                <div className="bg-white p-4 rounded shadow">
-                                    <h2 className="text-xl font-semibold mb-2">Teachers</h2>
-                                    <p className="text-3xl font-bold">{totalTeacher}</p>
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
+                                    <div className="flex items-center justify-between ">
+                                        <h2 className="text-lg font-semibold text-gray-700">Teachers</h2>
+                                        <GraduationCap className="text-gray-600" size={28} />
+                                    </div>
+                                    <p className="text-2xl font-bold text-gray-800">{totalTeacher}</p>
+                                    <p className='text-gray-600'>Total Teachers Teaching in the school</p>
                                 </div>
-                                <div className="bg-white p-4 rounded shadow">
-                                    <h2 className="text-xl font-semibold mb-2">Courses</h2>
-                                    <p className="text-3xl font-bold">{totalCourse}</p>
+                                <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
+                                    <div className="flex items-center justify-between ">
+                                        <h2 className="text-lg font-semibold text-gray-700">Courses</h2>
+                                        <BookOpen className="text-gray-600" size={28} />
+                                    </div>
+                                    <p className="text-2xl font-bold text-gray-800">{totalCourse}</p>
+                                    <p className='text-gray-600'>Total Courses being studied in the school</p>
                                 </div>
                             </div>
 
                             <div className="flex space-x-4 mb-8">
-                                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-1/3">
                                     Assign Teacher
                                 </button>
                                 <AssignCoursesButton onAssignCourse={handleAssignCourse} class_data={classData}/>

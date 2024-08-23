@@ -2,9 +2,16 @@ import React, { useEffect, useState } from 'react';
 import SchoolSidebar from './schoolSidebar';
 import { useSchoolContext } from 'context/SchoolContext';
 import apiClient from 'config/apiClient';
-import { FaSpinner, FaEdit, FaSave, FaTrash } from 'react-icons/fa';
 import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinner';
 import { useNavigate } from 'react-router-dom';
+// import school from '../../../../gallery/images/school.jpg';
+// import banner from '../../../../gallery/images/banner.jpg';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Edit, Save, Trash2, School, Mail, Home, Key } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const SchoolProfile = () => {
     const navigate = useNavigate();
@@ -19,7 +26,7 @@ const SchoolProfile = () => {
         email: '',
         password: '',
         address: '',
-        course_id:[]
+        course_id: []
     });
 
     useEffect(() => {
@@ -40,12 +47,11 @@ const SchoolProfile = () => {
                 setLoading(false);
             }
         };
-    
+
         if (schoolId) {
             fetchSchoolData();
         }
     }, [schoolId]);
-    
 
     const handleEdit = () => {
         setIsEditing(!isEditing);
@@ -84,34 +90,21 @@ const SchoolProfile = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            // Compare editedData with schoolData to find changes
             const updatedData = Object.entries(editedData).reduce((acc, [key, value]) => {
                 if (value !== schoolData[key]) {
                     acc[key] = value;
                 }
                 return acc;
             }, {});
-    
-            // Only proceed with update if there are changes
+
             if (Object.keys(updatedData).length > 0) {
-                console.log("Data being sent to API:", updatedData);
                 const putResponse = await apiClient.put(`/school/${schoolId}`, updatedData);
-                console.log("Response from PUT request:", putResponse);
-    
-                // Update schoolData with the new values
                 setSchoolData(prevData => ({
                     ...prevData,
                     ...updatedData
                 }));
-    
-                console.log("Updated school data:", {
-                    ...schoolData,
-                    ...updatedData
-                });
-            } else {
-                console.log("No changes detected, skipping update.");
             }
-    
+
             setIsEditing(false);
         } catch (err) {
             console.error("Error updating school data:", err);
@@ -120,8 +113,6 @@ const SchoolProfile = () => {
             setLoading(false);
         }
     };
-    
-
 
     if (error) return (
         <div className="flex items-center justify-center h-screen bg-red-50">
@@ -136,9 +127,9 @@ const SchoolProfile = () => {
         <div className="flex h-screen bg-gray-100">
             <SchoolSidebar />
             <div className="flex-1 overflow-auto">
-                <main className="p-6 ml-56">
-                    <h1 className="text-4xl font-bold mb-8 text-gray-800">School Profile</h1>
-                    <div className="bg-white shadow-lg rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl w-full max-w-3xl mx-auto mb-8">
+                <main className="p-6">
+                    <h1 className="text-4xl font-bold mb-8 text-gray-800 text-center">School Profile</h1>
+                    <Card className="w-full max-w-3xl mx-auto mb-8">
                         {loading ? (
                             <LoadingSpinner />
                         ) : schoolData ? (
@@ -149,109 +140,120 @@ const SchoolProfile = () => {
                                         alt="School Banner"
                                         className="w-full h-48 object-cover"
                                     />
-                                    <div className="absolute -bottom-10 left-4">
-                                        <div className="w-24 h-24 rounded-full border-4 border-white overflow-hidden shadow-lg" style={{ boxShadow: '0 0 0 2px black' }}>
+                                    <motion.div
+                                        className="absolute -bottom-20 left-4"
+                                        initial={{ scale: 1 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <div className="w-44 h-44 rounded-full border-4 border-white overflow-hidden shadow-lg" style={{ boxShadow: '0 0 0 2px black' }}>
                                             <img
                                                 src={logoImageUrl}
                                                 alt="School Logo"
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
+                                    </motion.div>
+                                </div>
+                                <CardContent className="p-6 pt-28">
+                                    <AnimatePresence>
+                                        <motion.div
+                                            className="space-y-4 grid grid-cols-2 gap-6"
+                                            initial={{ height: "auto" }}
+                                            animate={{ height: isEditing ? "auto" : "auto" }}
+                                            exit={{ height: "auto" }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            {['school_name', 'email', 'address'].map((field) => (
+                                                <div key={field} className="flex items-center space-x-4">
+                                                    {field === 'school_name' && <School className="text-gray-600 mt-2" />}
+                                                    {field === 'email' && <Mail className="text-gray-600  mt-2" />}
+                                                    {field === 'address' && <Home className="text-gray-600  mt-2" />}
+                                                    <div className="flex-grow">
+                                                        <p className="font-semibold text-gray-600 capitalize">{field.replace('_', ' ')}:</p>
+                                                        <Input
+                                                            type={field === 'email' ? 'email' : 'text'}
+                                                            name={field}
+                                                            value={editedData[field]}
+                                                            onChange={handleChange}
+                                                            className="mt-1"
+                                                            disabled={!isEditing}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {isEditing && (
+                                                <div className="flex items-center space-x-4">
+                                                    <Key className="text-gray-600  mt-2" />
+                                                    <div className="flex-grow">
+                                                        <p className="font-semibold text-gray-600">Password:</p>
+                                                        <Input
+                                                            type="password"
+                                                            name="password"
+                                                            value={editedData.password}
+                                                            onChange={handleChange}
+                                                            className="mt-1"
+                                                            placeholder="Enter new password"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                    <div className="flex gap-4 mt-12 mb-6">
+                                        <Button
+                                            onClick={handleEdit}
+                                            className="w-1/2"
+                                            disabled={loading}
+                                        >
+                                            {loading ? (
+                                                <LoadingSpinner />
+                                            ) : isEditing ? (
+                                                <>
+                                                    <Save className="mr-2" />
+                                                    Save Changes
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Edit className="mr-2" />
+                                                    Edit Information
+                                                </>
+                                            )}
+                                        </Button>
+                                        <Button
+                                            onClick={handleDeleteClick}
+                                            className=" bg-red-500 w-1/2 hover:bg-red-600"
+                                            disabled={loading}
+                                        >
+                                            <Trash2 className="mr-2" />
+                                            Delete School
+                                        </Button>
                                     </div>
-                                </div>
-                                <div className="p-6 pt-16">
-                                    <div className="space-y-4">
-                                        {['school_name', 'email', 'address'].map((field) => (
-                                            <div key={field}>
-                                                <p className="font-semibold text-gray-600 capitalize">{field.replace('_', ' ')}:</p>
-                                                {isEditing ? (
-                                                    <input
-                                                        type={field === 'email' ? 'email' : 'text'}
-                                                        name={field}
-                                                        value={editedData[field]}
-                                                        onChange={handleChange}
-                                                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                    />
-                                                ) : (
-                                                    <p className="text-gray-800">{schoolData[field]}</p>
-                                                )}
-                                            </div>
-                                        ))}
-                                        {isEditing && (
-                                            <div>
-                                                <p className="font-semibold text-gray-600">Password:</p>
-                                                <input
-                                                    type="password"
-                                                    name="password"
-                                                    value={editedData.password}
-                                                    onChange={handleChange}
-                                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                    placeholder="Enter new password"
-                                                />
-                                            </div>
-                                        )}
-                                    </div>
-                                    <div className='flex justify-between mt-6'>
-                                    <button
-                                        onClick={handleEdit}
-                                        className="mt-6 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ease-in-out flex items-center justify-center w-full sm:w-auto"
-                                        disabled={loading}
-                                    >
-                                        {loading ? (
-                                            <LoadingSpinner />
-                                        ) : isEditing ? (
-                                            <>
-                                                <FaSave className="mr-2" />
-                                                Save Changes
-                                            </>
-                                        ) : (
-                                            <>
-                                                <FaEdit className="mr-2" />
-                                                Edit Information
-                                            </>
-                                        )}
-                                    </button>
-                                    <button
-                                    onClick={handleDeleteClick}
-                                    className="mt-6 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 ease-in-out flex items-center justify-center  w-full sm:w-auto"
-                                    disabled={loading}
-                                >
-                                    <FaTrash className="mr-2" />
-                                    Delete School
-                                </button>
-                                </div>
-                                </div>
+                                </CardContent>
                             </>
                         ) : (
                             <div className="flex items-center justify-center h-64">
                                 <p className="text-gray-500">No school data available</p>
                             </div>
                         )}
-                    </div>
+                    </Card>
                 </main>
             </div>
-            {showDeleteConfirmation && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg">
-                        <h2 className="text-xl font-bold mb-4">Confirm Deletion</h2>
-                        <p className="mb-4">Are you sure you want to delete this school? This action cannot be undone.</p>
-                        <div className="flex justify-end">
-                            <button
-                                onClick={handleDeleteCancel}
-                                className="mr-2 px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleDeleteConfirm}
-                                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                            >
-                                Delete
-                            </button>
-                        </div>
+            <Dialog open={showDeleteConfirmation} onOpenChange={setShowDeleteConfirmation}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Confirm Deletion</DialogTitle>
+                    </DialogHeader>
+                    <p className="mb-4">Are you sure you want to delete this school? This action cannot be undone.</p>
+                    <div className="flex justify-end">
+                        <Button onClick={handleDeleteCancel} variant="outline" className="mr-2">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleDeleteConfirm} variant="destructive">
+                            Delete
+                        </Button>
                     </div>
-                </div>
-            )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

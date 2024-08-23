@@ -110,7 +110,7 @@ const AddStudentButton = ({ onAddStudent }) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+                <Button className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded w-1/3">
                     Add Student
                 </Button>
             </DialogTrigger>

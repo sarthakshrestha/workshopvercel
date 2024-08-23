@@ -142,7 +142,7 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
     return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-                <Button className="bg-green-500 text-white font-bold px-4 py-2 rounded hover:bg-green-600">
+                <Button className="bg-green-500 text-white font-bold px-4 py-2 rounded hover:bg-green-600 w-1/3">
                     Assign Courses
                 </Button>
             </DialogTrigger>

@@ -47,10 +47,6 @@ const EventPage = () => {
         }
     };
 
-    const allGalleryImages = [art1, art2, art3, art4, farewell, science1, science2, art1, art2, art3, art4, farewell, science1, science2];
-
-    const allVideos = [video, video, video];
-
     const handlePhotoUpload = (e) => {
         setSelectedPhotos([...selectedPhotos, ...e.target.files]);
     };
@@ -97,8 +93,8 @@ const EventPage = () => {
     return (
         <div className='flex'>
             <AdminSidebar />
-            <div className="ml-[220px] flex flex-row bg-white min-h-screen">
-                <div className="flex-3 p-8">
+            <div className="ml-[220px] flex w-full bg-white min-h-screen justify-center">
+                <div className=" p-8 justify-center">
                     <div className='flex justify-between items-center'>
                         <h3 className='text-3xl font-bold mt-[-15px] mb-[20px] flex items-center'>
                             Events
@@ -186,28 +182,7 @@ const EventPage = () => {
                     ))}
                 </div>
 
-                <div className="flex-1 p-4 border-l border-gray-200 fixed right-0 top-0 bottom-0 w-[41%]">
-                    <h2 className="text-3xl font-bold mb-2 flex items-center">
-                        Gallery
-                    </h2>
-                    <h3 className="text-lg font-semibold mb-2 mt-4 flex items-center">
-                        <Image className="mr-2" /> Photos
-                    </h3>
-                    <div className="grid grid-cols-3 gap-4 h-[53%] overflow-y-scroll">
-                        {allGalleryImages.map((image, index) => (
-                            <img key={index} src={image} alt={`Gallery Image ${index + 1}`} className="w-full h-32 rounded-lg object-cover" />
-                        ))}
-                    </div>
-
-                    <h3 className="text-lg font-semibold mt-6 mb-2 flex items-center">
-                        <Film className="mr-2" /> Videos
-                    </h3>
-                    <div className="flex gap-4 overflow-x-scroll">
-                        {allVideos.map((video, index) => (
-                            <video key={index} src={video} controls className="w-1/2 h-48 rounded-lg object-cover" />
-                        ))}
-                    </div>
-                </div>
+               
 
                 {/* Delete Confirmation Dialog */}
                 {showDeleteDialog && (
