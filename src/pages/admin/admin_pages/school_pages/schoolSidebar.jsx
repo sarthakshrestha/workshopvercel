@@ -16,7 +16,7 @@ const SchoolSidebar = () => {
     const academicCalendar = () => { navigate('/admin/schools/calendar'); };
     const profile = () => { navigate('/admin/schools/profile'); };
     return (
-        <aside className="w-56 h-screen fixed bg-homeText text-white shadow-lg font-archivo">
+        <aside className="w-56 h-screen bg-homeText text-white shadow-lg font-archivo">
             <div className="p-4 flex items-center justify-center flex-col">
                 <div className="mb-6">
                     <img src={logo} alt="Digital Horizon" className="h-full w-full rounded-lg cursor-pointer" />

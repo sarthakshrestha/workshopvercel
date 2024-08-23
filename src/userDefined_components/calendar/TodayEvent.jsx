@@ -9,121 +9,23 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import apiClient from "config/apiClient";
+import {Calendar} from 'lucide-react';
 
-const TodayEvent = ({ date, school_id,  }) => {
-  // Extract the year, month, and day from the date
-  const selectedYear =  date.getFullYear();
+const TodayEvent = ({ date, school_id }) => {
+  const selectedYear = date.getFullYear();
   const selectedMonth = date.getMonth() + 1;
-  const selectedDay = date.getDate() ;
+  const selectedDay = date.getDate();
 
   const [data, setData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-
   const { register, handleSubmit, reset, setValue } = useForm();
 
   const currentDate = new Date();
   const isFutureDate = date > currentDate;
-
-  const onSubmit = async (data) => {
-    const newEvent = {
-      id: "event_id",
-      event_name: data.event_name,
-      event_description: data.event_description,
-    };
-
-    const calendarData = {
-      year: selectedYear,
-      schools: [
-        {
-          school_id: school_id,
-          months: [
-            {
-              month: selectedMonth,
-              days: [
-                {
-                  day: selectedDay,
-                  events: [newEvent],
-                },
-              ],
-            },
-          ],
-        },
-      ],
-    };
-
-    try {
-      const response = await apiClient.post("/calendar", calendarData);
-
-      setData((prevData) => {
-        if (!prevData) {
-          // Initialize the state if it's null
-          return {
-            year: selectedYear,
-            schools: [
-              {
-                school_id: school_id,
-                events: [
-                  {
-                    month: selectedMonth,
-                    days: [
-                      {
-                        day: selectedDay,
-                        events: [newEvent],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          };
-        } else {
-          // Update the existing state
-          const updatedData = { ...prevData };
-          let monthData = updatedData.schools
-            ?.find((school) => school.school_id === school_id)
-            ?.events.find((eventMonth) => eventMonth.month === selectedMonth);
-
-          if (!monthData) {
-            // If the month doesn't exist, create it
-            monthData = {
-              month: selectedMonth,
-              days: [],
-            };
-            updatedData.schools[0].events.push(monthData);
-          }
-
-          let dayData = monthData.days.find(
-            (eventDay) => eventDay.day === selectedDay
-          );
-
-          if (!dayData) {
-            // If the day doesn't exist, create it
-            dayData = {
-              day: selectedDay,
-              events: [],
-            };
-            monthData.days.push(dayData);
-          }
-
-          // Add the new event to the day's events
-          dayData.events.push(newEvent);
-
-          return updatedData;
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    reset();
-    setIsOpen(false); // Close dialog
-  };
-
 
   const onUpdate = async (data) => {
     const updateData = {
@@ -163,6 +65,95 @@ const TodayEvent = ({ date, school_id,  }) => {
     setIsOpen(false); // Close dialog
   };
 
+  const onSubmit = async (formData) => {
+    const newEvent = {
+      id: "event_id",
+      event_name: formData.event_name,
+      event_description: formData.event_description,
+    };
+
+    const calendarData = {
+      year: selectedYear,
+      schools: [
+        {
+          school_id: school_id,
+          months: [
+            {
+              month: selectedMonth,
+              days: [
+                {
+                  day: selectedDay,
+                  events: [newEvent],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    try {
+      const response = await apiClient.post("/calendar", calendarData);
+      setData((prevData) => updateCalendarData(prevData, newEvent));
+    } catch (error) {
+      console.error(error);
+    }
+
+    reset();
+    setIsOpen(false);
+  };
+
+  const updateCalendarData = (prevData, newEvent) => {
+    if (!prevData) {
+      return {
+        year: selectedYear,
+        schools: [
+          {
+            school_id: school_id,
+            events: [
+              {
+                month: selectedMonth,
+                days: [
+                  {
+                    day: selectedDay,
+                    events: [newEvent],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+    } else {
+      const updatedData = { ...prevData };
+      let monthData = updatedData.schools
+        ?.find((school) => school.school_id === school_id)
+        ?.events.find((eventMonth) => eventMonth.month === selectedMonth);
+
+      if (!monthData) {
+        monthData = {
+          month: selectedMonth,
+          days: [],
+        };
+        updatedData.schools[0].events.push(monthData);
+      }
+
+      let dayData = monthData.days.find((eventDay) => eventDay.day === selectedDay);
+
+      if (!dayData) {
+        dayData = {
+          day: selectedDay,
+          events: [],
+        };
+        monthData.days.push(dayData);
+      }
+
+      dayData.events.push(newEvent);
+
+      return updatedData;
+    }
+  };
+
   const fetchData = async () => {
     try {
       const response = await apiClient.get(
@@ -170,14 +161,13 @@ const TodayEvent = ({ date, school_id,  }) => {
       );
       setData(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
     fetchData();
   }, [selectedDay]);
-
 
   const events =
     data?.schools?.[0]?.events
@@ -202,138 +192,86 @@ const TodayEvent = ({ date, school_id,  }) => {
   }, [selectedEvent, setValue]);
 
   return (
-    <div className="w-full h-full p-3 rounded-3xl bg-gray-200">
-      <section className="text-2xl font-semibold">
-        <span>{`Events for ${selectedDay} ${date.toLocaleString("default", {
-          month: "short",
-        })}`}</span>
-      </section>
-      <section className="mt-1 p-1 cursor-pointer bg-white rounded-lg">
-        {events.length > 0 ? (
-          events.map((event) => (
-            <div
-              key={event.id}
-              className="mb-2"
-              onClick={() => handleEventClick(event)}
-            >
-              <section className="text-lg font-medium">
-                &bull; {event.event_name}
-              </section>
-              <section className="text-sm font-normal">
-                {event.event_description}
-              </section>
-            </div>
-          ))
-        ) : (
-          <section className="text-sm font-normal flex justify-between items-center">
-            <span className="p-1 font-medium">
-              {`No events for ${selectedDay}, ${date.toLocaleString("default", {
-                month: "short",
-              })}`}
-            </span>
-            {isFutureDate && (
-              <Button onClick={() => setIsOpen(true)}>Add Event</Button>
-            )}
-          </section>
+    <div className="w-full p-6 rounded-lg h-[51.2vh] bg-white shadow-lg">
+      <div className="flex justify-between items-center mb-4">
+        <section className="text-2xl font-semibold">
+          {`Events for ${selectedDay} ${date.toLocaleString("default", {
+            month: "short",
+          })}`}
+        </section>
+        {isFutureDate && (
+          <Button className="ml-auto" onClick={() => setIsOpen(true)}>
+            Add Event
+          </Button>
         )}
-
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>
-                {selectedEvent ? "Update Event" : "Add Event"}
-              </DialogTitle>
-              <DialogDescription>
-                {selectedEvent
-                  ? "Make changes to the event. Click save when you're done."
-                  : "Make changes to the Calendar. Click save when you're done."}
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit(selectedEvent ? onUpdate : onSubmit)}>
-              <div className="grid gap-4 py-4">
-                <div className="gri grid-cols-4 items-center gap-4 hidden">
-                  <Label htmlFor="year" className="text-right">
-                    Year
-                  </Label>
-                  <Input
-                    id="year"
-                    {...register("year")}
-                    className="col-span-3"
-                  />
+      </div>
+      <div className=" overflow-y-scroll">
+        <section className="p-4 space-y-4 h-[40vh]">
+          {events.length > 0 ? (
+            events.map((event) => (
+              <div
+                key={event.id}
+                className="p-2 px-4 rounded-lg hover:bg-gray-50 cursor-pointer transition border border-gray-300"
+                onClick={() => handleEventClick(event)}
+              >
+                <div className="flex items-center mb-2">
+                  <Calendar className="h-5 w-5 text-gray-500 mr-2" />
+                  <section className="text-lg font-medium">{event.event_name}</section>
                 </div>
-                <div className="gri grid-cols-4 items-center gap-4 hidden">
-                  <Label htmlFor="school_id" className="text-right">
-                    School ID
-                  </Label>
-                  <Input
-                    id="school_id"
-                    {...register("school_id")}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="gri grid-cols-4 items-center gap-4 hidden">
-                  <Label htmlFor="month" className="text-right">
-                    Month
-                  </Label>
-                  <Input
-                    id="month"
-                    {...register("month")}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="gri grid-cols-4 items-center gap-4 hidden">
-                  <Label htmlFor="day" className="text-right">
-                    Day
-                  </Label>
-                  <Input id="day" {...register("day")} className="col-span-3" />
-                </div>
-                <div className="gri grid-cols-4 items-center gap-4 hidden">
-                  <Label htmlFor="event_id" className="text-right">
-                    Event ID
-                  </Label>
-                  <Input
-                    id="event_id"
-                    {...register("event_id")}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="event_name" className="text-right">
-                    Event Name
-                  </Label>
-                  <Input
-                    id="event_name"
-                    {...register("event_name")}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="event_description" className="text-right">
-                    Description
-                  </Label>
-                  <Input
-                    id="event_description"
-                    {...register("event_description")}
-                    className="col-span-3"
-                  />
-                </div>
+                <section className="text-sm text-gray-600">
+                  {event.event_description}
+                </section>
               </div>
+            ))
+          ) : (
+            <section className="text-center text-gray-600">
+              No events for {selectedDay}, {date.toLocaleString("default", { month: "short" })}
+            </section>
+          )}
+        </section>
+      </div>
 
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </form>
-          </DialogContent>
-        </Dialog>
-        {events.length > 0 && isFutureDate && (
-          <Button onClick={() => setIsOpen(true)}>Add Event</Button>
-        )}
-      </section>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{selectedEvent ? "Update Event" : "Add Event"}</DialogTitle>
+            <DialogDescription>
+              {selectedEvent
+                ? "Make changes to the event. Click save when you're done."
+                : "Fill out the event details. Click save when you're done."}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(selectedEvent ? onUpdate : onSubmit)}>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="event_name" className="text-right">
+                  Event Name
+                </Label>
+                <Input
+                  id="event_name"
+                  {...register("event_name")}
+                  className="col-span-3"
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="event_description" className="text-right">
+                  Description
+                </Label>
+                <Input
+                  id="event_description"
+                  {...register("event_description")}
+                  className="col-span-3"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit">Save changes</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default TodayEvent;
-
-
-

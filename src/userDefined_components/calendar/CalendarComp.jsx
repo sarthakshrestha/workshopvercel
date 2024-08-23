@@ -10,7 +10,7 @@ const CalendarComp = ({date, setDate}) => {
 
   return (
     <>
-      <div className="p-3 rounded-3xl bg-gray-200">
+      <div className="min-h-[37vh]">
         <Calendar
           mode="single"
           selected={date}

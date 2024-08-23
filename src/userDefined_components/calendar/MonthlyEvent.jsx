@@ -1,26 +1,16 @@
 import React, { useEffect, useState } from "react";
 import EventsCard from "userDefined_components/calendar/EventsCard";
 import apiClient from "config/apiClient";
+import { FaCalendarAlt } from "react-icons/fa";
 
 const getMonthName = (monthNumber) => {
   const monthNames = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
   ];
   return monthNames[monthNumber];
 };
 
-const MonthlyEvent = ({ date, school_id, }) => {
+const MonthlyEvent = ({ date, school_id }) => {
   const selectedMonth = date.getMonth() + 1;
   const selectedYear = date.getFullYear();
 
@@ -31,7 +21,6 @@ const MonthlyEvent = ({ date, school_id, }) => {
       const response = await apiClient.get(
         `/calendar/${selectedYear}/${school_id}/${selectedMonth}`
       );
-      // console.log(response.data.data)
       setData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -64,38 +53,35 @@ const MonthlyEvent = ({ date, school_id, }) => {
     });
   };
 
- const monthEvents = data?.schools?.[0]?.events?.find(
-   (eventMonth) => eventMonth.month === selectedMonth
- ) || { days: [] };
-
+  const monthEvents =
+    data?.schools?.[0]?.events?.find(
+      (eventMonth) => eventMonth.month === selectedMonth
+    ) || { days: [] };
 
   return (
-    <div className="w-96 h-full p-3 rounded-3xl bg-gray-200">
-      <section className="text-2xl font-semibold">
-        <span>
-          Events in {getMonthName(selectedMonth - 1)} {selectedYear}
-        </span>
+    <div className="w-full p-6 rounded-lg bg-white shadow-lg h-[90vh] overflow-x-auto">
+      <section className="text-2xl font-semibold flex items-center mb-4">
+        Events in {getMonthName(selectedMonth - 1)} {selectedYear}
       </section>
-      <section className="mt-3">
+      <section className="mt-4">
         {monthEvents && monthEvents.days.length > 0 ? (
           monthEvents.days.flatMap((day) =>
             day.events.map((event) => (
-              <div key={event.id} className="mb-2">
-                <EventsCard
-                  eventsData={event}
-                  day={day.day}
-                  month={getMonthName(selectedMonth - 1)}
-                  monthInt={selectedMonth}
-                  year={selectedYear}
-                  onEventUpdate={updateEventInState}
-                />
-              </div>
+              <EventsCard
+                eventsData={event}
+                day={day.day}
+                month={getMonthName(selectedMonth - 1)}
+                monthInt={selectedMonth}
+                year={selectedYear}
+                onEventUpdate={updateEventInState}
+                key={event.id}
+              />
             ))
           )
         ) : (
-          <section className="text-sm font-medium ">
-            No events for this month.
-          </section>
+          <div className="text-center text-gray-500 mt-8">
+            <p className="">No events for this month.</p>
+          </div>
         )}
       </section>
     </div>
@@ -103,5 +89,3 @@ const MonthlyEvent = ({ date, school_id, }) => {
 };
 
 export default MonthlyEvent;
-
-
