@@ -124,7 +124,7 @@ const SchoolCourses = () => {
                                         isAssigned={selectedCourses.includes(course.id)}
                                         onToggle={toggleCourse}
                                     />
-                                ))}
+                                ))} 
                             </div>
                             <DialogFooter>
                                 <Button onClick={assignCourses} disabled={isAssigning}>

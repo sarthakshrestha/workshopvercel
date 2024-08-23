@@ -1,13 +1,15 @@
 import apiClient from 'config/apiClient';
 import { useSchoolContext } from 'context/SchoolContext';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useToast } from "@/components/ui/use-toast"
 import { Toaster } from "@/components/ui/toaster";
 import SchoolSidebar from './schoolSidebar';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useNavigate } from 'react-router-dom';
+import { FaPlus } from 'react-icons/fa';
+import DisplayClassCard from 'userDefined_components/school_classes/displayClassCard';
+
 
 import {
     Dialog,
@@ -17,78 +19,13 @@ import {
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog";
-import { FaUserGraduate, FaBook, FaChalkboardTeacher, FaPlus } from 'react-icons/fa';
 
 const initialClassState = {
     class_name: '',
     school_id: '',
 }
 
-const DisplayClassCard = ({ classes }) => {
-    const navigate = useNavigate();
-    const [classData, setClassData] = useState([]);
-    const [totalStudent, setTotalStudent] = useState(0);
-    const [totalCourse, setTotalCourse] = useState(0);
-    const [totalTeacher, setTotalTeacher] = useState(0);
 
-    useEffect(() => {
-        const fetchClassData = async () => {
-            try {
-                const response = await apiClient.get(`/class/${classes.id}`);
-                if (response.data.status === "success") {
-                    setClassData(response.data.data);
-                    setTotalStudent(response.data.data.students?.length || 0);
-                    setTotalCourse(response.data.data.courses?.length || 0);
-                    setTotalTeacher(response.data.data.teachers?.length || 0);
-                } else {
-                    console.log("Error fetching data");
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-        fetchClassData();
-    }, [classes.id]);
-
-    const handleNavigateToClass = () => {
-        navigate(`/admin/schools/classes/${classes.id}`);
-    };
-
-    return (
-        <div className="bg-white rounded-lg shadow-lg p-6 transform transition duration-500 hover:scale-105">
-            <h3 className="text-2xl font-bold mb-4 text-indigo-600">{classData.class_name}</h3>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-                <div className="flex items-center space-x-2 bg-blue-100 p-3 rounded-md">
-                    <FaUserGraduate className="text-blue-500 text-2xl" />
-                    <div>
-                        <p className="text-sm text-gray-600">Students</p>
-                        <p className="text-lg font-semibold">{totalStudent}</p>
-                    </div>
-                </div>
-                <div className="flex items-center space-x-2 bg-green-100 p-3 rounded-md">
-                    <FaBook className="text-green-500 text-2xl" />
-                    <div>
-                        <p className="text-sm text-gray-600">Courses</p>
-                        <p className="text-lg font-semibold">{totalCourse}</p>
-                    </div>
-                </div>
-                <div className="flex items-center space-x-2 bg-purple-100 p-3 rounded-md">
-                    <FaChalkboardTeacher className="text-purple-500 text-2xl" />
-                    <div>
-                        <p className="text-sm text-gray-600">Teachers</p>
-                        <p className="text-lg font-semibold">{totalTeacher}</p>
-                    </div>
-                </div>
-            </div>
-            <Button 
-                onClick={handleNavigateToClass}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
-            >
-                View Class Details
-            </Button>
-        </div>
-    );
-};
 
 
 const SchoolClasses = () => {
@@ -99,23 +36,24 @@ const SchoolClasses = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [newClass, setNewClass] = useState({...initialClassState, school_id: schoolId});
 
-    const fetchClasses = async () => {
+    const fetchClasses = useCallback(async () => {
         setIsLoading(true);
         try {
             const response = await apiClient.get(`/class/school/${schoolId}`);
             setClassResponse(response.data.data);
+            console.log(response)
         } catch (error) {
             console.log("Error fetching classes", error);
             setClassResponse(null);
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [schoolId]);
 
     useEffect(() => {
         fetchClasses();
         setNewClass(prev => ({ ...prev, school_id: schoolId }));
-    }, [schoolId]);
+    }, [schoolId, fetchClasses]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

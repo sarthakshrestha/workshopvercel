@@ -5,7 +5,7 @@ import { SchoolContextProvider } from "context/SchoolContext";
 import SchoolsPage from "pages/admin/admin_pages/schoolsPage";
 import SchoolClasses from 'pages/admin/admin_pages/school_pages/schoolClasses';
 import SchoolCourses from 'pages/admin/admin_pages/school_pages/schoolCourses';
-import ClassDetails from 'pages/admin/class_details/classDetails';
+import ClassDetails from 'pages/admin/admin_pages/class_details/classDetails';
 import SchoolCalendar from 'pages/admin/admin_pages/school_pages/schoolCalendar';
 
 const SchoolRoutes = (
