@@ -40,7 +40,6 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
     const fetchSchoolCourses = useCallback(async () => {
         try {
             const response = await apiClient.get(`/school/${class_data.school_id}`);
-            console.log("School courses:", response.data.data.course_id);
             setSchoolCourseIds(response.data.data.course_id || []);
         } catch (error) {
             console.error('Error fetching school courses:', error);
@@ -57,7 +56,6 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
             if (schoolCourseIds.length === 0) return;
             
             const courseData = await apiClient.post('/course_list', schoolCourseIds );
-            console.log(courseData.data.data);
             setAllCourses(courseData.data.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -69,20 +67,6 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
         }
     }, [schoolCourseIds]);
 
-    // const fetchSchoolCourses = async () => {
-    //     try {
-    //         const response = await apiClient.get(`/school/${class_data.school_id}`);
-    //         console.log(response.data.data.course_id);
-    //         setSchoolCourses(response.data.data.course_id);
-    //     } catch (error) {
-    //         console.error('Error fetching data:', error);
-    //         toast({
-    //             title: "Error",
-    //             description: "Failed to fetch courses. Please try again.",
-    //             variant: "destructive",
-    //         });
-    //     }
-    // };
 
     const updateCourseLists = useCallback(() => {
         const assignedCourses = class_data.courses.map((course) => course.id) || [];
@@ -107,8 +91,6 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
     const fetchData = useCallback(() => {
         try {
             fetchSchoolCourses().then(
-                console.log(schoolCourses)
-            ).then(
                 fetchAllCourses(schoolCourses)
             );
             updateCourseLists();

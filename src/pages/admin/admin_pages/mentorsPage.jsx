@@ -15,7 +15,7 @@ const MentorsPage = () => {
     username: '',
     password: '',
     phone_num: '',
-    profile_pic: null,
+    profile_pic: '',
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -44,15 +44,13 @@ const MentorsPage = () => {
   };
 
   const handleCreate = async () => {
-    const formData = new FormData();
-    Object.entries(newMentor).forEach(([key, value]) => {
-      formData.append(key, value);
-    });
+    // const formData = new FormData();
+    // Object.entries(newMentor).forEach(([key, value]) => {
+    //   formData.append(key, value);
+    // });
 
     try {
-      await axios.post('http://localhost:8000/teacher', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      await axios.post('http://localhost:8000/teacher', newMentor);
       fetchMentors();
       setNewMentor({ name: '', address: '', username: '', password: '', phone_num: '', profile_pic: null });
       setIsDialogOpen(false);
