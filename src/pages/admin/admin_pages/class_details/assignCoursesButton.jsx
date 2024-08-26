@@ -43,6 +43,7 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
   const fetchSchoolCourses = useCallback(async () => {
     try {
       const response = await apiClient.get(`/school/${class_data.school_id}`);
+      console.log(response)
       setSchoolCourseIds(response.data.data.course_id || []);
     } catch (error) {
       console.error("Error fetching school courses:", error);
@@ -59,6 +60,7 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
       if (schoolCourseIds.length === 0) return;
 
       const courseData = await apiClient.post("/course_list", schoolCourseIds);
+      console.log(courseData);
       setAllCourses(courseData.data.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -72,6 +74,7 @@ const AssignCoursesButton = ({ onAssignCourse, class_data }) => {
 
   const updateCourseLists = useCallback(() => {
     const assignedCourses = class_data.courses.map((course) => course.id) || [];
+    // console.log(assignedCourses)
     setCourseList(assignedCourses);
     setSelectedCourses(assignedCourses);
   }, [class_data]);
