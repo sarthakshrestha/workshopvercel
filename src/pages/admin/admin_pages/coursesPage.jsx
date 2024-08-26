@@ -4,65 +4,37 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ChevronDown, ChevronUp, Code, Book, Clock } from 'lucide-react'; 
-import javascript from '../../../gallery/images/javascript.png';
-import python from '../../../gallery/images/PythonProgramming.jpg';
 import apiClient from 'config/apiClient';
 
 const CourseCard = ({ course }) => {
-  const [showDescription, setShowDescription] = useState(false);
-
-  const getCourseImage = (courseName) => {
-    if (courseName.toLowerCase().includes('javascript')) {
-      return javascript;
-    }
-    return python;
-  };
 
   return (
-    <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl min-w-[300px] ${showDescription ? 'h-auto' : 'h-[335px]'}`}>
-      <img
-        src={getCourseImage(course.course_name)}
-        alt={course.course_name}
-        className="w-full h-44 object-cover"
-      />
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800 flex items-center">
-          <Code className="mr-2"  size={24} />
-          {course.course_name}
-        </h2>
-        <h3 style={{ letterSpacing: "1.5px" }} className="text-lg font-semibold mb-2 text-gray-600 flex items-center">
-          <Book className="mr-2"  size={20} />
+    <div className={`bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl min-w-[300px]`}>
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+            <Code className="mr-2" size={24} color="#4A5568" />
+            {course.course_name}
+          </h2>
+
+        </div>
+        <h3 style={{ letterSpacing: "1px" }} className="text-lg font-semibold mb-3 text-gray-600 flex items-center">
+          <Book className="mr-2" size={20} color="#718096" />
           {course.course_content}
         </h3>
-        {showDescription && (
-          <p className="text-gray-500 mb-4 ">--- {course.description}</p>
-        )}
-        <div className="flex justify-between items-center mt-4">
+        <p className="text-gray-500 mb-4 italic">"{course.description}"</p>
+      
+        <div className="flex justify-start items-center mt-4">
           <span className="text-sm font-medium text-gray-800 flex items-center" style={{ letterSpacing: "1px" }}>
-            <Clock className="mr-1" color="black" size={23} />
-            Duration: <span className="text-gray-800 ml-1">{course.course_duration}</span>
+            <Clock className="mr-2" color="#4A5568" size={20} />
+            Duration: <span className="text-gray-600 ml-1 font-bold">{course.course_duration}</span>
           </span>
-          <Button
-            onClick={() => setShowDescription(!showDescription)}
-            className="text-white bg-homeText hover:bg-[#434311] px-2 py-1 rounded transition duration-300 text-sm font-medium flex items-center"
-          >
-            {showDescription ? (
-              <>
-                <span>Hide Details</span>
-                <ChevronUp className="w-4 h-4" />
-              </>
-            ) : (
-              <>
-                <span>Learn More</span>
-                <ChevronDown className="w-4 h-4" />
-              </>
-            )}
-          </Button>
         </div>
       </div>
     </div>
   );
 };
+
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
@@ -96,7 +68,6 @@ const CoursesPage = () => {
 
   const handleAddCourse = async () => {
     try {
-      // Replace the below URL with your backend endpoint for adding courses
       const response = await apiClient.post('/course', newCourse);
       setCourses([...courses, response.data.data]);
     } catch (error) {
@@ -158,7 +129,7 @@ const CoursesPage = () => {
           </Dialog>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 xl:gap-20">
-          {courses.length > 0 && courses.map((course, index) => (
+          {courses && courses.length > 0 && courses.map((course, index) => (
             <CourseCard key={index} course={course} />
           ))}
         </div>
