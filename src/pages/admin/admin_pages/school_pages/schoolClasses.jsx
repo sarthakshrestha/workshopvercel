@@ -1,6 +1,6 @@
 import apiClient from "config/apiClient";
 import { useSchoolContext } from "context/SchoolContext";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import SchoolSidebar from "./schoolSidebar";
@@ -33,7 +33,6 @@ const initialClassState = {
 const ClassItem = ({ classes }) => {
   const navigate = useNavigate();
   const [classData, setClassData] = useState({});
-  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchClassData = async () => {
@@ -58,24 +57,16 @@ const ClassItem = ({ classes }) => {
       layout
       className="bg-white border-l-4 border-black shadow-md p-4 mb-4 overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0, height: isExpanded ? "150px" : "60px" }}
+      animate={{ opacity: 1, y: 0, height: "150px" }}
       transition={{ duration: 0.3 }}
     >
       <div className="flex justify-between items-center">
         <h3 className="text-xl font-semibold text-gray-800">
           {classData.class_name}
         </h3>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-500 hover:text-gray-700"
-        >
-          <FaEllipsisV />
-        </motion.button>
+        
       </div>
       <AnimatePresence>
-        {isExpanded && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -110,7 +101,6 @@ const ClassItem = ({ classes }) => {
               </Button>
             </motion.div>
           </motion.div>
-        )}
       </AnimatePresence>
     </motion.div>
   );
@@ -149,6 +139,12 @@ const SchoolClasses = () => {
     const { name, value } = e.target;
     setNewClass((prev) => ({ ...prev, [name]: value, school_id: schoolId }));
   };
+
+  const sortedClasses = useMemo(() => {
+    return [...classResponse].sort((a, b) => 
+      a.class_name.localeCompare(b.class_name)
+    );
+  }, [classResponse]);
 
   const addClass = async () => {
     try {
@@ -241,14 +237,14 @@ const SchoolClasses = () => {
                 className="h-12 w-12 border-t-2 border-b-2 rounded-full"
               />
             </div>
-          ) : classResponse && classResponse.length > 0 ? (
+          ) : sortedClasses && sortedClasses.length > 0 ? (
             <motion.div
               className="grid grid-cols-2 gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {classResponse.map((classes, index) => (
+              {sortedClasses.map((classes, index) => (
                 <ClassItem key={index} classes={classes} />
               ))}
             </motion.div>
