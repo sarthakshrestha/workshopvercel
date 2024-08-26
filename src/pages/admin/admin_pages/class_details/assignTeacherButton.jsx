@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Toaster } from "@/components/ui/toaster";
 import apiClient from "config/apiClient";
+import { PersonStanding } from "lucide-react";
 
 const TeacherCard = ({ teacher, isAssigned, onToggle }) => {
   return (
@@ -81,7 +82,8 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-blue-500 text-white px-4 py-2 font-bold rounded hover:bg-blue-600 w-1/3">
+        <Button className="bg-zinc-800 text-white px-4 py-2 font-bold rounded hover:bg-zinc-900 w-1/3">
+          <PersonStanding />
           Assign Mentors
         </Button>
       </DialogTrigger>

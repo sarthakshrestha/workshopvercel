@@ -7,6 +7,7 @@ import {
   Book,
   Calendar,
   GraduationCap,
+  LogOut,
 } from "lucide-react";
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +35,7 @@ const TeacherSidebar = () => {
         <nav className="flex-grow overflow-y-auto w-full">
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={(e) => teacherDashboard()}
           >
             <Home className="mr-2 h-5 w-5" />
@@ -42,11 +43,19 @@ const TeacherSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={(e) => schools()}
           >
             <School className="mr-2 h-5 w-5" />
             Schools
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            onClick={(e) => schools()}
+          >
+            <LogOut className="mr-2 h-5 w-5" />
+            Logout
           </Button>
         </nav>
       </div>

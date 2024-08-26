@@ -11,6 +11,7 @@ import {
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import WhiteLogo from "../../gallery/WhiteLogo.png";
 
 const AdminSidebar = () => {
   const navigate = useNavigate();
