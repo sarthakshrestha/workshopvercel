@@ -174,10 +174,10 @@ function Bars() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-gray-900">
-                  Reduce teacher turnover rates
+                  Reduce mentor turnover rates
                 </h3>
                 <p className="text-gray-600">
-                  Happy teachers result in lower turnover and less need for
+                  Happy mentors result in lower turnover and less need for
                   hiring.
                 </p>
               </div>
