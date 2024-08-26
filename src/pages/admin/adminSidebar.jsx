@@ -42,7 +42,7 @@ const AdminSidebar = () => {
   };
 
   return (
-    <aside className="w-56 h-screen fixed bg-homeText text-white shadow-lg font-archivo">
+    <aside className="w-56 h-screen fixed bg-[#34496C] text-white shadow-lg font-archivo">
       <div className="p-4 flex items-center justify-center flex-col mt-4">
         <div className="mb-6">
           <img
