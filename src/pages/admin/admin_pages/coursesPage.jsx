@@ -42,7 +42,8 @@ const CoursesPage = () => {
     course_name: '',
     course_content: '',
     course_duration: '',
-    description: ''
+    description: '',
+    logo:''
   });
 
   useEffect(() => {
