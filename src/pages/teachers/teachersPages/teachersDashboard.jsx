@@ -66,7 +66,7 @@ const TeachersDashboard = () => {
   return (
     <div className='flex'>
       <TeacherSidebar/>
-      <div className="p-6 bg-gray-100 min-h-screen w-full">
+      <div className="p-6 bg-gray-100 min-h-screen w-full ml-56">
         <h1 className="text-3xl font-bold mb-6">Teacher's Dashboard</h1>
         
         {/* Cards */}

@@ -86,7 +86,7 @@ const SchoolClasses = () => {
     return (
         <div className="flex h-screen bg-gray-100">
             <TeacherSidebar />
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto ml-56">
                 <main className="p-8">
                     <div className="flex justify-between items-center mb-8">
                         <h1 className="text-3xl font-bold text-gray-800">Class Management</h1>

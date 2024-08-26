@@ -74,7 +74,7 @@ const StudentProfile = () => {
     return (
         <div className='flex'>
             <TeacherSidebar />
-            <div className="flex-1 p-8 bg-gray-100">
+            <div className="flex-1 p-8 bg-gray-100 ml-56">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <Card >
                         <CardHeader>

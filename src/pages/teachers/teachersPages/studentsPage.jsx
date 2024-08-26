@@ -42,7 +42,7 @@ const StudentsPage = () => {
   return (
     <div className='flex'>
       <TeacherSidebar />
-      <div className="p-6 bg-white min-h-screen w-full">
+      <div className="p-6 bg-white min-h-screen w-full ml-56">
         <Card>
           <CardHeader>
             <CardTitle>{classData.class_name} - Students</CardTitle>

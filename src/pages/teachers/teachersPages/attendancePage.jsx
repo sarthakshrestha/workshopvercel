@@ -127,7 +127,7 @@ const AttendanceComponent = () => {
     return (
         <div className="flex h-screen bg-gray-100">
             <TeacherSidebar />
-            <div className="p-6 bg-gray-100 w-full flex flex-col overflow-hidden">
+            <div className="p-6 bg-gray-100 w-full flex flex-col overflow-hidden ml-56">
                 <Card className="w-full max-w-4xl mx-auto flex flex-col bg-white" style={{ height: '95vh' }}>
                     <CardHeader>
                         <div className="flex justify-between items-center">

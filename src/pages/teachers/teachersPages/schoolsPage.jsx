@@ -70,7 +70,7 @@ const SchoolsPage = () => {
     return (
         <div className='flex'>
             <TeacherSidebar />
-            <div className="p-6 bg-white min-h-screen w-full">
+            <div className="p-6 bg-white min-h-screen w-full ml-56">
                 <h1 className="text-3xl font-bold mb-6">Schools</h1>
                 <div className="relative mb-8">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
