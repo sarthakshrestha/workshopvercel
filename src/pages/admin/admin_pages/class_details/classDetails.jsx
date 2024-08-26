@@ -346,7 +346,7 @@ const ClassDetails = () => {
                                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
                                     <div className="flex items-center justify-between ">
                                         <h2 className="text-lg font-semibold text-gray-700">
-                                            Teachers
+                                            Mentors
                                         </h2>
                                         <GraduationCap className="text-gray-600" size={28} />
                                     </div>
