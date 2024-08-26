@@ -61,7 +61,7 @@ const SchoolClasses = () => {
                 const classIds = searchParams.get('classes')?.split(',') || [];
 
                 const classPromises = classIds.map(classId =>
-                    apiClient.get(`http://localhost:8000/class/${classId}`)
+                    apiClient.get(`/class/${classId}`)
                 );
 
                 const classResponses = await Promise.all(classPromises);

@@ -5,6 +5,7 @@ import { School, Mail, MapPin, Search, Eye } from 'lucide-react';
 import TeacherSidebar from '../teacherSidebar';
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
+import apiClient from 'config/apiClient';
 
 const SchoolsPage = () => {
     const navigate = useNavigate();
@@ -21,7 +22,7 @@ const SchoolsPage = () => {
                     throw new Error('Teacher ID not found in localStorage');
                 }
 
-                const teacherResponse = await fetch(`http://localhost:8000/teacher/${teacher_id}`);
+                const teacherResponse = await apiClient.get(`/teacher/${teacher_id}`);
                 const teacherData = await teacherResponse.json();
 
                 if (teacherData.status !== 'success') {
@@ -29,7 +30,7 @@ const SchoolsPage = () => {
                 }
 
                 const schoolPromises = teacherData.data.schools.map(async (school) => {
-                    const schoolResponse = await fetch(`http://localhost:8000/school/${school.school_id}`);
+                    const schoolResponse = await apiClient.get(`/school/${school.school_id}`);
                     const schoolData = await schoolResponse.json();
                     return {
                         ...schoolData.data,
