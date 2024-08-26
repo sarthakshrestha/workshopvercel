@@ -56,7 +56,7 @@ const AdminSidebar = () => {
         <nav className="flex-grow overflow-y-auto w-full">
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={adminDashboard}
           >
             <Home className="mr-2 h-5 w-5" />
@@ -64,7 +64,7 @@ const AdminSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={schools}
           >
             <School className="mr-2 h-5 w-5" />
@@ -72,7 +72,7 @@ const AdminSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={mentors}
           >
             <Users className="mr-2 h-5 w-5" />
@@ -80,7 +80,7 @@ const AdminSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={courses}
           >
             <GraduationCap className="mr-2 h-5 w-5" />
@@ -88,7 +88,7 @@ const AdminSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={events}
           >
             <Calendar className="mr-2 h-5 w-5" />
@@ -96,7 +96,7 @@ const AdminSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-homeText-hover hover:text-white transition-all duration-300 ease-in-out"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={handleLogout}
           >
             <LogOut className="mr-2 h-5 w-5" />
