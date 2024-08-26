@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import AdminSidebar from '../adminSidebar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import axios from 'axios';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Trash, Plus, X, Check } from 'lucide-react';
 import { Table, TableHead, TableHeader, TableBody, TableRow, TableCell } from '@/components/ui/table'; 
+import apiClient from 'config/apiClient';
 
 const MentorsPage = () => {
   const [mentors, setMentors] = useState([]);
@@ -27,7 +27,7 @@ const MentorsPage = () => {
 
   const fetchMentors = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/teacher');
+      const response = await apiClient.get('/teacher');
       setMentors(response.data.data);
     } catch (error) {
       console.error('Error fetching mentors:', error);
@@ -36,7 +36,7 @@ const MentorsPage = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/teacher/${id}`);
+      await apiClient.delete(`/teacher/${id}`);
       fetchMentors();
     } catch (error) {
       console.error('Error deleting mentor:', error);
@@ -50,7 +50,7 @@ const MentorsPage = () => {
     // });
 
     try {
-      await axios.post('http://localhost:8000/teacher', newMentor);
+      await apiClient.post('/teacher', newMentor);
       fetchMentors();
       setNewMentor({ name: '', address: '', username: '', password: '', phone_num: '', profile_pic: null });
       setIsDialogOpen(false);

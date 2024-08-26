@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import axios from 'axios';
 import AdminSidebar from '../adminSidebar';
 import { Camera, Calendar, School, Image, Film, Trash2 } from 'lucide-react';
 import art1 from '../../../gallery/images/art1.jpg';
@@ -15,6 +14,7 @@ import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter } from
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import apiClient from 'config/apiClient';
 
 const EventPage = () => {
     const [events, setEvents] = useState([]);
@@ -31,7 +31,7 @@ const EventPage = () => {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/event')
+        apiClient.get('/event')
             .then(response => setEvents(response.data.data))
             .catch(error => console.error('Error fetching events:', error));
     }, []);
@@ -64,7 +64,7 @@ const EventPage = () => {
         selectedPhotos.forEach((photo, index) => formData.append(`photos[${index}]`, photo));
         selectedVideos.forEach((video, index) => formData.append(`videos[${index}]`, video));
 
-        axios.post('http://localhost:8080/event', formData, {
+        apiClient.post('/event', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -82,7 +82,7 @@ const EventPage = () => {
     };
 
     const handleDeleteEvent = (eventId) => {
-        axios.delete(`http://localhost:8000/event/${eventId}`)
+        apiClient.delete(`/event/${eventId}`)
             .then(() => {
                 setEvents(events.filter(event => event.id !== eventId)); // Remove deleted event from state
                 setShowDeleteDialog(false); // Close the dialog
