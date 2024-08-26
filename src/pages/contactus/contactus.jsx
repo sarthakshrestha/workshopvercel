@@ -1,4 +1,4 @@
-import Footer from "footer/footer";
+import Footer from "pages/footer/footer";
 import Navbar from "pages/navbar/navbar";
 import React from "react";
 import Maps from "../../gallery/Maps.png";

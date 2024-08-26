@@ -9,9 +9,9 @@ import MakeADifference from "./section/makeadifference";
 import Testimonials from "./section/testimonials";
 import Bars from "./section/bars";
 import ImageCarousel from "./section/wedo";
-import Footer from "footer/footer";
 import TestimonialSection from "./section/testimonial1";
 import EverythingInOnePlace from "./section/everything";
+import Footer from "./footer/footer";
 
 const LandingPage = () => {
   return (

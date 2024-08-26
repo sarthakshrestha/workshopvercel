@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye } from 'lucide-react';
 import TeacherSidebar from '../teacherSidebar';
 import { Input } from "@/components/ui/input"; // Add this import
+import apiClient from 'config/apiClient';
 
 const StudentsPage = () => {
   const [classData, setClassData] = useState(null);
@@ -19,7 +19,7 @@ const StudentsPage = () => {
   useEffect(() => {
     const fetchClassData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/class/${classId}`);
+        const response = await apiClient.get(`/class/${classId}`);
         setClassData(response.data.data);
         setLoading(false);
       } catch (err) {

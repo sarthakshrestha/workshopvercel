@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import TeacherSidebar from '../teacherSidebar';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { User, Phone, Mail, MapPin, BookOpen, Clock, FileText } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import apiClient from 'config/apiClient';
 
 const StudentProfile = () => {
     const { studentId } = useParams();
@@ -19,17 +19,17 @@ const StudentProfile = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const studentResponse = await axios.get(`http://127.0.0.1:8000/student/${studentId}`);
+                const studentResponse = await apiClient.get(`/student/${studentId}`);
                 setStudent(studentResponse.data.data);
                 let classid = studentResponse.data.data.class_id;
 
                 if (classid && classid.length > 0) {
-                    const attendanceResponse = await axios.get(`http://127.0.0.1:8000/attendances/student/${studentId}/class/${classid}/month/${selectedYear}/${selectedMonth.toString().padStart(2, '0')}`);
+                    const attendanceResponse = await apiClient.get(`/attendances/student/${studentId}/class/${classid}/month/${selectedYear}/${selectedMonth.toString().padStart(2, '0')}`);
                     setAttendance(attendanceResponse.data.data.attendances);
                 }
 
                 if (studentResponse.data.data.course_id && studentResponse.data.data.course_id.length > 0) {
-                    const courseResponse = await axios.get(`http://127.0.0.1:8000/course/${studentResponse.data.data.course_id[0]}`);
+                    const courseResponse = await apiClient.get(`/course/${studentResponse.data.data.course_id[0]}`);
                     setCourse(courseResponse.data.data);
                 }
             } catch (error) {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,7 @@ import { Users } from 'lucide-react';
 import TeacherSidebar from '../teacherSidebar';
 import { Toaster } from "@/components/ui/toaster"
 import { format } from 'date-fns';
+import apiClient from 'config/apiClient';
 
 const AttendanceComponent = () => {
     const { classId } = useParams();
@@ -21,7 +21,7 @@ const AttendanceComponent = () => {
         const fetchData = async () => {
             try {
                 const today = format(new Date(), 'yyyy-MM-dd');
-                const attendanceResponse = await axios.get(`http://localhost:8000/attendances/class/${classId}/date/${today}`);
+                const attendanceResponse = await apiClient.get(`/attendances/class/${classId}/date/${today}`);
 
                 if (attendanceResponse.data.status === "success" && attendanceResponse.data.message !== "No attendance found for the given date") {
                     setIsExistingAttendance(true);
@@ -49,7 +49,7 @@ const AttendanceComponent = () => {
 
         const fetchClassData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/class/${classId}`);
+                const response = await apiClient.get(`/class/${classId}`);
                 const classData = response.data.data;
                 setClassName(classData.class_name);
 
@@ -105,7 +105,7 @@ const AttendanceComponent = () => {
             };
 
 
-            await axios.post(`http://localhost:8000/attendances/class`, submitData);
+            await apiClient.post(`/attendances/class`, submitData);
 
             const presentCount = attendanceData.filter(student => student.status === "present").length;
             const absentCount = attendanceData.length - presentCount;
