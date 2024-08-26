@@ -53,7 +53,7 @@ const ClassDetails = () => {
                 class_id: classId,
                 course_id: classData.courses &&
                     classData.courses.length > 0 &&
-                    classData.courses.map(course => course.id)
+                    classData.courses.map(course => course.id) || []
             };
             console.log(classData.courses);
             console.log(addStudent);

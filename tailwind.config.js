@@ -68,6 +68,9 @@ module.exports = {
           DEFAULT:"#2F3C3A",
           foreground:"#FFFFFF"
         },
+        fontFamily: {
+          sans: ['Inter', 'sans-serif'], // Added Inter font to font-sans
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
