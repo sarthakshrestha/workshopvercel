@@ -5,9 +5,41 @@ import { Button } from "@/components/ui/button";
 import Logo from "../../gallery/Logo.png";
 import Blur from "../../gallery/images/blur.jpg";
 import { useNavigate } from "react-router-dom";
+import { isMentor } from "./util";
+import axiosInstance from "@/utils/axiosInstance";
+import Cookies from "js-cookie";
 
 function MentorLogin() {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  isMentor();
+
+  const handleLogin = async (e) =>{
+    e.preventDefault();
+    try{
+      const response = await axiosInstance.post("/mentor/login",{
+        email,
+        password,
+      });
+
+      const{access_token, token_type} = response.data;
+
+      Cookies.set("access_token", access_token, {expires: 7});
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `${token_type} ${access_token}`;
+
+      navigate("/teacher/dashboard");
+    }
+    catch (err) {
+      setError("Invalid credentials. Please try again.");
+    }
+  }
 
   const homeRedirect = () => {
     navigate("/");
@@ -81,6 +113,7 @@ function MentorLogin() {
               {/* Sign In Button */}
               <Button
                 type="submit"
+                onClick={handleLogin}
                 className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 font-sans"
               >
                 Sign In

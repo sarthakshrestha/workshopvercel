@@ -26,6 +26,7 @@ function AdminLogin() {
         password,
       });
 
+
       const { access_token, token_type } = response.data;
       // Save access token in cookies
       Cookies.set("access_token", access_token, { expires: 7 }); // Expires in 7 days, adjust as needed
