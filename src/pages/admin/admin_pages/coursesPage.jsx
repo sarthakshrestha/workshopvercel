@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../adminSidebar';
-import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { ChevronDown, ChevronUp, Code, Book, Clock } from 'lucide-react'; 
 import javascript from '../../../gallery/images/javascript.png';
 import python from '../../../gallery/images/PythonProgramming.jpg';
+import apiClient from 'config/apiClient';
 
 const CourseCard = ({ course }) => {
   const [showDescription, setShowDescription] = useState(false);
@@ -76,7 +76,7 @@ const CoursesPage = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/course');
+        const response = await apiClient.get('/course');
         setCourses(response.data.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -97,7 +97,7 @@ const CoursesPage = () => {
   const handleAddCourse = async () => {
     try {
       // Replace the below URL with your backend endpoint for adding courses
-      const response = await axios.post('http://localhost:8000/course', newCourse);
+      const response = await apiClient.post('/course', newCourse);
       setCourses([...courses, response.data.data]);
     } catch (error) {
       console.error('Error adding course:', error);
