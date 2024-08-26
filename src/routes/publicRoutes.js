@@ -5,6 +5,9 @@ import LandingPage from "../pages/landingPage";
 import ContactUs from "pages/contactus/contactus";
 import AdminLogin from "pages/authentication/adminlogin";
 import MentorLogin from "pages/authentication/mentorlogin";
+import StudentDashboard from "pages/student/studentDashboard";
+import ClassesDashboard from "pages/student/studentClasses";
+import StudentProfile from "pages/student/studentProfile";
 
 const PublicRoutes = [
   <Routes>
@@ -14,13 +17,13 @@ const PublicRoutes = [
     <Route key="auth" path="/admin/login" element={<AdminLogin />} />,
     {/* <Route key="aboutus" path="/about" element={<AboutUs />} />, */}
     {/* <Route key="courses" path="/courses" element={<Courses />} />, */}
-    {/* <Route key="student" path="/student" element={<StudentDashboard />} /> */}
-    {/* <Route
+    <Route key="student" path="/student" element={<StudentDashboard />} />
+    <Route
       key="student"
       path="/student/classes"
       element={<ClassesDashboard />}
-    /> */}
-    {/* <Route key="student" path="/student/profile" element={<StudentProfile />} /> */}
+    />
+    <Route key="student" path="/student/profile" element={<StudentProfile />} />
     <Route key="contact" path="/contact" element={<ContactUs />} />
   </Routes>,
 ];
