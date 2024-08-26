@@ -6,7 +6,7 @@ export const getRoleFromToken = () => {
   const token = Cookies.get("access_token");
   if (token) {
     const decoded = jwtDecode(token);
-
+    console.log("role from admin", decoded.role);
     return decoded.role;
   } else {
     Cookies.remove("access_token");
@@ -15,7 +15,6 @@ export const getRoleFromToken = () => {
 };
 
 export const isAdmin = () => {
-  console.log("admin role");
   return getRoleFromToken() === "ADMIN";
 };
 

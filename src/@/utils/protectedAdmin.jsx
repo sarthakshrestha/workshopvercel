@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate, Outlet } from "react-router";
 import { isAdmin } from "pages/authentication/util";
 
-function ProtectedAmin() {
+function ProtectedAdmin() {
   if (isAdmin()) {
     //
     return <Outlet />;
@@ -11,4 +11,4 @@ function ProtectedAmin() {
   }
 }
 
-export default ProtectedAmin;
+export default ProtectedAdmin;
