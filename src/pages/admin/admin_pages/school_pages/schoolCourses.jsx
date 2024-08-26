@@ -1,172 +1,200 @@
-import React, { useState, useEffect } from 'react';
-import SchoolSidebar from './schoolSidebar';
-import { useSchoolContext } from 'context/SchoolContext';
-import apiClient from 'config/apiClient';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import React, { useState, useEffect } from "react";
+import AdminSidebar from "pages/admin/adminSidebar";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
-import { FaSpinner } from 'react-icons/fa';
-import LoadingSpinner from 'userDefined_components/loading_spinner/loadingSpinner';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Code, Book, Clock, Info } from "lucide-react";
+import apiClient from "config/apiClient";
 
-const CourseCard = ({ course, isAssigned, onToggle }) => {
-    return (
-        <div
-            className={`p-4 border rounded-lg mb-4 cursor-pointer ${isAssigned ? 'bg-blue-100' : ''}`}
-            onClick={() => onToggle(course.id)}
+const CourseCard = ({ course }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Card className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl flex flex-col">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-gray-800 flex items-center">
+          {course.course_name}
+        </CardTitle>
+        <CardDescription className="text-lg font-semibold text-gray-600 flex items-center">
+          {course.course_content}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex-grow">
+        <p className="text-gray-500  italic">
+          "{course.description.substring(0, 100)}..."
+        </p>
+      </CardContent>
+      <CardFooter className="mt-auto flex flex-col">
+        <div className="flex justify-between items-center mb-4">
+          <span className="text-sm font-medium text-gray-800 flex items-center">
+            <Clock className="mr-2" color="#4A5568" size={20} />
+            Duration:{" "}
+            <span className="text-gray-600 ml-1 font-bold">
+              {course.course_duration}
+            </span>
+          </span>
+        </div>
+        <Button
+          onClick={() => setIsOpen(true)}
+          className="w-full h-full bg-blue-900 hover:bg-blue-800 text-white"
         >
-            <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold">{course.course_name}</h3>
-                <Checkbox checked={isAssigned} />
+          <Info className="mr-2" size={16} />
+          View Details
+        </Button>
+      </CardFooter>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{course.course_name}</DialogTitle>
+            <DialogDescription>{course.course_content}</DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            <p className="text-gray-700">{course.description}</p>
+            <div className="mt-4 flex items-center space-x-2">
+              <Clock size={16} />
+              <span>Duration: {course.course_duration}</span>
             </div>
-            <p className="text-sm text-gray-600">{course.description}</p>
-        </div>
-    );
+          </div>
+        </DialogContent>
+      </Dialog>
+    </Card>
+  );
 };
 
-const SchoolCourses = () => {
-    const { schoolId } = useSchoolContext();
-    const [courseList, setCourseList] = useState([]);
-    const [allCourses, setAllCourses] = useState([]);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [selectedCourses, setSelectedCourses] = useState([]);
-    const [currentSchoolData, setCurrentSchoolData] = useState();
-    const [isLoading, setIsLoading] = useState(true);
-    const [isAssigning, setIsAssigning] = useState(false);
-    const { toast } = useToast();
+const CoursesPage = () => {
+  const [courses, setCourses] = useState([]);
+  const [newCourse, setNewCourse] = useState({
+    course_name: "",
+    course_content: "",
+    course_duration: "",
+    description: "",
+  });
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
 
-    useEffect(() => {
-        fetchData();
-    }, [schoolId]);
-
-    const fetchData = async () => {
-        setIsLoading(true);
-        try {
-            const schoolResponse = await apiClient.get(`/school/${schoolId}`);
-            const courseResponse = await apiClient.get('/course');
-            setCurrentSchoolData(schoolResponse.data.data);
-            setCourseList(schoolResponse.data.data.course_id || []);
-            setAllCourses(courseResponse.data.data);
-            setSelectedCourses(schoolResponse.data.data.course_id || []);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            toast({
-                title: "Error",
-                description: "Failed to fetch courses. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsLoading(false);
-        }
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await apiClient.get("/course");
+        setCourses(response.data.data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+      }
     };
 
-    const toggleCourse = (courseId) => {
-        setSelectedCourses(prev =>
-            prev.includes(courseId)
-                ? prev.filter(id => id !== courseId)
-                : [...prev, courseId]
-        );
-    };
+    fetchCourses();
+  }, []);
 
-    const assignCourses = async () => {
-        setIsAssigning(true);
-        try {
-            const updatedSchoolData = {
-                ...currentSchoolData,
-                course_id: selectedCourses
-            };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCourse((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
-            delete updatedSchoolData.id;
-            console.log(updatedSchoolData);
+  const handleAddCourse = async () => {
+    try {
+      const response = await apiClient.post("/course", newCourse);
+      setCourses([...courses, response.data.data]);
+      setIsAddDialogOpen(false);
+      setNewCourse({
+        course_name: "",
+        course_content: "",
+        course_duration: "",
+        description: "",
+      });
+    } catch (error) {
+      console.error("Error adding course:", error);
+    }
+  };
 
-            const response = await apiClient.put(`/school/${schoolId}`, updatedSchoolData);
-
-            if (response.data.status === "success") {
-                toast({
-                    title: "Success",
-                    description: "Courses updated successfully",
-                });
-                setCourseList(selectedCourses);
-                setIsDialogOpen(false);
-                fetchData();
-            }
-        } catch (error) {
-            console.error('Error assigning courses:', error);
-            toast({
-                title: "Error",
-                description: "Failed to update courses. Please try again.",
-                variant: "destructive",
-            });
-        } finally {
-            setIsAssigning(false);
-        }
-    };
-
-    return (
-        <div className="flex h-screen">
-            <SchoolSidebar />
-            <div className="flex-1 overflow-auto">
-                <main className="p-6">
-                    <div className='flex justify-between items-end'>
-                        <div>
-                    <h1 className="text-2xl font-bold">Course Management</h1>
-                    </div>
-                    <div>
-                    <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading}>Manage Courses</Button>
-                    </div>
-                    </div>
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogContent className="max-w-3xl">
-                            <DialogHeader>
-                                <DialogTitle>Assign Courses</DialogTitle>
-                            </DialogHeader>
-                            <div className="mt-4 max-h-96 overflow-y-auto">
-                                {allCourses.map(course => (
-                                    <CourseCard
-                                        key={course.id}
-                                        course={course}
-                                        isAssigned={selectedCourses.includes(course.id)}
-                                        onToggle={toggleCourse}
-                                    />
-                                ))}
-                            </div>
-                            <DialogFooter>
-                                <Button onClick={assignCourses} disabled={isAssigning}>
-                                    {isAssigning ? (
-                                        <>
-                                            <FaSpinner className="animate-spin mr-2" />
-                                            Saving...
-                                        </>
-                                    ) : 'Save Changes'}
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-
-                    <div className="mt-8">
-                        <h2 className="text-xl font-semibold mb-4">Assigned Courses</h2>
-                        {isLoading ? (
-                            <LoadingSpinner/>
-                        ) : courseList.length > 0 ? (
-                            courseList.map(courseId => {
-                                const course = allCourses.find(c => c.id === courseId);
-                                return course ? (
-                                    <div key={courseId} className="p-4 border rounded-lg mb-4">
-                                        <h3 className="text-lg font-semibold">{course.course_name}</h3>
-                                        <p className="text-sm text-gray-600">{course.description}</p>
-                                    </div>
-                                ) : null;
-                            })
-                        ) : (
-                            <p className="text-gray-600">No courses assigned yet.</p>
-                        )}
-                    </div>
-                </main>
-            </div>
-            <Toaster duration={1000} />
+  return (
+    <div className="flex bg-gray-100 min-h-screen">
+      <AdminSidebar />
+      <div className="flex-1 p-10 ml-[220px] xl:ml-[270px]">
+        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
+          Courses
+        </h1>
+        <div className="mb-4">
+          <Button
+            onClick={() => setIsAddDialogOpen(true)}
+            className="bg-blue-900 hover:bg-blue-800 text-white"
+          >
+            Add Course
+          </Button>
         </div>
-    );
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 xl:gap-20">
+          {courses &&
+            courses.length > 0 &&
+            courses.map((course, index) => (
+              <CourseCard key={index} course={course} />
+            ))}
+        </div>
+      </div>
+
+      <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add a New Course</DialogTitle>
+            <DialogDescription>
+              Fill out the details of the new course below.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <Input
+              placeholder="Course Name"
+              name="course_name"
+              value={newCourse.course_name}
+              onChange={handleInputChange}
+            />
+            <Input
+              placeholder="Course Content"
+              name="course_content"
+              value={newCourse.course_content}
+              onChange={handleInputChange}
+            />
+            <Input
+              placeholder="Course Duration"
+              name="course_duration"
+              value={newCourse.course_duration}
+              onChange={handleInputChange}
+            />
+            <Input
+              placeholder="Description"
+              name="description"
+              value={newCourse.description}
+              onChange={handleInputChange}
+            />
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={handleAddCourse}
+              className="bg-blue-900 hover:bg-blue-800 text-white"
+            >
+              Submit
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 };
 
-export default SchoolCourses;
+export default CoursesPage;

@@ -76,7 +76,7 @@ const SchoolSidebar = () => {
             onClick={(e) => courses()}
           >
             <GraduationCap className="mr-2 h-5 w-5" />
-            Courses
+            Programs
           </Button>
           <Button
             variant="ghost"
