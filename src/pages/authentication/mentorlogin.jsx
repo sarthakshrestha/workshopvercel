@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { isMentor } from "./util";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
+import { useState } from "react";
 
 function MentorLogin() {
   const navigate = useNavigate();
@@ -18,28 +19,27 @@ function MentorLogin() {
 
   isMentor();
 
-  const handleLogin = async (e) =>{
+  const handleLogin = async (e) => {
     e.preventDefault();
-    try{
-      const response = await axiosInstance.post("/mentor/login",{
+    try {
+      const response = await axiosInstance.post("/mentor/login", {
         email,
         password,
       });
 
-      const{access_token, token_type} = response.data;
+      const { access_token, token_type } = response.data;
 
-      Cookies.set("access_token", access_token, {expires: 7});
+      Cookies.set("access_token", access_token, { expires: 7 });
 
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `${token_type} ${access_token}`;
 
       navigate("/teacher/dashboard");
-    }
-    catch (err) {
+    } catch (err) {
       setError("Invalid credentials. Please try again.");
     }
-  }
+  };
 
   const homeRedirect = () => {
     navigate("/");
@@ -90,6 +90,8 @@ function MentorLogin() {
                   type="email"
                   id="email"
                   placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
                 />
               </div>
@@ -104,9 +106,11 @@ function MentorLogin() {
                 </Label>
                 <Input
                   type="password"
+                  value={password}
                   id="password"
                   placeholder="Enter your password"
                   className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
