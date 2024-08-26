@@ -13,11 +13,13 @@ function Hero() {
             Where Young Minds Code Their Future
           </h1>
           <p className="text-xl mt-5 sm:text-base md:text-lg lg:text-3xl lg:mb-20 text-gray-700 font-sans max-w-2xl lg:leading-snug">
-            We believe that teaching programming in colleges should be
-            personalized, fun, effective, and industry-oriented.
+            Through immersive, hands-on mentorship, we equip students with the
+            practical skills, creativity, and confidence needed to excel in a
+            rapidly evolving tech landscape, ensuring they are not just prepared
+            for the future—they are empowered to shape it.
           </p>
           <div>
-            <Button className="bg-buttonColor text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-20 w-full sm:w-auto max-sm:hidden">
+            <Button className="bg-blue-500 text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-20 w-full sm:w-auto max-sm:hidden">
               Start Learning
             </Button>
           </div>
