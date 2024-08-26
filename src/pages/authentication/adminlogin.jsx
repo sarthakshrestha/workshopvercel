@@ -12,7 +12,7 @@ import { isAdmin } from "./util";
 function AdminLogin() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -22,9 +22,11 @@ function AdminLogin() {
     e.preventDefault();
     try {
       const response = await axiosInstance.post("/admin/login", {
-        username,
+        email,
         password,
       });
+      console.log(response.data);
+      console.log("helo");
 
       const { access_token, token_type } = response.data;
 
@@ -99,8 +101,8 @@ function AdminLogin() {
                 id="username"
                 placeholder="Enter your username"
                 className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 

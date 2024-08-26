@@ -2,12 +2,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 // export const baseURL = "https://erp-v2-7a15.onrender.com";
-// export const baseURL = "http://localhost:8081";
+// export const baseURL = "http://localhost:8000";
 export const baseURL = "https://school-api.wordscapepress.com";
 
 const axiosInstance = axios.create({
   baseURL: "https://school-api.wordscapepress.com",
-  // baseURL: "http://localhost:8081",
+  // baseURL: "http://localhost:8000",
   // baseURL: "erp-api.wordscapepress.com",
   // baseURL: "https://erp-v2-7a15.onrender.com",
   // Changes
