@@ -89,8 +89,8 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-purple-600">
-            Assign New Teachers
+          <DialogTitle className="text-2xl font-bold text-zinc-800">
+            Assign New Mentors
           </DialogTitle>
         </DialogHeader>
         <div className="mt-4 max-h-96 overflow-y-auto">
@@ -106,7 +106,7 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
         <DialogFooter className="mt-6">
           <Button
             onClick={handleSave}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-zinc-800 hover:bg-zinc-600 text-white font-bold py-2 px-4 rounded"
           >
             Save
           </Button>

@@ -54,8 +54,8 @@ const DisplayClassCard = ({ classes }) => {
             <p className="text-lg font-semibold">{totalCourse}</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2 bg-purple-100 p-3 rounded-md">
-          <FaChalkboardTeacher className="text-purple-500 text-2xl" />
+        <div className="flex items-center space-x-2 bg-zinc-100 p-3 rounded-md">
+          <FaChalkboardTeacher className="text-zinc-500 text-2xl" />
           <div>
             <p className="text-sm text-gray-600">Mentors</p>
             <p className="text-lg font-semibold">{totalTeacher}</p>

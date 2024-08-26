@@ -102,7 +102,7 @@ const AddStudentButton = ({ onAddStudent }) => {
           type={key}
           value={value}
           onChange={handleInputChange}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-300 focus:ring focus:ring-purple-200 focus:ring-opacity-50 ${
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${
             errors[key] ? "border-red-500" : ""
           }`}
         />
@@ -123,7 +123,7 @@ const AddStudentButton = ({ onAddStudent }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-purple-600">
+          <DialogTitle className="text-2xl font-bold text-zinc-600">
             Add New Student
           </DialogTitle>
         </DialogHeader>
