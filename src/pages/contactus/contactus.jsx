@@ -11,7 +11,7 @@ function ContactUs() {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="md:flex rounded-2xl">
             <div className="md:w-1/2 lg:p-20 max-sm:p-4 rounded-2xl">
-              <h2 className="text-4xl font-bold mb-4 flex text-center w-full mx-[30%]">
+              <h2 className="text-4xl font-bold mb-4 flex text-center w-full mx-[30%] font-sans">
                 <span className="mr-2">Get in</span>
                 <span className="text-blue-500">touch</span>
               </h2>
