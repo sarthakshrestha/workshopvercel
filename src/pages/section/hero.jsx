@@ -1,8 +1,15 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import Circle from "../../gallery/Circle.svg";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
+  const navigate = useNavigate();
+
+  const contactClick = () => {
+    navigate("/contact");
+  };
+
   return (
     <section className="flex flex-col md:flex-row min-h-screen justify-between items-center p-4 sm:p-6 md:p-12 relative  overflow-hidden">
       <div className="absolute inset-0 "></div>
@@ -18,7 +25,10 @@ function Hero() {
             rapidly evolving tech landscape.
           </p>
           <div>
-            <Button className="bg-blue-500 text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-20 w-full sm:w-auto max-sm:hidden">
+            <Button
+              className="bg-blue-500 text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-20 w-full sm:w-auto max-sm:hidden"
+              onClick={contactClick}
+            >
               Start Learning
             </Button>
           </div>
