@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import apiClient from "config/apiClient";
-import {Calendar} from 'lucide-react';
+import { Calendar } from "lucide-react";
 
 const TodayEvent = ({ date, school_id }) => {
   const selectedYear = date.getFullYear();
@@ -138,7 +138,9 @@ const TodayEvent = ({ date, school_id }) => {
         updatedData.schools[0].events.push(monthData);
       }
 
-      let dayData = monthData.days.find((eventDay) => eventDay.day === selectedDay);
+      let dayData = monthData.days.find(
+        (eventDay) => eventDay.day === selectedDay
+      );
 
       if (!dayData) {
         dayData = {
@@ -216,7 +218,9 @@ const TodayEvent = ({ date, school_id }) => {
               >
                 <div className="flex items-center mb-2">
                   <Calendar className="h-5 w-5 text-gray-500 mr-2" />
-                  <section className="text-lg font-medium">{event.event_name}</section>
+                  <section className="text-lg font-medium">
+                    {event.event_name}
+                  </section>
                 </div>
                 <section className="text-sm text-gray-600">
                   {event.event_description}
@@ -225,7 +229,8 @@ const TodayEvent = ({ date, school_id }) => {
             ))
           ) : (
             <section className="text-center text-gray-600">
-              No events for {selectedDay}, {date.toLocaleString("default", { month: "short" })}
+              No events for {selectedDay},{" "}
+              {date.toLocaleString("default", { month: "short" })}
             </section>
           )}
         </section>
@@ -234,7 +239,9 @@ const TodayEvent = ({ date, school_id }) => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{selectedEvent ? "Update Event" : "Add Event"}</DialogTitle>
+            <DialogTitle>
+              {selectedEvent ? "Update Event" : "Add Event"}
+            </DialogTitle>
             <DialogDescription>
               {selectedEvent
                 ? "Make changes to the event. Click save when you're done."

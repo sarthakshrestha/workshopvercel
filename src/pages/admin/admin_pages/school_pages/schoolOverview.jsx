@@ -54,22 +54,22 @@ const SchoolDashboard = () => {
   }, [schoolId]);
 
   const studentPerCourseData = {
-    labels: ["React", "Node.js", "Python", "Java", "JavaScript"],
+    labels: ["Coding", "Scratch", "HTML/CSS"],
     datasets: [
       {
         label: "Students per Course",
-        data: [65, 59, 80, 81, 56],
+        data: [65, 59, 80],
         backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
     ],
   };
 
   const popularCoursesData = {
-    labels: ["React", "Node.js", "Python", "Java", "JavaScript"],
+    labels: ["Coding", "Scratch", "HTML/CSS"],
     datasets: [
       {
         label: "Course Popularity",
-        data: [300, 250, 400, 350, 280],
+        data: [200, 350, 280],
         backgroundColor: "rgba(153, 102, 255, 0.6)",
       },
     ],
@@ -140,7 +140,7 @@ const SchoolDashboard = () => {
                 <BookOpen className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">25</div>
+                <div className="text-2xl font-bold">3</div>
                 <div className="text-sm">Courses assigned to this school</div>
               </CardContent>
             </Card>
@@ -152,7 +152,7 @@ const SchoolDashboard = () => {
                 <Users className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">1,234</div>
+                <div className="text-2xl font-bold">572</div>
                 <div className="text-sm">Students Studying to this school</div>
               </CardContent>
             </Card>

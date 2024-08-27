@@ -26,7 +26,7 @@ function Hero() {
           </p>
           <div>
             <Button
-              className="bg-blue-500 text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-20 w-full sm:w-auto max-sm:hidden"
+              className="bg-blue-500 text-white font-regular text-lg lg:text-xl p-4 lg:p-8 rounded-xl shadow-lg hover:bg-buttonColor-hover transition duration-300 font-sans flex items-center justify-center lg:mt-16 w-full sm:w-auto max-sm:hidden"
               onClick={contactClick}
             >
               Start Learning

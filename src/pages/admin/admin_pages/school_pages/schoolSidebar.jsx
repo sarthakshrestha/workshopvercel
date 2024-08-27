@@ -52,14 +52,14 @@ const SchoolSidebar = () => {
         </div>
 
         <nav className="flex-grow overflow-y-auto w-full">
-          <Button
+          {/* <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={(e) => schools()}
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
             Return to Dashboard
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"

@@ -198,9 +198,9 @@ function Navbar() {
         ) : (
           <Button
             className="bg-[#004EFF] text-white hover:bg-blue-900 hover:text-white px-3 md:px-4 py-1 md:py-2 font-bold font-sans text-xs md:text-sm"
-            onClick={() => navigate("/help")}
+            onClick={() => navigate("/contact")}
           >
-            Get Help
+            Get Info
           </Button>
         )}
       </header>

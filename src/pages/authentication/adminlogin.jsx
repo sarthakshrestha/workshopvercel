@@ -91,7 +91,7 @@ function AdminLogin() {
                 htmlFor="username"
                 className="block font-medium text-gray-700 font-sans text-lg"
               >
-                Username
+                Email
               </Label>
               <Input
                 type="username"
