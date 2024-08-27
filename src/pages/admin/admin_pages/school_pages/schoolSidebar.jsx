@@ -7,15 +7,22 @@ import {
   Calendar,
   ArrowLeft,
   GraduationCap,
+  LogOut,
 } from "lucide-react";
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const SchoolSidebar = () => {
   const navigate = useNavigate();
 
   const schools = () => {
     navigate("../admin/schools");
+  };
+
+  const handleLogout = () => {
+    Cookies.remove("access_token");
+    navigate("/");
   };
 
   const schoolOverview = () => {
@@ -93,6 +100,14 @@ const SchoolSidebar = () => {
           >
             <User className="mr-2 h-5 w-5" />
             Profile
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            onClick={handleLogout}
+          >
+            <LogOut className="mr-2 h-5 w-5" />
+            Logout
           </Button>
         </nav>
       </div>

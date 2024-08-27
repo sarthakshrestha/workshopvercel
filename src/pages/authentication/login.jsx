@@ -7,6 +7,7 @@ import Blur from "../../gallery/images/blur.jpg";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -34,6 +35,14 @@ function SignInPage() {
       const { access_token, token_type } = response.data;
 
       Cookies.set("access_token", access_token, { expires: 7 });
+
+      const decodedToken = jwtDecode(access_token);
+
+      const studentId = decodedToken.id || decodedToken.sub;
+
+      console.log("Student ID:", studentId);
+
+      localStorage.setItem("student_id", studentId);
 
       axiosInstance.defaults.headers.common[
         "Authorization"

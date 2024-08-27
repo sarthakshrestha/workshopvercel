@@ -36,7 +36,7 @@ function AdminLogin() {
       ] = `${token_type} ${access_token}`;
 
       console.log("Successfully logged in");
-      navigate(`/admin/schools/`);
+      navigate(`/admin/schools/overview`);
 
       // Handle successful login, e.g., redirect
       // history.push('/dashboard'); // Uncomment and import 'useHistory' from 'react-router-dom' if using React Router

@@ -14,6 +14,7 @@ import {
   Legend,
 } from "chart.js";
 import { baseURL } from "@/utils/axiosInstance";
+import CurriculumModal from "./curriculumModal";
 
 ChartJS.register(
   CategoryScale,
@@ -114,6 +115,9 @@ const SchoolDashboard = () => {
           <h1 className="text-4xl font-bold mb-8 text-gray-800 ">
             School Dashboard
           </h1>
+          <div className="mb-6">
+            <CurriculumModal />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>

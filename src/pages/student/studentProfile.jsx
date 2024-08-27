@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Edit, Save } from "lucide-react";
+import { baseURL } from "@/utils/axiosInstance";
 import StudentSidebar from "./studentSidebar";
 
 const StudentsProfile = () => {
@@ -28,9 +29,7 @@ const StudentsProfile = () => {
   const fetchStudentData = async () => {
     const student_id = localStorage.getItem("student_id");
     try {
-      const response = await axios.get(
-        `http://localhost:8000/student/${student_id}`
-      );
+      const response = await axios.get(`${baseURL}/student/${student_id}`);
       const { data } = response.data;
       setStudentData({
         id: data.id,
@@ -50,10 +49,7 @@ const StudentsProfile = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(
-        `http://localhost:8000/student/${studentData.id}`,
-        studentData
-      );
+      await axios.put(`${baseURL}/student/${studentData.id}`, studentData);
       setIsEditing(false);
       fetchStudentData();
     } catch (error) {
