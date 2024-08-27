@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Eye } from "lucide-react";
-import TeacherSidebar from "../mentorSidebar";
+import TeacherSidebar from "../teacherSidebar";
 import { Input } from "@/components/ui/input"; // Add this import
 import apiClient from "config/apiClient";
 

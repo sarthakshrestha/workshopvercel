@@ -26,7 +26,6 @@ function AdminLogin() {
         password,
       });
 
-
       const { access_token, token_type } = response.data;
       // Save access token in cookies
       Cookies.set("access_token", access_token, { expires: 7 }); // Expires in 7 days, adjust as needed
@@ -37,7 +36,7 @@ function AdminLogin() {
       ] = `${token_type} ${access_token}`;
 
       console.log("Successfully logged in");
-      navigate("/admin");
+      navigate(`/admin/schools/`);
 
       // Handle successful login, e.g., redirect
       // history.push('/dashboard'); // Uncomment and import 'useHistory' from 'react-router-dom' if using React Router

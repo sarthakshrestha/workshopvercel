@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { Users } from "lucide-react";
-import TeacherSidebar from "../mentorSidebar";
+import TeacherSidebar from "../teacherSidebar";
 import { Toaster } from "@/components/ui/toaster";
 import { format } from "date-fns";
 import apiClient from "config/apiClient";

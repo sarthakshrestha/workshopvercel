@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import TeachersDashboard from "pages/mentors/mentorPages/mentorDashboard";
+import TeachersDashboard from "pages/mentors/mentorPages/teachersDashboard";
 import SchoolsPage from "pages/mentors/mentorPages/schoolsPage";
 import SchoolClasses from "pages/mentors/mentorPages/Classes";
 import AttendanceComponent from "pages/mentors/mentorPages/attendancePage";

@@ -4,19 +4,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import logo from "gallery/Logo.png";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { isAdmin } from "pages/authentication/util";
+import { isMentor, isStudent, isAdmin } from "pages/authentication/util";
 
 function Navbar() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
 
-  const handleJoinUsClick = () => {
+  const adminDashboard = () => {
     navigate("/admin");
   };
 
   const aboutUsClick = () => {
     navigate("/about");
+  };
+
+  const mentorDashboard = () => {
+    navigate("/mentor/dashboard");
+  };
+
+  const studentDashboard = () => {
+    navigate("/student");
   };
 
   const loginClick = () => {
@@ -154,12 +162,14 @@ function Navbar() {
         {/* Desktop Navigation */}
         <nav className="hidden md:block text-black mr-6">
           <ul className="flex space-x-8 text-black text-sm">
-            <li
-              className="cursor-pointer font-sans text-lg"
-              onClick={loginClick}
-            >
-              Login
-            </li>
+            {!(isAdmin() || isMentor() || isStudent()) && (
+              <li
+                className="cursor-pointer font-sans text-lg"
+                onClick={loginClick}
+              >
+                Login
+              </li>
+            )}
           </ul>
         </nav>
 
@@ -167,9 +177,23 @@ function Navbar() {
         {isAdmin() ? (
           <Button
             className="bg-[#004EFF] text-white hover:bg-blue-900 hover:text-white px-3 md:px-4 py-1 md:py-2 font-bold font-sans text-xs md:text-sm"
-            onClick={handleJoinUsClick}
+            onClick={adminDashboard}
           >
-            Dashboard
+            Admin Dashboard
+          </Button>
+        ) : isMentor() ? (
+          <Button
+            className="bg-[#004EFF] text-white hover:bg-blue-900 hover:text-white px-3 md:px-4 py-1 md:py-2 font-bold font-sans text-xs md:text-sm"
+            onClick={mentorDashboard}
+          >
+            Mentor Dashboard
+          </Button>
+        ) : isStudent() ? (
+          <Button
+            className="bg-[#004EFF] text-white hover:bg-blue-900 hover:text-white px-3 md:px-4 py-1 md:py-2 font-bold font-sans text-xs md:text-sm"
+            onClick={studentDashboard}
+          >
+            Student Dashboard
           </Button>
         ) : (
           <Button

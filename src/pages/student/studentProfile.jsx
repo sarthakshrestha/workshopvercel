@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Edit, Save } from "lucide-react";
 import StudentSidebar from "./studentSidebar";
 
-const StudentProfile = () => {
+const StudentsProfile = () => {
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [studentData, setStudentData] = useState({
@@ -28,7 +28,9 @@ const StudentProfile = () => {
   const fetchStudentData = async () => {
     const student_id = localStorage.getItem("student_id");
     try {
-      const response = await axios.get(`http://localhost:8000/student/${student_id}`);
+      const response = await axios.get(
+        `http://localhost:8000/student/${student_id}`
+      );
       const { data } = response.data;
       setStudentData({
         id: data.id,
@@ -46,6 +48,19 @@ const StudentProfile = () => {
     }
   };
 
+  const handleSave = async () => {
+    try {
+      await axios.put(
+        `http://localhost:8000/student/${studentData.id}`,
+        studentData
+      );
+      setIsEditing(false);
+      fetchStudentData();
+    } catch (error) {
+      console.error("Error updating student data:", error);
+    }
+  };
+
   const handleEdit = () => {
     setIsEditing(!isEditing);
   };
@@ -53,16 +68,6 @@ const StudentProfile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setStudentData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = async () => {
-    try {
-      await axios.put(`http://localhost:8000/student/${studentData.id}`, studentData);
-      setIsEditing(false);
-      fetchStudentData(); // Refresh data after update
-    } catch (error) {
-      console.error("Error updating student data:", error);
-    }
   };
 
   return (
@@ -73,7 +78,10 @@ const StudentProfile = () => {
           <CardHeader className="bg-gradient-to-r from-blue-700 to-blue-900 text-white p-6">
             <div className="flex items-center space-x-4">
               <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
-                <AvatarImage src="https://github.com/shadcn.png" alt="Student Avatar" />
+                <AvatarImage
+                  src="https://github.com/shadcn.png"
+                  alt="Student Avatar"
+                />
                 <AvatarFallback className="text-2xl bg-blue-200 text-blue-800">
                   {studentData.student_name
                     .split(" ")
@@ -93,7 +101,9 @@ const StudentProfile = () => {
             <Separator className="my-6" />
             <div className="space-y-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">Name</label>
+                <label className="text-sm font-medium text-gray-600">
+                  Name
+                </label>
                 <Input
                   type="text"
                   name="student_name"
@@ -115,7 +125,9 @@ const StudentProfile = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">Phone Number</label>
+                <label className="text-sm font-medium text-gray-600">
+                  Phone Number
+                </label>
                 <Input
                   type="tel"
                   name="phone_num"
@@ -126,7 +138,9 @@ const StudentProfile = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">Email</label>
+                <label className="text-sm font-medium text-gray-600">
+                  Email
+                </label>
                 <Input
                   type="email"
                   name="student_email"
@@ -137,7 +151,9 @@ const StudentProfile = () => {
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">Address</label>
+                <label className="text-sm font-medium text-gray-600">
+                  Address
+                </label>
                 <Input
                   type="text"
                   name="address"
@@ -171,4 +187,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default StudentsProfile;
