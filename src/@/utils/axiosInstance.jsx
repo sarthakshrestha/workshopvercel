@@ -1,10 +1,12 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const baseURL = "https://school-api.wordscapepress.com";
+// export const baseURL = "https://school-api.wordscapepress.com";
+export const baseURL = "http://127.0.0.1:8000";
 
 const axiosInstance = axios.create({
-  baseURL: "https://school-api.wordscapepress.com",
+  // baseURL: "https://school-api.wordscapepress.com",
+  baseURL: "http://127.0.0.1:8000",
 });
 
 axiosInstance.interceptors.request.use(

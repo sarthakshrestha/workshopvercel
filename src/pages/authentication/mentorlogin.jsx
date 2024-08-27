@@ -35,7 +35,7 @@ function MentorLogin() {
         "Authorization"
       ] = `${token_type} ${access_token}`;
 
-      navigate("/teacher/dashboard");
+      navigate("/mentor/dashboard");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }
