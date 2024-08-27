@@ -33,23 +33,36 @@ const SchoolDashboard = () => {
     const fetchEvents = async () => {
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth() + 1;
-      const response = await fetch(
-        `${baseURL}/calendar/${currentYear}/${schoolId}/${currentMonth}`
-      );
-      const data = await response.json();
-      if (data.status === "success") {
-        const allEvents = data.data.schools[0].events.flatMap((monthEvents) =>
-          monthEvents.days.flatMap((day) =>
-            day.events.map((event) => ({
-              ...event,
-              month: monthEvents.month,
-              day: day.day,
-            }))
-          )
+      try {
+        const response = await fetch(
+          `${baseURL}/calendar/${currentYear}/${schoolId}/${currentMonth}`
         );
-        setEvents(allEvents);
+        const data = await response.json();
+        if (
+          data.status === "success" &&
+          data.data.schools &&
+          data.data.schools.length > 0
+        ) {
+          const allEvents = data.data.schools[0].events.flatMap((monthEvents) =>
+            monthEvents.days.flatMap((day) =>
+              day.events.map((event) => ({
+                ...event,
+                month: monthEvents.month,
+                day: day.day,
+              }))
+            )
+          );
+          setEvents(allEvents);
+        } else {
+          console.log("No schools data available");
+          setEvents([]);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        setEvents([]);
       }
     };
+
     fetchEvents();
   }, [schoolId]);
 
