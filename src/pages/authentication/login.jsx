@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Logo from "../../gallery/Logo.png";
 import Blur from "../../gallery/images/blur.jpg";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "@/utils/axiosInstance";
+import Cookies from "js-cookie";
 
 function SignInPage() {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const mentorLogin = () => {
     navigate("/mlogin");
@@ -17,8 +23,26 @@ function SignInPage() {
     navigate("/admin/login");
   };
 
-  const studentLogin = () => {
-    navigate("/student");
+  const studentLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axiosInstance.post("/student/login", {
+        email,
+        password,
+      });
+
+      const { access_token, token_type } = response.data;
+
+      Cookies.set("access_token", access_token, { expires: 7 });
+
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `${token_type} ${access_token}`;
+
+      navigate("/student");
+    } catch (err) {
+      setError("Invalid credentials. Please try again.");
+    }
   };
 
   const homeRedirect = () => {
@@ -50,10 +74,13 @@ function SignInPage() {
           </div>
 
           <h2 className="text-4xl lg:text-4xl font-bold mb-6 text-gray-800 font-sans">
-            Sign In
+            Sign in{" "}
+            <span className="text-regular lg:text-regular font-light mb-6 text-gray-800 font-sans">
+              as a student
+            </span>
           </h2>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={studentLogin}>
             {/* Email Field */}
             <div>
               <Label
@@ -66,6 +93,8 @@ function SignInPage() {
                 type="email"
                 id="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
               />
             </div>
@@ -82,6 +111,8 @@ function SignInPage() {
                 type="password"
                 id="password"
                 placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
               />
             </div>
@@ -90,10 +121,14 @@ function SignInPage() {
             <Button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 transition duration-300 font-sans"
-              onClick={studentLogin}
             >
               Sign In
             </Button>
+
+            {/* Error Message */}
+            {error && (
+              <div className="text-red-600 text-sm mt-2 font-sans">{error}</div>
+            )}
 
             {/* Additional Options */}
             <div className="flex justify-between items-center mt-4 font-sans">
@@ -102,7 +137,7 @@ function SignInPage() {
                 className="text-blue-600 hover:underline font-sans"
                 onClick={mentorLogin}
               >
-                Are you a mentor?
+                I mentor students.
               </a>
               <a
                 href="#"
