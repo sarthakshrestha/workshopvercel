@@ -17,11 +17,17 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   FaUserGraduate,
   FaBook,
   FaChalkboardTeacher,
   FaPlus,
-  FaEllipsisV,
 } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -55,53 +61,49 @@ const ClassItem = ({ classes }) => {
   return (
     <motion.div
       layout
-      className="bg-white border-l-4 border-black shadow-md p-4 mb-4 overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0, height: "150px" }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold text-gray-800">
-          {classData.class_name}
-        </h3>
-        
-      </div>
-      <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="mt-4 grid grid-cols-3 gap-4 text-sm text-gray-600">
-              <div className="flex items-center">
-                <FaUserGraduate className="mr-2 w-5 h-5 text-gray-700" />
-                <span>{classData.students?.length || 0} Students</span>
-              </div>
-              <div className="flex items-center">
-                <FaBook className="mr-2 w-5 h-5 text-gray-700" />
-                <span>{classData.courses?.length || 0} Courses</span>
-              </div>
-              <div className="flex items-center">
-                <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
-                <span>{classData.teachers?.length || 0} Mentors</span>
-              </div>
-            </div>
+      <Card className="overflow-hidden">
+        <CardHeader>
+          <CardTitle>{classData.class_name}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <AnimatePresence>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.3 }}
-              className="flex justify-center items-center"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <Button
-                onClick={handleNavigateToClass}
-                className="mt-4 underline bg-white hover:bg-white text-black font-medium py-2 px-4 rounded-md transition duration-300"
-              >
-                View Details
-              </Button>
+              <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
+                <div className="flex items-center">
+                  <FaUserGraduate className="mr-2 w-5 h-5 text-gray-700" />
+                  <span>{classData.students?.length || 0} Students</span>
+                </div>
+                <div className="flex items-center">
+                  <FaBook className="mr-2 w-5 h-5 text-gray-700" />
+                  <span>{classData.courses?.length || 0} Courses</span>
+                </div>
+                <div className="flex items-center">
+                  <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
+                  <span>{classData.teachers?.length || 0} Mentors</span>
+                </div>
+              </div>
             </motion.div>
-          </motion.div>
-      </AnimatePresence>
+          </AnimatePresence>
+        </CardContent>
+        <CardFooter className="flex justify-center">
+          <Button
+            onClick={handleNavigateToClass}
+            variant="outline"
+            className="mt-4"
+          >
+            View Details
+          </Button>
+        </CardFooter>
+      </Card>
     </motion.div>
   );
 };
@@ -141,7 +143,7 @@ const SchoolClasses = () => {
   };
 
   const sortedClasses = useMemo(() => {
-    return [...classResponse].sort((a, b) => 
+    return [...classResponse].sort((a, b) =>
       a.class_name.localeCompare(b.class_name)
     );
   }, [classResponse]);
@@ -190,40 +192,27 @@ const SchoolClasses = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <Button className="text-white font-medium py-2 px-4 rounded-md transition duration-300 flex items-center">
+                  <Button className="flex items-center">
                     <FaPlus className="mr-2" />
                     <span>Add Class</span>
                   </Button>
                 </motion.div>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px] bg-white">
+              <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-gray-800">
-                    Add New Class
-                  </DialogTitle>
+                  <DialogTitle>Add New Class</DialogTitle>
                 </DialogHeader>
                 <div className="mt-4">
-                  <Label
-                    htmlFor="class_name"
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Class Name
-                  </Label>
+                  <Label htmlFor="class_name">Class Name</Label>
                   <Input
                     id="class_name"
                     name="class_name"
                     value={newClass.class_name}
                     onChange={handleInputChange}
-                    className="mt-1 block w-full rounded-md shadow-sm"
                   />
                 </div>
                 <DialogFooter className="mt-6">
-                  <Button
-                    onClick={addClass}
-                    className="text-white font-medium py-2 px-4 rounded-md transition duration-300"
-                  >
-                    Save Class
-                  </Button>
+                  <Button onClick={addClass}>Save Class</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -253,17 +242,23 @@ const SchoolClasses = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-white border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md"
             >
-              <p className="font-bold">No Classes Found</p>
-              <p>
-                Start by adding a new class using the 'Add Class' button above.
-              </p>
+              <Card>
+                <CardHeader>
+                  <CardTitle>No Classes Found</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p>
+                    Start by adding a new class using the 'Add Class' button
+                    above.
+                  </p>
+                </CardContent>
+              </Card>
             </motion.div>
           )}
         </main>
       </div>
-      <Toaster duration={1000} />
+      <Toaster />
     </div>
   );
 };

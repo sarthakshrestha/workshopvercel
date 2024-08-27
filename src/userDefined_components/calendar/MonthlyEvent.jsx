@@ -5,7 +5,18 @@ import { FaCalendarAlt } from "react-icons/fa";
 
 const getMonthName = (monthNumber) => {
   const monthNames = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   return monthNames[monthNumber];
 };
@@ -53,10 +64,9 @@ const MonthlyEvent = ({ date, school_id }) => {
     });
   };
 
-  const monthEvents =
-    data?.schools?.[0]?.events?.find(
-      (eventMonth) => eventMonth.month === selectedMonth
-    ) || { days: [] };
+  const monthEvents = data?.schools?.[0]?.events?.find(
+    (eventMonth) => eventMonth.month === selectedMonth
+  ) || { days: [] };
 
   return (
     <div className="w-full p-6 rounded-lg bg-white shadow-lg h-[90vh] overflow-x-auto">

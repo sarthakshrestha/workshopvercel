@@ -4,6 +4,7 @@ import ProtectedStudent from "@/utils/protectedStudent";
 import StudentDashboard from "pages/student/studentDashboard";
 import ClassesDashboard from "pages/student/studentClasses";
 import StudentAttendance from "pages/student/individualStudentPage";
+import SchoolCalendar from "pages/student/schoolAcademicCalendar";
 
 const StudentRoutes = (
   <Routes>
@@ -20,9 +21,14 @@ const StudentRoutes = (
         element={<StudentsProfile />}
       />
       <Route
-    key="attendance"
+        key="attendance"
         path="/student/attendances/:studentId"
         element={<StudentAttendance />}
+      />
+      <Route
+        key="attendance"
+        path="/student/calendar"
+        element={<SchoolCalendar />}
       />
     </Route>
   </Routes>

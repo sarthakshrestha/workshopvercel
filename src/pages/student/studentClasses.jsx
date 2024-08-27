@@ -19,6 +19,7 @@ import {
 import StudentSidebar from "./studentSidebar";
 import axios from "axios";
 import { baseURL } from "@/utils/axiosInstance";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ClassesDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -120,34 +121,46 @@ const ClassesDashboard = () => {
           ))}
         </div>
 
-        {selectedClass && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white p-8 rounded-lg max-w-2xl w-full">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-blue-800">
-                  {selectedClass.class_name} Overview
-                </h2>
-                <Button onClick={closeOverview} variant="ghost">
-                  <XCircle className="h-6 w-6 text-gray-600 hover:text-gray-800" />
-                </Button>
-              </div>
-              <p className="mb-4 text-gray-700">
-                {selectedClass.description ||
-                  "Welcome to our exciting Scratch programming class! In this course, students will embark on a journey to explore the fascinating world of coding through Scratch, a visual programming language designed for young learners. Our experienced instructors will guide students through interactive lessons, engaging projects, and fun challenges that will spark creativity and develop essential problem-solving skills. Whether you're a beginner or have some coding experience, this class is perfect for anyone looking to dive into the world of programming in a fun and accessible way."}
-              </p>
-              <h3 className="text-xl font-semibold mb-2 text-blue-700">
-                What we teach:
-              </h3>
-              <ul className="list-disc pl-5 text-gray-700">
-                <li>Introduction to Scratch programming</li>
-                <li>Creating interactive stories and games</li>
-                <li>Understanding basic programming concepts</li>
-                <li>Developing problem-solving skills</li>
-                <li>Fostering creativity through coding</li>
-              </ul>
-            </div>
-          </div>
-        )}
+        <AnimatePresence>
+          {selectedClass && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <motion.div
+                className="bg-white p-8 rounded-lg max-w-2xl w-full"
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.8 }}
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-2xl font-bold text-blue-800">
+                    {selectedClass.class_name} Overview
+                  </h2>
+                  <Button onClick={closeOverview} variant="ghost">
+                    <XCircle className="h-6 w-6 text-gray-600 hover:text-gray-800" />
+                  </Button>
+                </div>
+                <p className="mb-4 text-gray-700">
+                  {selectedClass.description ||
+                    "Welcome to our exciting Scratch programming class! In this course, students will embark on a journey to explore the fascinating world of coding through Scratch, a visual programming language designed for young learners. Our experienced instructors will guide students through interactive lessons, engaging projects, and fun challenges that will spark creativity and develop essential problem-solving skills. Whether you're a beginner or have some coding experience, this class is perfect for anyone looking to dive into the world of programming in a fun and accessible way."}
+                </p>
+                <h3 className="text-xl font-semibold mb-2 text-blue-700">
+                  What we teach:
+                </h3>
+                <ul className="list-disc pl-5 text-gray-700">
+                  <li>Introduction to Scratch programming</li>
+                  <li>Creating interactive stories and games</li>
+                  <li>Understanding basic programming concepts</li>
+                  <li>Developing problem-solving skills</li>
+                  <li>Fostering creativity through coding</li>
+                </ul>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
     </div>
   );

@@ -152,7 +152,7 @@ function Navbar() {
           <img
             src={logo}
             alt="Logo"
-            className="h-auto w-auto max-h-[110px] md:max-h-[110px] lg:max-h-[125px] object-contain cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
+            className="h-auto w-auto max-h-[190px] md:max-h-[110px] lg:max-h-[235px] object-contain cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105"
             onClick={() => {
               navigate("/");
             }}

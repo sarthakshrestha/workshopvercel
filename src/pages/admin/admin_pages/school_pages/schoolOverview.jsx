@@ -113,7 +113,7 @@ const SchoolDashboard = () => {
       <div className="flex-1 overflow-auto">
         <div className="p-8 bg-gray-50 min-h-screen">
           <h1 className="text-4xl font-bold mb-8 text-gray-800 ">
-            School Dashboard
+            SVI School Dashboard
           </h1>
           <div className="mb-6">
             <CurriculumModal />

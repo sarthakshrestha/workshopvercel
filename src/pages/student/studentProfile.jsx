@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Edit, Save } from "lucide-react";
 import { baseURL } from "@/utils/axiosInstance";
 import StudentSidebar from "./studentSidebar";
+import Arpit from "../../gallery/members/Arpit1.png";
 
 const StudentsProfile = () => {
   const navigate = useNavigate();
@@ -73,11 +74,8 @@ const StudentsProfile = () => {
         <Card className="w-full max-w-2xl shadow-xl rounded-xl overflow-hidden bg-white">
           <CardHeader className="bg-gradient-to-r from-blue-700 to-blue-900 text-white p-6">
             <div className="flex items-center space-x-4">
-              <Avatar className="h-24 w-24 border-4 border-white shadow-lg">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="Student Avatar"
-                />
+              <Avatar className="h-auto w-24 border-4 border-white shadow-lg">
+                <AvatarImage src={Arpit} alt="Student Avatar" />
                 <AvatarFallback className="text-2xl bg-blue-200 text-blue-800">
                   {studentData.student_name
                     .split(" ")

@@ -93,15 +93,15 @@ function SignInPage() {
             {/* Email Field */}
             <div>
               <Label
-                htmlFor="email"
+                htmlFor="text"
                 className="block font-medium text-gray-700 font-sans text-lg"
               >
-                Email
+                Student ID
               </Label>
               <Input
-                type="email"
-                id="email"
-                placeholder="Enter your email"
+                type="text"
+                id="text"
+                placeholder="Enter your student ID"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
