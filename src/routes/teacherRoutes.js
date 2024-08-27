@@ -1,13 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import TeachersDashboard from "pages/teachers/teachersPages/teachersDashboard";
-import SchoolsPage from "pages/teachers/teachersPages/schoolsPage";
-import SchoolClasses from "pages/teachers/teachersPages/Classes";
-import AttendanceComponent from "pages/teachers/teachersPages/attendancePage";
-import StudentsPage from "pages/teachers/teachersPages/studentsPage";
-import StudentProfile from "pages/teachers/teachersPages/individualStudentPage";
+import TeachersDashboard from "pages/mentors/mentorPages/mentorDashboard";
+import SchoolsPage from "pages/mentors/mentorPages/schoolsPage";
+import SchoolClasses from "pages/mentors/mentorPages/Classes";
+import AttendanceComponent from "pages/mentors/mentorPages/attendancePage";
+import StudentsPage from "pages/mentors/mentorPages/studentsPage";
+import StudentProfile from "pages/mentors/mentorPages/individualStudentPage";
 import ProtectedMentor from "@/utils/protectedMentor";
 
-const TeacherRoutes = (
+const MentorRoutes = (
   <Routes>
     <Route element={<ProtectedMentor />}>
       <Route path="/mentor/dashboard" element={<TeachersDashboard />} />
@@ -26,4 +26,4 @@ const TeacherRoutes = (
   </Routes>
 );
 
-export default TeacherRoutes;
+export default MentorRoutes;

@@ -8,9 +8,10 @@ import {
   LogOut,
   Home,
 } from "lucide-react";
+import { History, ClipboardList, FileCheck, CalendarCheck } from 'lucide-react';
+
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
-
 
 const StudentSidebar = () => {
   const navigate = useNavigate();
@@ -29,6 +30,11 @@ const StudentSidebar = () => {
 
   const studentProfile = () => {
     navigate("/student/profile");
+  };
+
+  const Attendance = () => {
+    const studentId = localStorage.getItem("student_id");
+    navigate(`/student/attendances/${studentId}`);
   };
 
   return (
@@ -74,6 +80,14 @@ const StudentSidebar = () => {
           >
             <Calendar className="mr-2 h-5 w-5" />
             Academic Calendar
+          </Button>
+          <Button
+            variant="ghost"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            onClick={Attendance}
+          >
+            <History className="mr-2 h-5 w-5" />
+            Attendance History
           </Button>
           <Button
             variant="ghost"

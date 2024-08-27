@@ -1,8 +1,9 @@
 import { Route, Routes } from "react-router-dom";
-import StudentProfile from "pages/teachers/teachersPages/individualStudentPage";
+import StudentProfile from "pages/mentors/mentorPages/individualStudentPage";
 import ProtectedStudent from "@/utils/protectedStudent";
 import StudentDashboard from "pages/student/studentDashboard";
 import ClassesDashboard from "pages/student/studentClasses";
+import StudentAttendance from "pages/student/individualStudentPage";
 
 const StudentRoutes = (
   <Routes>
@@ -17,6 +18,11 @@ const StudentRoutes = (
         key="student"
         path="/student/profile"
         element={<StudentProfile />}
+      />
+      <Route
+        key="attendance"
+        path="/student/attendances/:studentId"
+        element={<StudentAttendance />}
       />
     </Route>
   </Routes>

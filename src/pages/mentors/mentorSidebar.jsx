@@ -13,7 +13,7 @@ import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-const TeacherSidebar = () => {
+const MentorSidebar = () => {
   const navigate = useNavigate();
 
   const teacherDashboard = () => {
@@ -68,4 +68,4 @@ const TeacherSidebar = () => {
   );
 };
 
-export default TeacherSidebar;
+export default MentorSidebar;

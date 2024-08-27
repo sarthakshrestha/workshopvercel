@@ -9,6 +9,7 @@ import { isMentor } from "./util";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 function MentorLogin() {
   const navigate = useNavigate();
@@ -28,6 +29,14 @@ function MentorLogin() {
       });
 
       const { access_token, token_type } = response.data;
+
+      const decodedToken = jwtDecode(access_token);
+
+      const teacherId = decodedToken.id || decodedToken.sub;
+
+      console.log("Teacher ID:", teacherId);
+
+      localStorage.setItem("teacher_id", teacherId);
 
       Cookies.set("access_token", access_token, { expires: 7 });
 
