@@ -8,7 +8,7 @@ export const SchoolContextProvider = ({ children }) => {
     const savedSchoolId = localStorage.getItem("schoolId");
     return savedSchoolId
       ? JSON.parse(savedSchoolId)
-      : JSON.parse("66c0dae5f0965cf6f1bf21bb");
+      : "66c0dae5f0965cf6f1bf21bb";
   });
 
   useEffect(() => {
