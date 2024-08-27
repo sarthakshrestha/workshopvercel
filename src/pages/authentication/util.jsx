@@ -31,5 +31,6 @@ export const isLoggedIn = () => {
 
 // Function to check if the user is a student
 export const isStudent = () => {
+  console.log("Check");
   return getRoleFromToken() === "STUDENT";
 };

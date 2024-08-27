@@ -26,7 +26,6 @@ const TeacherSidebar = () => {
     Cookies.remove("access_token");
     navigate("/");
   };
-
   return (
     <aside className="w-56 h-screen fixed bg-[#34496C] text-white shadow-lg font-archivo">
       <div className="p-4 flex items-center justify-center flex-col">
