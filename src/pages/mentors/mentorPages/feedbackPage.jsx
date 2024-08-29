@@ -1,27 +1,45 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import MentorSidebar from "../mentorSidebar";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+
 import StarRating from "./starRating";
+import MentorSidebar from "../mentorSidebar";
 
 function Feedback() {
   const [newFeedback, setNewFeedback] = useState({
     rating: 0,
     comment: "",
-    mentorName: "",
+    studentName: "",
     school: "",
     class: "",
     student: "",
   });
 
   const [feedbackList, setFeedbackList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Mock data for dropdowns
   const schools = ["School A", "School B", "School C"];
   const classes = ["Class 1", "Class 2", "Class 3"];
-  const student = ["Mentor 1", "Mentor 2", "Mentor 3"];
+  const students = ["student 1", "student 2", "student 3"];
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (name, value) => {
     setNewFeedback((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -35,11 +53,12 @@ function Feedback() {
     setNewFeedback({
       rating: 0,
       comment: "",
-      mentorName: "",
+      studentName: "",
       school: "",
       class: "",
       student: "",
     });
+    setIsModalOpen(false);
   };
 
   return (
@@ -47,113 +66,93 @@ function Feedback() {
       <MentorSidebar />
       <div className="flex-1 ml-56 p-6">
         <h2 className="text-2xl font-bold mb-4">Feedback</h2>
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle>Give Feedback</CardTitle>
-          </CardHeader>
-          <CardContent>
+
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <Button>Add Feedback</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Give Feedback</DialogTitle>
+            </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2 mt-1">
+                <Label className="block text-sm font-medium mb-2 mt-1">
                   Rating
-                </label>
+                </Label>
                 <StarRating
                   rating={newFeedback.rating}
                   onRatingChange={handleRatingChange}
                 />
               </div>
               <div>
-                <label
-                  htmlFor="comment"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Comment
-                </label>
-                <textarea
+                <Label htmlFor="comment">Comment</Label>
+                <Textarea
                   id="comment"
-                  name="comment"
-                  rows={3}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   value={newFeedback.comment}
-                  onChange={handleInputChange}
+                  onChange={(e) => handleInputChange("comment", e.target.value)}
                 />
               </div>
               <div>
-                <label
-                  htmlFor="school"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  School
-                </label>
-                <select
-                  id="school"
-                  name="school"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                <Label htmlFor="school">School</Label>
+                <Select
                   value={newFeedback.school}
-                  onChange={handleInputChange}
+                  onValueChange={(value) => handleInputChange("school", value)}
                 >
-                  <option value="">Select a school</option>
-                  {schools.map((school, index) => (
-                    <option key={index} value={school}>
-                      {school}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a school" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {schools.map((school, index) => (
+                      <SelectItem key={index} value={school}>
+                        {school}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
-                <label
-                  htmlFor="class"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Class
-                </label>
-                <select
-                  id="class"
-                  name="class"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                <Label htmlFor="class">Class</Label>
+                <Select
                   value={newFeedback.class}
-                  onChange={handleInputChange}
+                  onValueChange={(value) => handleInputChange("class", value)}
                 >
-                  <option value="">Select a class</option>
-                  {classes.map((cls, index) => (
-                    <option key={index} value={cls}>
-                      {cls}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a class" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {classes.map((cls, index) => (
+                      <SelectItem key={index} value={cls}>
+                        {cls}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
-                <label
-                  htmlFor="mentor"
-                  className="block text-sm font-medium text-gray-700"
+                <Label htmlFor="student">Student</Label>
+                <Select
+                  value={newFeedback.student}
+                  onValueChange={(value) => handleInputChange("student", value)}
                 >
-                  Mentor
-                </label>
-                <select
-                  id="mentor"
-                  name="mentor"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  value={newFeedback.mentor}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select a mentor</option>
-                  {student.map((mentor, index) => (
-                    <option key={index} value={mentor}>
-                      {mentor}
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a student" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {students.map((student, index) => (
+                      <SelectItem key={index} value={student}>
+                        {student}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-              <button
-                type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Submit Feedback
-              </button>
+              <Button type="submit">Submit Feedback</Button>
             </form>
-          </CardContent>
-        </Card>
-        <Card>
+          </DialogContent>
+        </Dialog>
+
+        <Card className="mt-6">
           <CardHeader>
             <CardTitle>Feedback List</CardTitle>
           </CardHeader>
