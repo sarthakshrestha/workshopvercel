@@ -2,7 +2,7 @@ import apiClient from "config/apiClient";
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import TeacherSidebar from "../teacherSidebar";
+import TeacherSidebar from "../mentorSidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { FaUserGraduate, FaBook, FaChalkboardTeacher } from "react-icons/fa";
@@ -27,7 +27,7 @@ const ClassItem = ({ classData }) => {
         </div>
         <div className="flex items-center">
           <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
-          <span>{classData.teachers?.length || 0} Teachers</span>
+          <span>{classData.teachers?.length || 0} Mentors</span>
         </div>
       </div>
       <div className="flex justify-center items-center">

@@ -14,7 +14,6 @@ import {
   Legend,
 } from "chart.js";
 import { baseURL } from "@/utils/axiosInstance";
-import CurriculumModal from "./curriculumModal";
 
 ChartJS.register(
   CategoryScale,
@@ -33,17 +32,16 @@ const SchoolDashboard = () => {
     const fetchEvents = async () => {
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth() + 1;
-      try {
-        const response = await fetch(
-          `${baseURL}/calendar/${currentYear}/${schoolId}/${currentMonth}`
-        );
-        const data = await response.json();
-        if (
-          data.status === "success" &&
-          data.data.schools &&
-          data.data.schools.length > 0
-        ) {
-          const allEvents = data.data.schools[0].events.flatMap((monthEvents) =>
+      const response = await fetch(
+        `${baseURL}/calendar/${currentYear}/${schoolId}/${currentMonth}`
+      );
+      const data = await response.json();
+      console.log(data);
+      if (data.status === "success") {
+        const allEvents =
+          data.data &&
+          data.data.length > 0 &&
+          data.data.schools[0].events.flatMap((monthEvents) =>
             monthEvents.days.flatMap((day) =>
               day.events.map((event) => ({
                 ...event,
@@ -52,37 +50,29 @@ const SchoolDashboard = () => {
               }))
             )
           );
-          setEvents(allEvents);
-        } else {
-          console.log("No schools data available");
-          setEvents([]);
-        }
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        setEvents([]);
+        setEvents(allEvents);
       }
     };
-
     fetchEvents();
   }, [schoolId]);
 
   const studentPerCourseData = {
-    labels: ["Coding", "Scratch", "HTML/CSS"],
+    labels: ["React", "Node.js", "Python", "Java", "JavaScript"],
     datasets: [
       {
         label: "Students per Course",
-        data: [65, 59, 80],
+        data: [65, 59, 80, 81, 56],
         backgroundColor: "rgba(75, 192, 192, 0.6)",
       },
     ],
   };
 
   const popularCoursesData = {
-    labels: ["Coding", "Scratch", "HTML/CSS"],
+    labels: ["React", "Node.js", "Python", "Java", "JavaScript"],
     datasets: [
       {
         label: "Course Popularity",
-        data: [200, 350, 280],
+        data: [300, 250, 400, 350, 280],
         backgroundColor: "rgba(153, 102, 255, 0.6)",
       },
     ],
@@ -126,11 +116,8 @@ const SchoolDashboard = () => {
       <div className="flex-1 overflow-auto">
         <div className="p-8 bg-gray-50 min-h-screen">
           <h1 className="text-4xl font-bold mb-8 text-gray-800 ">
-            SVI School Dashboard
+            School Dashboard
           </h1>
-          <div className="mb-6">
-            <CurriculumModal />
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
@@ -153,7 +140,7 @@ const SchoolDashboard = () => {
                 <BookOpen className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">3</div>
+                <div className="text-2xl font-bold">25</div>
                 <div className="text-sm">Courses assigned to this school</div>
               </CardContent>
             </Card>
@@ -165,7 +152,7 @@ const SchoolDashboard = () => {
                 <Users className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">572</div>
+                <div className="text-2xl font-bold">1,234</div>
                 <div className="text-sm">Students Studying to this school</div>
               </CardContent>
             </Card>
@@ -186,29 +173,31 @@ const SchoolDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-8">
-                  {events.map((event) => (
-                    <div key={event.id} className="flex">
-                      <div className="flex-shrink-0">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 text-white text-xs flex-col">
-                          <div
-                            className="font-bold"
-                            style={{ letterSpacing: "1px" }}
-                          >
-                            {getMonthAbbreviation(event.month)}
-                          </div>
-                          <div>{event.day}</div>
-                        </span>
+                  {events &&
+                    events.length > 0 &&
+                    events.map((event) => (
+                      <div key={event.id} className="flex">
+                        <div className="flex-shrink-0">
+                          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-500 text-white text-xs flex-col">
+                            <div
+                              className="font-bold"
+                              style={{ letterSpacing: "1px" }}
+                            >
+                              {getMonthAbbreviation(event.month)}
+                            </div>
+                            <div>{event.day}</div>
+                          </span>
+                        </div>
+                        <div className="ml-4 flex-1 space-y-2">
+                          <p className="text-sm font-medium leading-5">
+                            {event.event_name}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {event.event_description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="ml-4 flex-1 space-y-2">
-                        <p className="text-sm font-medium leading-5">
-                          {event.event_name}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {event.event_description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardContent>
             </Card>

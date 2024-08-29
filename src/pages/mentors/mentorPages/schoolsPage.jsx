@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { School, Mail, MapPin, Search, Eye } from "lucide-react";
-import TeacherSidebar from "../teacherSidebar";
+import TeacherSidebar from "../mentorSidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import apiClient from "config/apiClient";

@@ -26,6 +26,7 @@ const StudentSidebar = () => {
     navigate("/student/classes");
   };
 
+  
   const studentDashboard = () => {
     navigate("/student");
   };

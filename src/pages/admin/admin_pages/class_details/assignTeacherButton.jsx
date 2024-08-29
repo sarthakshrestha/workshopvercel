@@ -75,7 +75,32 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
   };
 
   const handleSave = () => {
-    onAssignTeacher(selectedTeachers);
+    // Temporary local arrays to accumulate the changes
+    let tempNewlySelectedTeachers = [];
+    let tempNewlyRemovedTeachers = [];
+
+    // Find newly selected teachers
+    selectedTeachers &&
+      selectedTeachers.length > 0 &&
+      selectedTeachers.forEach((teacher) => {
+        if (!teacherList.includes(teacher)) {
+          tempNewlySelectedTeachers.push(teacher); // Add to temporary array
+        }
+      });
+
+    // Find newly removed teachers
+    teacherList &&
+      teacherList.length > 0 &&
+      teacherList.forEach((teacher) => {
+        if (!selectedTeachers.includes(teacher)) {
+          tempNewlyRemovedTeachers.push(teacher); // Add to temporary array
+        }
+      });
+
+    // Pass the temporary lists to the onAssignTeacher function
+    onAssignTeacher(tempNewlySelectedTeachers, tempNewlyRemovedTeachers);
+
+    // Close dialog
     setIsDialogOpen(false);
   };
 

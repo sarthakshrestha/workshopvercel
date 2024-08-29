@@ -21,9 +21,7 @@ const SchoolCalendar = () => {
           throw new Error("Student ID not found in localStorage");
         }
 
-        const response = await axios.get(
-          `http://localhost:8000/student/${studentId}`
-        );
+        const response = await axios.get(`${baseURL}/student/${studentId}`);
         const { data } = response.data;
         setSchoolId(data.school_id);
         setLoading(false);

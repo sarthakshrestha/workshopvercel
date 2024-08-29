@@ -17,7 +17,6 @@ axiosInstance.interceptors.request.use(
       config.headers.Authorization = `Bearer ${token}`;
       // console.log(token);
     }
-
     return config;
   },
   (error) => {
@@ -33,7 +32,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Corrected syntax error here
     if (error.response && error.response.status === 401) {
-      window.location.href = "/login"; // Redirect to login on 401 error
+      window.location.href = "/login";
     }
     return Promise.reject(error);
   }

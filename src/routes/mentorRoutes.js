@@ -6,6 +6,7 @@ import AttendanceComponent from "pages/mentors/mentorPages/attendancePage";
 import StudentsPage from "pages/mentors/mentorPages/studentsPage";
 import StudentProfile from "pages/mentors/mentorPages/individualStudentPage";
 import ProtectedMentor from "@/utils/protectedMentor";
+import Feedback from "pages/mentors/mentorPages/feedbackPage";
 
 const MentorRoutes = (
   <Routes>
@@ -22,6 +23,7 @@ const MentorRoutes = (
         path="/mentor/attendance/:studentId"
         element={<StudentProfile />}
       />
+      <Route path="/mentor/feedback" element={<Feedback />} />
     </Route>
   </Routes>
 );

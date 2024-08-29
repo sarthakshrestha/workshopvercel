@@ -11,7 +11,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import TeacherSidebar from "../teacherSidebar";
+import TeacherSidebar from "../mentorSidebar";
 
 ChartJS.register(
   CategoryScale,
