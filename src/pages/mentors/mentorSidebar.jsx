@@ -24,9 +24,9 @@ const MentorSidebar = () => {
     navigate("/mentor/school");
   };
 
-  const feedbackClick = () => {
-    navigate("/mentor/feedback");
-  };
+  // const feedbackClick = () => {
+  //   navigate("/mentor/feedback");
+  // };
 
   const handleLogout = () => {
     Cookies.remove("access_token");
@@ -60,14 +60,14 @@ const MentorSidebar = () => {
             <School className="mr-2 h-5 w-5" />
             Schools
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={(e) => feedbackClick()}
           >
             <MessageSquare className="mr-2 h-5 w-5" />
             Feedback
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"

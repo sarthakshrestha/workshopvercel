@@ -104,6 +104,16 @@ const StudentsPage = () => {
                           <Eye className="mr-2 h-4 w-4" />
                           View Attendance
                         </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            navigate(`/mentor/feedback/${student.id}`)
+                          }
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          Give Feedback
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

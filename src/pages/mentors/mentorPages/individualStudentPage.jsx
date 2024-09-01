@@ -41,6 +41,7 @@ const StudentProfile = () => {
     const fetchData = async () => {
       try {
         const studentResponse = await apiClient.get(`/student/${studentId}`);
+        console.log(studentResponse);
         setStudent(studentResponse.data.data);
         let classid = studentResponse.data.data.class_id;
 

@@ -148,5 +148,4 @@ const StudentAttendance = () => {
     );
 };
 
-export default StudentAttendance;
-  
+export default StudentAttendance;   
