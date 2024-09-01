@@ -88,7 +88,7 @@ const MentorDashboard = () => {
           </div>
 
           {/* Events */}
-          <Card className="border border-gray-200 lg:w-1/2 p-3">
+          <Card className="border border-gray-200 lg:w-1/2 py-4">
             <CardHeader>
               <CardTitle className="flex items-center text-3xl">
                 Upcoming Events for this week

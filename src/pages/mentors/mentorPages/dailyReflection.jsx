@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Send } from "lucide-react";
+import SubmitButton from "../../../assets/Submit.svg";
 
 const DailyReflection = () => {
   const [reflection, setReflection] = useState("");
@@ -29,7 +30,7 @@ const DailyReflection = () => {
             onClick={handleSubmit}
             className="p-2 rounded-full hover:bg-[#5DBFBD] transition-colors duration-200"
           >
-            <Send className="h-6 w-6 text-black" />
+            <img src={SubmitButton} className="h-14 w-14" alt="Submit Button" />
           </button>
         </div>
       </CardContent>
