@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { FaPlus } from "react-icons/fa";
 import { motion } from "framer-motion";
+import LoadingSpinner from "userDefined_components/loading_spinner/loadingSpinner";
 
 const initialClassState = {
   class_name: "",
@@ -157,13 +158,7 @@ const SchoolClasses = () => {
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="h-12 w-12 border-t-2 border-b-2 rounded-full"
-              />
-            </div>
+            <LoadingSpinner />
           ) : sortedClasses && sortedClasses.length > 0 ? (
             <Table className="bg-white">
               <TableHeader className="bg-gray-500 text-white hover:text-white">
