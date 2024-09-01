@@ -17,7 +17,7 @@ import Cookies from "js-cookie";
 const MentorSidebar = () => {
   const navigate = useNavigate();
 
-  const teacherDashboard = () => {
+  const mentorDashboard = () => {
     navigate("/mentor/dashboard");
   };
   const schools = () => {
@@ -47,7 +47,7 @@ const MentorSidebar = () => {
           <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
-            onClick={(e) => teacherDashboard()}
+            onClick={(e) => mentorDashboard()}
           >
             <Home className="mr-2 h-5 w-5" />
             Dashboard

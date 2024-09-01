@@ -17,100 +17,25 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  FaUserGraduate,
-  FaBook,
-  FaChalkboardTeacher,
-  FaPlus,
-} from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { FaPlus } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 const initialClassState = {
   class_name: "",
   school_id: "",
 };
 
-const ClassItem = ({ classes }) => {
-  const navigate = useNavigate();
-  const [classData, setClassData] = useState({});
-
-  useEffect(() => {
-    const fetchClassData = async () => {
-      try {
-        const response = await apiClient.get(`/class/${classes.id}`);
-        if (response.data.status === "success") {
-          setClassData(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchClassData();
-  }, [classes.id]);
-
-  const handleNavigateToClass = () => {
-    navigate(`/admin/schools/classes/${classes.id}`);
-  };
-
-  return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Card className="overflow-hidden">
-        <CardHeader>
-          <CardTitle>{classData.class_name}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <AnimatePresence>
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="grid grid-cols-3 gap-4 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <FaUserGraduate className="mr-2 w-5 h-5 text-gray-700" />
-                  <span>{classData.students?.length || 0} Students</span>
-                </div>
-                <div className="flex items-center">
-                  <FaBook className="mr-2 w-5 h-5 text-gray-700" />
-                  <span>{classData.courses?.length || 0} Courses</span>
-                </div>
-                <div className="flex items-center">
-                  <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
-                  <span>{classData.teachers?.length || 0} Mentors</span>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </CardContent>
-        <CardFooter className="flex justify-center">
-          <Button
-            onClick={handleNavigateToClass}
-            variant="outline"
-            className="mt-4"
-          >
-            View Details
-          </Button>
-        </CardFooter>
-      </Card>
-    </motion.div>
-  );
-};
-
 const SchoolClasses = () => {
   const { schoolId } = useSchoolContext();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [classResponse, setClassResponse] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -123,7 +48,16 @@ const SchoolClasses = () => {
     setIsLoading(true);
     try {
       const response = await apiClient.get(`/class/school/${schoolId}`);
-      setClassResponse(response.data.data);
+      const classesWithDetails = await Promise.all(
+        response.data.data.map(async (classItem) => {
+          const detailsResponse = await apiClient.get(`/class/${classItem.id}`);
+          return {
+            ...classItem,
+            ...detailsResponse.data.data,
+          };
+        })
+      );
+      setClassResponse(classesWithDetails);
     } catch (error) {
       console.log("Error fetching classes", error);
       setClassResponse([]);
@@ -177,6 +111,10 @@ const SchoolClasses = () => {
     }
   };
 
+  const handleViewDetails = (classId) => {
+    navigate(`/admin/schools/classes/${classId}`);
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       <SchoolSidebar />
@@ -227,33 +165,46 @@ const SchoolClasses = () => {
               />
             </div>
           ) : sortedClasses && sortedClasses.length > 0 ? (
-            <motion.div
-              className="grid grid-cols-2 gap-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {sortedClasses.map((classes, index) => (
-                <ClassItem key={index} classes={classes} />
-              ))}
-            </motion.div>
+            <Table className="bg-white">
+              <TableHeader className="bg-gray-500 text-white hover:text-white">
+                <TableRow>
+                  <TableHead className="text-white">Class Name</TableHead>
+                  <TableHead className="text-white">Students</TableHead>
+                  <TableHead className="text-white">Courses</TableHead>
+                  <TableHead className="text-white">Mentors</TableHead>
+                  <TableHead className="text-white">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedClasses.map((classItem) => (
+                  <TableRow key={classItem.id}>
+                    <TableCell>{classItem.class_name}</TableCell>
+                    <TableCell>{classItem.students?.length || 0}</TableCell>
+                    <TableCell>{classItem.courses?.length || 0}</TableCell>
+                    <TableCell>{classItem.teachers?.length || 0}</TableCell>
+                    <TableCell>
+                      <Button
+                        onClick={() => handleViewDetails(classItem.id)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        View Details
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card>
-                <CardHeader>
-                  <CardTitle>No Classes Found</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p>
-                    Start by adding a new class using the 'Add Class' button
-                    above.
-                  </p>
-                </CardContent>
-              </Card>
+              <p>
+                No Classes Found. Start by adding a new class using the 'Add
+                Class' button above.
+              </p>
             </motion.div>
           )}
         </main>

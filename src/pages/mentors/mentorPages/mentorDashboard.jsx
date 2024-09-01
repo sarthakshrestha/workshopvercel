@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const TeachersDashboard = () => {
+const MentorDashboard = () => {
   // Dummy data for the cards
   const cardData = [
     {
@@ -159,4 +159,4 @@ const TeachersDashboard = () => {
   );
 };
 
-export default TeachersDashboard;
+export default MentorDashboard;
