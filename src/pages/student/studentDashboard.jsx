@@ -154,24 +154,9 @@ const StudentDashboard = () => {
       <div className="flex-1 overflow-auto">
         <main className="p-6">
           <h1 className="text-4xl font-bold mb-6 text-gray-800">
-            Student Dashboard
+            Hello, look through your Dashboard
           </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-md font-medium">
-                  Enrolled Courses
-                </CardTitle>
-                <Book className="h-6 w-6 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalEnrolledCourses}</div>
-                <div className="text-sm text-gray-600">
-                  Total Courses Enrolled
-                </div>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-md font-medium">
