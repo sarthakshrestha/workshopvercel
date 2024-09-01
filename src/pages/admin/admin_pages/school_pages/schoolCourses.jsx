@@ -124,7 +124,7 @@ const SchoolCourses = () => {
               <h1 className="text-2xl font-bold">Course Management</h1>
             </div>
             <div>
-              {/* <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading}>Manage Courses</Button> */}
+              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading}>Manage Courses</Button>
             </div>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

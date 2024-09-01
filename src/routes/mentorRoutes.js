@@ -23,7 +23,7 @@ const MentorRoutes = (
         path="/mentor/attendance/:studentId"
         element={<StudentProfile />}
       />
-      <Route path="/mentor/feedback" element={<Feedback />} />
+      <Route path="/mentor/feedback/:studentId" element={<Feedback />} />
     </Route>
   </Routes>
 );
