@@ -33,7 +33,6 @@ const StudentsProfile = () => {
       const response = await axios.get(`${baseURL}/student/${student_id}`);
       const { data } = response.data;
       setStudentData({
-        id: data.id,
         student_name: data.student_name,
         age: data.age,
         phone_num: data.phone_num,

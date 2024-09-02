@@ -15,7 +15,7 @@ const ClassDetails = () => {
   const { classId } = useParams();
   const { toast } = useToast();
   const [classData, setClassData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [ isLoading, setIsLoading] = useState(true);
   const [totalCourse, setTotalCourse] = useState(0);
   const [totalTeacher, setTotalTeacher] = useState(0);
   const [totalStudent, setTotalStudent] = useState(0);
