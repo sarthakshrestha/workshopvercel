@@ -90,23 +90,23 @@ const StudentsProfile = () => {
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <Avatar className="h-auto w-36 border-4 border-white shadow-lg mb-[-5rem]">
           <AvatarImage src={Arpit} alt="Student Avatar" />
-          <AvatarFallback className="text-2xl bg-blue-200 text-blue-800">
+          <AvatarFallback className="text-2xl bg-[#C0D1EE] text-blue-800">
             {studentData.student_name
               .split(" ")
               .map((n) => n[0])
               .join("")}
           </AvatarFallback>
         </Avatar>
-        <Card className="w-full max-w-2xl shadow-xl rounded-xl overflow-hidden bg-[#C0D1EE] p-9">
-          <CardHeader className="text-zinc-900">
-            <div className="flex mx-auto items-center space-x-4 mt-8">
+        <Card className="w-full max-w-xl shadow-xl rounded-xl overflow-hidden bg-[#C0D1EE] p-9">
+          <CardHeader className="text-[#353535]">
+            <div className="flex mx-auto items-center space-x-4 mt-2">
               <div>
-                <CardTitle className="text-3xl mt-5">
+                <CardTitle className="text-3xl mt-5 ">
                   {studentData.student_name}
                 </CardTitle>
               </div>
             </div>
-            <div className="flex mx-auto items-center space-x-4">
+            <div className="flex mx-auto items-center space-x-4 ">
               <div>
                 <CardTitle className="text-lg mt-1 text-[#686868]">
                   {studentData.address}

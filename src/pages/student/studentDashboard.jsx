@@ -19,10 +19,17 @@ import Students from "assets/Students.svg";
 import Courses from "assets/Courses.svg";
 
 const StudentDashboard = () => {
-  const [studentData, setStudentData] = useState(null);
   const [classData, setClassData] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
+  const [studentData, setStudentData] = useState({
+    id: "",
+    student_name: "",
+    age: "",
+    phone_num: "",
+    student_email: "",
+    address: "",
+  });
 
   const feedbacks = [
     {
@@ -219,7 +226,10 @@ const StudentDashboard = () => {
                   alt="Mentor"
                   className="w-32 h-32 rounded-full"
                 />
-                <span className="mt-2 text-lg font-semibold">Student Name</span>
+                <span className="mt-2 text-lg font-semibold">
+                  {" "}
+                  {studentData.student_name}
+                </span>
               </CardHeader>
             </Card>
           </div>
