@@ -30,16 +30,19 @@ const SchoolDashboard = () => {
   const [events, setEvents] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
+  const [name, setName] = useState("");
+  const [classes, setClasses] = useState(0);
 
   const fetchStudentCount = async () => {
     try {
       const response = await apiClient.get(`/student/school/${schoolId}`);
       const courseResponse = await apiClient.get(`/school/${schoolId}`);
+      const classResponse = await apiClient.get(`/class/school/${schoolId}`);
       if (response.data && response.data.data) {
         setStudentCount(response.data.data.length);
         setCourseCount(courseResponse.data.data.course_id.length);
-        console.log("Course Count:", courseCount);
-        console.log("No. of students ", studentCount);
+        setName(courseResponse.data.data.school_name);
+        setClasses(classResponse.data.data.length);
       } else {
         console.warn("No student data received from the server.");
       }
@@ -139,10 +142,10 @@ const SchoolDashboard = () => {
       <div className="flex-1 overflow-auto">
         <div className="p-8 bg-gray-50 min-h-screen">
           <h1 className="text-4xl font-bold mb-8 text-gray-800 ">
-            School Dashboard
+            {name} Dashboard
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium ">
@@ -153,6 +156,18 @@ const SchoolDashboard = () => {
               <CardContent>
                 <div className="text-2xl font-bold">{courseCount}</div>
                 <div className="text-sm">Courses assigned to this school</div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium ">
+                  Total Number of Classes
+                </CardTitle>
+                <BookOpen className="h-6 w-6 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{classes}</div>
+                <div className="text-sm">Classes teaching in this school</div>
               </CardContent>
             </Card>
             <Card>

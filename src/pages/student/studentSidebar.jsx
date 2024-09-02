@@ -39,6 +39,10 @@ const StudentSidebar = () => {
     navigate(`/student/attendances/${studentId}`);
   };
 
+  const Assignment = () => {
+    navigate(`/student/assignment`);
+  };
+
   return (
     <aside className="w-56 bg-[#34496C] text-white shadow-lg font-archivo h-screen">
       <div className="p-4 flex items-center justify-center flex-col mt-10">
@@ -108,7 +112,7 @@ const StudentSidebar = () => {
                 ? "bg-white text-black"
                 : ""
             }`}
-            onClick={Attendance}
+            onClick={Assignment}
           >
             <NotebookPen className="mr-2 h-5 w-5" />
             Assignments

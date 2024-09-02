@@ -63,7 +63,6 @@ const StudentDashboard = () => {
   //   return `${nepaliMonth} ${nepaliDay}, ${nepaliYear}`;
   // }
 
-
   useEffect(() => {
     const fetchData = async () => {
       const studentId = localStorage.getItem("student_id");
@@ -91,13 +90,17 @@ const StudentDashboard = () => {
         );
         const courseResponses = await Promise.all(coursePromises);
         setCoursesData(courseResponses.map((response) => response.data.data));
-        const feedbackResponse = await axios.get(`http://127.0.0.1:8000/feedback/for/${studentId}`);
+        const feedbackResponse = await axios.get(
+          `${baseURL}/feedback/for/${studentId}`
+        );
         const feedbacksWithTeachers = await Promise.all(
           feedbackResponse.data.data.map(async (feedback) => {
-            const teacherResponse = await axios.get(`${baseURL}/teacher/${feedback.feedback_by}`);
+            const teacherResponse = await axios.get(
+              `${baseURL}/teacher/${feedback.feedback_by}`
+            );
             return {
               ...feedback,
-              teacherName: teacherResponse.data.data.name
+              teacherName: teacherResponse.data.data.name,
             };
           })
         );
@@ -291,29 +294,41 @@ const StudentDashboard = () => {
               </CardHeader>
               <CardContent className="h-[200px] overflow-y-auto">
                 <div className="space-y-4">
-                  {assignments && assignments.length > 0 && assignments.map((assignment) => (
-                    <div
-                      key={assignment._id}
-                      className="border-b border-gray-200 pb-2 mb-2 last:border-b-0"
-                    >
-                      <div className="text-lg font-bold">{assignment.title}</div>
-                      <div className="text-sm text-gray-600">
-                        Description: {assignment.description}
+                  {assignments &&
+                    assignments.length > 0 &&
+                    assignments.map((assignment) => (
+                      <div
+                        key={assignment._id}
+                        className="border-b border-gray-200 pb-2 mb-2 last:border-b-0"
+                      >
+                        <div className="text-lg font-bold">
+                          {assignment.title}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          Description: {assignment.description}
+                        </div>
+
+                        <div className="text-sm text-gray-800 text-end mt-[10px]">
+                          {new Date(assignment.start_date).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}{" "}
+                          --{" "}
+                          {new Date(assignment.end_date).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </div>
                       </div>
-                      
-                      <div className="text-sm text-gray-800 text-end mt-[10px]">
-                         {new Date(assignment.start_date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })} -- {new Date(assignment.end_date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </CardContent>
             </Card>
@@ -323,40 +338,46 @@ const StudentDashboard = () => {
               Recent Feedbacks
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {feedbacks && feedbacks.length > 0 && feedbacks.map((feedback) => (
-                <Card key={feedback.id}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span className="text-[19px]">Feedback</span>
-                      <span className="flex items-center">
-                        <Star
-                          className="h-5 w-5 text-yellow-400 mr-1"
-                          fill="currentColor"
-                        />
-                        {feedback.rating}
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-600 mb-4">
-                      {feedback.feedback_description}
-                    </p>
+              {feedbacks &&
+                feedbacks.length > 0 &&
+                feedbacks.map((feedback) => (
+                  <Card key={feedback.id}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center justify-between">
+                        <span className="text-[19px]">Feedback</span>
+                        <span className="flex items-center">
+                          <Star
+                            className="h-5 w-5 text-yellow-400 mr-1"
+                            fill="currentColor"
+                          />
+                          {feedback.rating}
+                        </span>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-600 mb-4">
+                        {feedback.feedback_description}
+                      </p>
 
-                    <p className="text-sm font-semibold mt-2">
-                      From mentor: {feedback.teacherName}
-                    </p>
-                    <p className="text-sm text-end text-gray-600 mt-[5px]">
-                      {new Date(feedback.feedback_date).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })
-                        /// convertToNepaliDate(feedback.feedback_date)
-                      }
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+                      <p className="text-sm font-semibold mt-2">
+                        From mentor: {feedback.teacherName}
+                      </p>
+                      <p className="text-sm text-end text-gray-600 mt-[5px]">
+                        {
+                          new Date(feedback.feedback_date).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
+                          /// convertToNepaliDate(feedback.feedback_date)
+                        }
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           </div>
         </main>
