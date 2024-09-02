@@ -5,6 +5,7 @@ import {
   BookOpen,
   Calendar,
   GraduationCap,
+  NotebookPen,
   LogOut,
   Home,
 } from "lucide-react";
@@ -99,6 +100,18 @@ const StudentSidebar = () => {
           >
             <History className="mr-2 h-5 w-5" />
             Attendance History
+          </Button>
+          <Button
+            variant="ghost"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname.includes("/student/attendances")
+                ? "bg-white text-black"
+                : ""
+            }`}
+            onClick={Attendance}
+          >
+            <NotebookPen className="mr-2 h-5 w-5" />
+            Assignments
           </Button>
           <Button
             variant="ghost"
