@@ -168,7 +168,7 @@ const StudentDashboard = () => {
           <h1 className="text-4xl font-bold mb-6 text-gray-800">
             Hello, look through your Dashboard
           </h1>
-          <div className="grid md:grid-cols-4 gap-5 mb-0 w-full">
+          <div className="grid md:grid-cols-4 gap-6 mb-0 w-full">
             <Card className="flex items-center justify-between py-4 px-6 h-[180px]">
               <div className="flex flex-col items-start text-left">
                 <CardTitle className="text-xl font-medium mb-1">
@@ -234,7 +234,7 @@ const StudentDashboard = () => {
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
             <Card className="h-[300px]">
               <CardHeader>
                 <CardTitle className="flex items-center">
