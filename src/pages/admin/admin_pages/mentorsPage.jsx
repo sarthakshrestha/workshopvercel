@@ -19,9 +19,11 @@ import {
   TableRow,
   TableCell,
 } from "@/components/ui/table";
+import { useNavigate } from "react-router-dom";
 import apiClient from "config/apiClient";
 
 const MentorsPage = () => {
+  const navigate = useNavigate();
   const [mentors, setMentors] = useState([]);
   const [newMentor, setNewMentor] = useState({
     name: "",
@@ -92,6 +94,12 @@ const MentorsPage = () => {
     await handleDelete(mentorToDelete);
     handleCloseDeleteDialog();
   };
+
+
+
+  const handleViewDetails = ()=>{
+    navigate("/admin/mentor/profile");
+  }
 
   return (
     <div>
@@ -214,9 +222,6 @@ const MentorsPage = () => {
                     Phone Number
                   </TableHead>
                   <TableHead className="text-center font-bold">
-                    Profile Pic
-                  </TableHead>
-                  <TableHead className="text-center font-bold">
                     Actions
                   </TableHead>
                 </TableRow>
@@ -236,25 +241,24 @@ const MentorsPage = () => {
                     <TableCell className="text-center font-semibold">
                       {mentor.phone_num}
                     </TableCell>
-                    <TableCell className="text-center font-semibold">
-                      {mentor.profile_pic ? (
-                        <img
-                          src={mentor.profile_pic}
-                          alt="Profile"
-                          className="w-10 h-10 rounded-full"
-                        />
-                      ) : (
-                        "No Image"
-                      )}
-                    </TableCell>
-                    <TableCell className="text-center font-semibold">
+                    <TableCell className="text-center font-semibold space-x-2">
+
                       <Button
-                        className="bg-red-800 hover:bg-red-700"
+                        variant="outline"
+                      // onClick={() => {
+                      //   handleViewDetails(mentor.id);
+                      // }}
+                      >
+                        View Details
+                      </Button>
+
+                      <Button
+                        variant="destructive"
                         onClick={() => {
                           handleOpenDeleteDialog(mentor.id);
                         }}
                       >
-                        <Trash /> Delete
+                        Delete
                       </Button>
                     </TableCell>
                   </TableRow>
