@@ -31,19 +31,18 @@ const SchoolDashboard = () => {
   const [studentCount, setStudentCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
   const [name, setName] = useState("");
+  const [classes, setClasses] = useState(0);
 
   const fetchStudentCount = async () => {
     try {
       const response = await apiClient.get(`/student/school/${schoolId}`);
       const courseResponse = await apiClient.get(`/school/${schoolId}`);
+      const classResponse = await apiClient.get(`/class/school/${schoolId}`);
       if (response.data && response.data.data) {
         setStudentCount(response.data.data.length);
         setCourseCount(courseResponse.data.data.course_id.length);
         setName(courseResponse.data.data.school_name);
-        console.log(courseResponse);
-        console.log("Course Count:", courseCount);
-        console.log("No. of students ", studentCount);
-        console.log("School Name");
+        setClasses(classResponse.data.data.length);
       } else {
         console.warn("No student data received from the server.");
       }
@@ -167,8 +166,8 @@ const SchoolDashboard = () => {
                 <BookOpen className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{courseCount}</div>
-                <div className="text-sm">Courses assigned to this school</div>
+                <div className="text-2xl font-bold">{classes}</div>
+                <div className="text-sm">Classes teaching in this school</div>
               </CardContent>
             </Card>
             <Card>
