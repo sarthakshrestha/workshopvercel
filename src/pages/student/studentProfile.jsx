@@ -65,20 +65,20 @@ const StudentsProfile = () => {
     <>
       <div className="space-y-2">
         <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm text-[#7B7B7B]">Age</p>
-          <p className="text-xl">{studentData.age}</p>
+          <p className="text-sm text-[#7B7B7B] ml-6">Age</p>
+          <p className="text-xl ml-6">{studentData.age}</p>
         </div>
       </div>
       <div className="space-y-2">
         <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm text-[#7B7B7B]">Phone Number</p>
-          <p className="text-xl">{studentData.phone_num}</p>
+          <p className="text-sm ml-6 text-[#7B7B7B]">Phone Number</p>
+          <p className="text-xl ml-6">{studentData.phone_num}</p>
         </div>
       </div>
       <div className="space-y-2">
         <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm text-[#7B7B7B]">Student ID</p>
-          <p className="text-xl">{studentData.student_email}</p>
+          <p className="text-sm ml-6 text-[#7B7B7B]">Student ID</p>
+          <p className="text-xl ml-6">{studentData.student_email}</p>
         </div>
       </div>
     </>
