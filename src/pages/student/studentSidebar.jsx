@@ -39,7 +39,7 @@ const StudentSidebar = () => {
   };
 
   return (
-    <aside className="w-56 bg-[#34496C] text-white shadow-lg font-archivo">
+    <aside className="w-56 bg-[#34496C] text-white shadow-lg font-archivo h-screen">
       <div className="p-4 flex items-center justify-center flex-col mt-10">
         <div className="mb-6">
           <img
