@@ -4,6 +4,7 @@ import { School, BookOpen, Users, Calendar } from "lucide-react";
 import profileicon from ".././../../gallery/profile/Profile.jpg";
 import TeacherSidebar from "../mentorSidebar";
 import DailyReflection from "./dailyReflection";
+import Profile from "../../../gallery/Mentor.jpg";
 
 const MentorDashboard = () => {
   // Dummy data for the cards
@@ -57,11 +58,10 @@ const MentorDashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
           <div className="flex flex-col items-center">
             <img
-              src={profileicon}
+              src={Profile}
               alt="Profile Icon"
-              className="w-[90px] h-auto rounded-full mb-2"
+              className="w-36 h-36 rounded-full mb-2"
             />
-            <h3 className="text-center">Profile Name</h3>
           </div>
           {cardData.map((card, index) => (
             <Card key={index} className="border border-gray-200 mr-5">

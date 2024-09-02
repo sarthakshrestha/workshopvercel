@@ -8,9 +8,8 @@ import {
   LogOut,
   Home,
 } from "lucide-react";
-import { History, ClipboardList, FileCheck, CalendarCheck } from "lucide-react";
+import { History } from "lucide-react";
 import Cookies from "js-cookie";
-
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +25,6 @@ const StudentSidebar = () => {
     navigate("/student/classes");
   };
 
-  
   const studentDashboard = () => {
     navigate("/student");
   };
@@ -41,7 +39,7 @@ const StudentSidebar = () => {
   };
 
   return (
-    <aside className="w-56 h-screen bg-[#34496C] text-white shadow-lg font-archivo">
+    <aside className="w-56 bg-[#34496C] text-white shadow-lg font-archivo">
       <div className="p-4 flex items-center justify-center flex-col mt-10">
         <div className="mb-6">
           <img
@@ -56,7 +54,11 @@ const StudentSidebar = () => {
         <nav className="flex-grow overflow-y-auto w-full">
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname === "/student"
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={(e) => studentDashboard()}
           >
             <Home className="mr-2 h-5 w-5" />
@@ -64,22 +66,23 @@ const StudentSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname.includes("/student/classes")
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={classesClick}
           >
             <BookOpen className="mr-2 h-5 w-5" />
             Classes
           </Button>
-          {/* <Button
-            variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
-          >
-            <GraduationCap className="mr-2 h-5 w-5" />
-            Courses
-          </Button> */}
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname.includes("/student/calendar")
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={(e) => navigate("/student/calendar")}
           >
             <Calendar className="mr-2 h-5 w-5" />
@@ -87,7 +90,11 @@ const StudentSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname.includes("/student/attendances")
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={Attendance}
           >
             <History className="mr-2 h-5 w-5" />
@@ -95,7 +102,11 @@ const StudentSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname.includes("/student/profile")
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={studentProfile}
           >
             <User className="mr-2 h-5 w-5" />
@@ -103,7 +114,11 @@ const StudentSidebar = () => {
           </Button>
           <Button
             variant="ghost"
-            className="w-full justify-start text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            className={`w-full justify-start text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out ${
+              window.location.pathname === "/student/logout"
+                ? "bg-white text-black"
+                : ""
+            }`}
             onClick={handleLogout}
           >
             <LogOut className="mr-2 h-5 w-5" />

@@ -71,7 +71,7 @@ const StudentsProfile = () => {
       <StudentSidebar />
       <div className="flex-1 flex flex-col items-center justify-center p-8">
         <Card className="w-full max-w-2xl shadow-xl rounded-xl overflow-hidden bg-white">
-          <CardHeader className="bg-gradient-to-r from-blue-700 to-blue-900 text-white p-6">
+          <CardHeader className="bg-gradient-to-b from-[#93DCDB] to-[#70CFCD] text-white p-6">
             <div className="flex items-center space-x-4">
               <Avatar className="h-auto w-24 border-4 border-white shadow-lg">
                 <AvatarImage src={Arpit} alt="Student Avatar" />
