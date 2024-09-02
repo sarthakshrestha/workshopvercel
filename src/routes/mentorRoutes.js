@@ -7,6 +7,7 @@ import StudentsPage from "pages/mentors/mentorPages/studentsPage";
 import StudentProfile from "pages/mentors/mentorPages/individualStudentPage";
 import ProtectedMentor from "@/utils/protectedMentor";
 import Feedback from "pages/mentors/mentorPages/feedbackPage";
+import AssignmentPage from "pages/mentors/mentorPages/assignmentPage";
 
 const MentorRoutes = (
   <Routes>
@@ -24,6 +25,7 @@ const MentorRoutes = (
         element={<StudentProfile />}
       />
       <Route path="/mentor/feedback/:studentId" element={<Feedback />} />
+      <Route path="/mentor/assignment/:classId" element={<AssignmentPage />} />
     </Route>
   </Routes>
 );

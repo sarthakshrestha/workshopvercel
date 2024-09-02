@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StudentSidebar from "./studentSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ProfilePicture from "../../gallery/Mentor.jpg";
 import {
   Users,
   Book,
@@ -12,12 +13,23 @@ import {
   FileText,
 } from "lucide-react";
 import { baseURL } from "@/utils/axiosInstance";
+import Assignments from "assets/Assignments.svg";
+import Attendance from "assets/Attendance.svg";
+import Students from "assets/Students.svg";
+import Courses from "assets/Courses.svg";
 
 const StudentDashboard = () => {
-  const [studentData, setStudentData] = useState(null);
   const [classData, setClassData] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [coursesData, setCoursesData] = useState([]);
+  const [studentData, setStudentData] = useState({
+    id: "",
+    student_name: "",
+    age: "",
+    phone_num: "",
+    student_email: "",
+    address: "",
+  });
 
   const feedbacks = [
     {
@@ -154,61 +166,71 @@ const StudentDashboard = () => {
       <div className="flex-1 overflow-auto">
         <main className="p-6">
           <h1 className="text-4xl font-bold mb-6 text-gray-800">
-            Student Dashboard
+            Hello, look through your Dashboard
           </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-md font-medium">
-                  Enrolled Courses
-                </CardTitle>
-                <Book className="h-6 w-6 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalEnrolledCourses}</div>
-                <div className="text-sm text-gray-600">
-                  Total Courses Enrolled
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-md font-medium">
+          <div className="grid md:grid-cols-4 gap-5 mb-0 w-full">
+            <Card className="flex items-center justify-between py-4 px-6 h-[180px]">
+              <div className="flex flex-col items-start text-left">
+                <CardTitle className="text-xl font-medium mb-1">
                   Total Students
                 </CardTitle>
-                <Users className="h-6 w-6 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{totalStudents}</div>
-                <div className="text-sm text-gray-600">In Your Class</div>
-              </CardContent>
+                <div className="text-6xl font-bold">{totalStudents}</div>
+                <div className="text-sm text-gray-600 mt-4">In Your Class</div>
+              </div>
+              <div className="flex-shrink-0 ml-4">
+                <img
+                  src={Students}
+                  alt="Total Students"
+                  className="h-12 w-12"
+                />
+              </div>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-md font-medium">
+
+            <Card className="flex items-center justify-between py-4 px-6 h-[180px]">
+              <div className="flex flex-col items-start text-left mr-4">
+                <CardTitle className="text-xl font-medium mb-1">
                   Attendance
                 </CardTitle>
-                <CheckCircle className="h-6 w-6 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{`${presentClasses}/${totalClasses}`}</div>
-                <div className="text-sm text-gray-600">
+                <div className="text-6xl font-bold">{`${presentClasses}/${totalClasses}`}</div>
+                <div className="text-sm text-gray-600 mt-4">
                   Present / Total Classes
                 </div>
-              </CardContent>
+              </div>
+              <div className="flex-shrink-0">
+                <img src={Attendance} alt="Attendance" className="h-14 w-14" />
+              </div>
             </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-md font-medium">
+
+            <Card className="flex items-center justify-between py-4 px-6 h-[180px]">
+              <div className="flex flex-col items-start text-left mr-4">
+                <CardTitle className="text-xl font-medium mb-1">
                   Assignments
                 </CardTitle>
-                <FileText className="h-6 w-6 text-muted-foreground" />
+                <div className="text-6xl font-bold">{assignments.length}</div>
+                <div className="text-sm text-gray-600 mt-1">
+                  Pending Assignments
+                </div>
+              </div>
+              <div className="flex-shrink-0">
+                <img
+                  src={Assignments}
+                  alt="Assignments"
+                  className="h-14 w-14"
+                />
+              </div>
+            </Card>
+            <Card className=" bg-none border-none ">
+              <CardHeader className="flex flex-col items-center bg-gray-100 shadow-none border-none">
+                <img
+                  src={ProfilePicture}
+                  alt="Mentor"
+                  className="w-32 h-32 rounded-full"
+                />
+                <span className="mt-2 text-lg font-semibold">
+                  {" "}
+                  {studentData.student_name}
+                </span>
               </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{assignments.length}</div>
-                <div className="text-sm text-gray-600">Pending Assignments</div>
-              </CardContent>
             </Card>
           </div>
 
@@ -216,7 +238,9 @@ const StudentDashboard = () => {
             <Card className="h-[300px]">
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <Book className="mr-2 h-6 w-6" />
+                  <div className="flex-shrink-0 mr-2">
+                    <img src={Courses} alt="Courses" className="h-12 w-12" />
+                  </div>
                   Enrolled Courses
                 </CardTitle>
               </CardHeader>
@@ -244,7 +268,13 @@ const StudentDashboard = () => {
             <Card className="h-[300px]">
               <CardHeader>
                 <CardTitle className="flex items-center">
-                  <FileText className="mr-2 h-6 w-6" />
+                  <div className="flex-shrink-0 mr-2">
+                    <img
+                      src={Assignments}
+                      alt="Assignments"
+                      className="h-12 w-12"
+                    />
+                  </div>
                   Upcoming Assignments
                 </CardTitle>
               </CardHeader>

@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["Inter", "sans-serif"],
+        patrick: ["Patrick Hand", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",

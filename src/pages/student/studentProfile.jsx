@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,7 +32,6 @@ const StudentsProfile = () => {
       const response = await axios.get(`${baseURL}/student/${student_id}`);
       const { data } = response.data;
       setStudentData({
-        id: data.id,
         student_name: data.student_name,
         age: data.age,
         phone_num: data.phone_num,
@@ -62,117 +60,62 @@ const StudentsProfile = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setStudentData((prev) => ({ ...prev, [name]: value }));
-  };
+  const renderReadOnlyFields = () => (
+    <>
+      <div className="space-y-2">
+        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
+          <p className="text-sm text-[#7B7B7B] ml-6">Age</p>
+          <p className="text-xl ml-6">{studentData.age}</p>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
+          <p className="text-sm ml-6 text-[#7B7B7B]">Phone Number</p>
+          <p className="text-xl ml-6">{studentData.phone_num}</p>
+        </div>
+      </div>
+      <div className="space-y-2">
+        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
+          <p className="text-sm ml-6 text-[#7B7B7B]">Student ID</p>
+          <p className="text-xl ml-6">{studentData.student_email}</p>
+        </div>
+      </div>
+    </>
+  );
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       <StudentSidebar />
       <div className="flex-1 flex flex-col items-center justify-center p-8">
-        <Card className="w-full max-w-2xl shadow-xl rounded-xl overflow-hidden bg-white">
-          <CardHeader className="bg-gradient-to-r from-blue-700 to-blue-900 text-white p-6">
-            <div className="flex items-center space-x-4">
-              <Avatar className="h-auto w-24 border-4 border-white shadow-lg">
-                <AvatarImage src={Arpit} alt="Student Avatar" />
-                <AvatarFallback className="text-2xl bg-blue-200 text-blue-800">
-                  {studentData.student_name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </AvatarFallback>
-              </Avatar>
+        <Avatar className="h-auto w-36 border-4 border-white shadow-lg mb-[-5rem]">
+          <AvatarImage src={Arpit} alt="Student Avatar" />
+          <AvatarFallback className="text-2xl bg-[#C0D1EE] text-blue-800">
+            {studentData.student_name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")}
+          </AvatarFallback>
+        </Avatar>
+        <Card className="w-full max-w-xl shadow-xl rounded-xl overflow-hidden bg-[#C0D1EE] p-9">
+          <CardHeader className="text-[#353535]">
+            <div className="flex mx-auto items-center space-x-4 mt-2">
               <div>
-                <CardTitle className="text-3xl font-bold">
+                <CardTitle className="text-3xl mt-5 ">
                   {studentData.student_name}
                 </CardTitle>
-                {/* <p className="text-sm opacity-80">Student ID: {studentData.id}</p> */}
+              </div>
+            </div>
+            <div className="flex mx-auto items-center space-x-4 ">
+              <div>
+                <CardTitle className="text-lg mt-1 text-[#686868]">
+                  {studentData.address}
+                </CardTitle>
               </div>
             </div>
           </CardHeader>
-          <CardContent className="p-6">
-            <Separator className="my-6" />
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">
-                  Name
-                </label>
-                <Input
-                  type="text"
-                  name="student_name"
-                  value={studentData.student_name}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">Age</label>
-                <Input
-                  type="number"
-                  name="age"
-                  value={studentData.age}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">
-                  Phone Number
-                </label>
-                <Input
-                  type="tel"
-                  name="phone_num"
-                  value={studentData.phone_num}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">
-                  Email
-                </label>
-                <Input
-                  type="email"
-                  name="student_email"
-                  value={studentData.student_email}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="shadow-sm"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-600">
-                  Address
-                </label>
-                <Input
-                  type="text"
-                  name="address"
-                  value={studentData.address}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  className="shadow-sm"
-                />
-              </div>
-            </div>
-            <div className="mt-8">
-              <Button
-                onClick={isEditing ? handleSave : handleEdit}
-                className="w-full bg-gradient-to-r from-blue-700 to-blue-900 text-white shadow-lg hover:from-blue-600 hover:to-blue-800 transition-all duration-300"
-              >
-                {isEditing ? (
-                  <>
-                    <Save className="mr-2 h-4 w-4" /> Save Changes
-                  </>
-                ) : (
-                  <>
-                    <Edit className="mr-2 h-4 w-4" /> Edit Information
-                  </>
-                )}
-              </Button>
+          <CardContent className="p-6 mx-auto flex">
+            <div className="space-y-6 flex flex-col items-stretch w-full">
+              {renderReadOnlyFields()}
             </div>
           </CardContent>
         </Card>

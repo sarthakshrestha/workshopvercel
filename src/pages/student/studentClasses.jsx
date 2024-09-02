@@ -99,7 +99,7 @@ const ClassesDashboard = () => {
                 <div className="flex space-x-2 text-gray-700">
                   <GraduationCap className="h-5 w-5 text-blue-600" />
                   <span className="text-center">
-                    Teachers: {classItem.teachers.length}
+                    Mentors: {classItem.teachers.length}
                   </span>
                 </div>
                 <div className="flex space-x-2 text-gray-700">

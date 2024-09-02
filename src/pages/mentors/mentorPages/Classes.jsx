@@ -43,6 +43,12 @@ const ClassItem = ({ classData }) => {
         >
           Take Attendance
         </Button>
+        <Button
+          className="underline bg-white hover:bg-white text-black font-medium py-2 px-4 rounded-md transition duration-300"
+          onClick={() => navigate("/mentor/assignment/" + classData.id)}
+        >
+          Give Assignment
+        </Button>
       </div>
     </div>
   );

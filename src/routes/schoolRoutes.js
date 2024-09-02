@@ -8,6 +8,7 @@ import SchoolCourses from "pages/admin/admin_pages/school_pages/schoolCourses";
 import ClassDetails from "pages/admin/admin_pages/class_details/classDetails";
 import SchoolCalendar from "pages/admin/admin_pages/school_pages/schoolCalendar";
 import ProtectedAdmin from "@/utils/protectedAdmin";
+import ClassAttendancePage from "pages/admin/admin_pages/school_pages/classAttendance";
 
 const SchoolRoutes = (
   <SchoolContextProvider>
@@ -23,6 +24,10 @@ const SchoolRoutes = (
         <Route path="/admin/schools/courses" element={<SchoolCourses />} />
         <Route path="/admin/schools/calendar" element={<SchoolCalendar />} />
         <Route path="/admin/schools/profile" element={<SchoolProfile />} />
+        <Route
+          path="/admin/class/attendance/:classId"
+          element={<ClassAttendancePage />}
+        />
       </Route>
     </Routes>
   </SchoolContextProvider>

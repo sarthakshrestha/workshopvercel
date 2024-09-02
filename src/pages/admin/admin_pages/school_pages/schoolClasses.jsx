@@ -115,6 +115,10 @@ const SchoolClasses = () => {
     navigate(`/admin/schools/classes/${classId}`);
   };
 
+  const handleViewAttendance = (classId) => {
+    navigate(`/admin/class/attendance/${classId}`);
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
       <SchoolSidebar />
@@ -166,29 +170,55 @@ const SchoolClasses = () => {
             </div>
           ) : sortedClasses && sortedClasses.length > 0 ? (
             <Table className="bg-white">
-              <TableHeader className="bg-gray-500 text-white hover:text-white">
-                <TableRow>
-                  <TableHead className="text-white">Class Name</TableHead>
-                  <TableHead className="text-white">Students</TableHead>
-                  <TableHead className="text-white">Courses</TableHead>
-                  <TableHead className="text-white">Mentors</TableHead>
-                  <TableHead className="text-white">Actions</TableHead>
+              <TableHeader className="  text-white hover:text-white">
+                <TableRow className="bg-[#0a0a28] hover:bg-[#0a0a28]">
+                  <TableHead className="text-white text-center ">
+                    Class Name
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Students
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Courses
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Mentors
+                  </TableHead>
+                  <TableHead className="text-white text-center">
+                    Actions
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sortedClasses.map((classItem) => (
                   <TableRow key={classItem.id}>
-                    <TableCell>{classItem.class_name}</TableCell>
-                    <TableCell>{classItem.students?.length || 0}</TableCell>
-                    <TableCell>{classItem.courses?.length || 0}</TableCell>
-                    <TableCell>{classItem.teachers?.length || 0}</TableCell>
-                    <TableCell>
+                    <TableCell className="text-center">
+                      {classItem.class_name}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {classItem.students?.length || 0}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {classItem.courses?.length || 0}
+                    </TableCell>
+                    <TableCell className="text-center">
+                      {classItem.teachers?.length || 0}
+                    </TableCell>
+                    <TableCell className="text-center">
                       <Button
                         onClick={() => handleViewDetails(classItem.id)}
-                        variant="outline"
                         size="sm"
                       >
                         View Details
+                      </Button>
+
+                      <Button
+                        onClick={() => handleViewAttendance(classItem.id)}
+                        variant="outline"
+                        size="sm"
+                        className="ml-2"
+                      >
+                        View Attendance
                       </Button>
                     </TableCell>
                   </TableRow>

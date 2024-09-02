@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import TeacherSidebar from "../mentorSidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MentorSidebar from "../mentorSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -33,7 +33,6 @@ const StudentProfile = () => {
   const { studentId } = useParams();
   const [student, setStudent] = useState(null);
   const [attendance, setAttendance] = useState([]);
-  const [course, setCourse] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
 
@@ -52,16 +51,6 @@ const StudentProfile = () => {
               .padStart(2, "0")}`
           );
           setAttendance(attendanceResponse.data.data.attendances);
-        }
-
-        if (
-          studentResponse.data.data.course_id &&
-          studentResponse.data.data.course_id.length > 0
-        ) {
-          const courseResponse = await apiClient.get(
-            `/course/${studentResponse.data.data.course_id[0]}`
-          );
-          setCourse(courseResponse.data.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -100,10 +89,10 @@ const StudentProfile = () => {
 
   return (
     <div className="flex">
-      <TeacherSidebar />
-      <div className="flex-1 p-8 bg-gray-100 ml-56">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card>
+      <MentorSidebar />
+      <div className="w-full flex flex-col p-8 bg-gray-100 ">
+        <div className="flex w-full justify-center items-center ">
+          <Card className="w-3/5">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">
                 Student Information
@@ -112,94 +101,52 @@ const StudentProfile = () => {
             <CardContent className="space-y-2 ">
               <div className="flex space-x-4 justify-between items-center">
                 <div>
-                  <h2 className="text-2xl mb-[20px] ">
-                    {student.student_name}
+                  <h2 className="text-2xl mb-[20px]">
+                    {student?.student_name}
                   </h2>
                   <div className="flex items-center  space-x-2 mb-2">
                     <User size={18} />
                     <span>
                       <strong className="font-semibold">Age:</strong>{" "}
-                      {student.age}
+                      {student?.age}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 mb-2">
                     <Phone size={18} />
                     <span>
                       <strong className="font-semibold">Phone:</strong>{" "}
-                      {student.phone_num}
+                      {student?.phone_num}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 mb-2">
                     <Mail size={18} />
                     <span>
                       <strong className="font-semibold">Email:</strong>{" "}
-                      {student.student_email}
+                      {student?.student_email}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2 mb-2">
                     <MapPin size={18} />
                     <span>
                       <strong className="font-semibold">Address:</strong>{" "}
-                      {student.address}
+                      {student?.address}
                     </span>
                   </div>
                 </div>
                 <div>
                   <Avatar className="w-40 h-40">
                     <AvatarImage
-                      src={student.avatar_url}
-                      alt={student.student_name}
+                      src={student?.avatar_url}
+                      alt={student?.student_name}
                     />
                     <AvatarFallback>
-                      {student.student_name.charAt(0)}
+                      {student?.student_name.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                 </div>
               </div>
             </CardContent>
           </Card>
-
-          {course && (
-            <Card className="h-full">
-              <CardHeader>
-                <CardTitle className="text-2xl mb-4">
-                  Course Information
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <BookOpen size={20} className=" flex-shrink-0" />
-                  <div className="flex gap-2">
-                    <span className="font-semibold">Course Name:</span>
-                    <p className="text-gray-700">{course.course_name}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <FileText size={20} className=" flex-shrink-0" />
-                  <div className="flex gap-2">
-                    <span className="font-semibold">Content:</span>
-                    <p className="text-gray-700">{course.course_content}</p>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <div>
-                    <Clock size={20} className=" flex-shrink-0" />
-                  </div>
-                  <div className="flex gap-2">
-                    <span className="font-semibold">Duration:</span>
-                    <p className="text-gray-700">{course.course_duration}</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <FileText size={20} className=" flex-shrink-0 mt-1" />
-                  <div className="flex gap-2">
-                    <span className="font-semibold">Description:</span>
-                    <p className="text-gray-700">{course.description}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
         </div>
 
         <Card className="mt-8">
@@ -246,9 +193,10 @@ const StudentProfile = () => {
               <Table>
                 <TableHeader>
                   <TableRow className="bg-gray-50">
-                    <TableHead>Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Remarks</TableHead>
+                    <TableHead className=" w-1/6 text-center">Date</TableHead>
+                    <TableHead className="w-1/3 text-center">Status</TableHead>
+                    <TableHead className="w-2/6">Remarks</TableHead>
+                    <TableHead className="text-center w-1/12">Laptop</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -258,14 +206,23 @@ const StudentProfile = () => {
                     );
                     return (
                       <TableRow key={date}>
-                        <TableCell>{date}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-center">{date}</TableCell>
+                        <TableCell className="text-center">
                           {attendanceRecord
                             ? attendanceRecord.status
-                            : "No class in this day / Attendance was not Captured"}
+                            : "No class in this day / Attendance was not taken"}
                         </TableCell>
                         <TableCell>
-                          {attendanceRecord ? attendanceRecord.remarks : ""}
+                          <span className="w-[300px] truncate">
+                            {attendanceRecord ? attendanceRecord.remarks : ""}
+                          </span>
+                        </TableCell>
+                        <TableCell className="text-center w-1/4">
+                          {attendanceRecord
+                            ? attendanceRecord.laptop
+                              ? "Yes"
+                              : "No"
+                            : "---"}
                         </TableCell>
                       </TableRow>
                     );
