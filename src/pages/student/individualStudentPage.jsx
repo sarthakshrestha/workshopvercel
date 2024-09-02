@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import StudentSidebar from "./studentSidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -12,15 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  User,
-  Phone,
-  Mail,
-  MapPin,
-  BookOpen,
-  Clock,
-  FileText,
-} from "lucide-react";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -28,19 +17,28 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import apiClient from "config/apiClient";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
+import StudentSidebar from "./studentSidebar";
 
-const StudentProfile = () => {
+const StudentAttendance = () => {
   const { studentId } = useParams();
   const [student, setStudent] = useState(null);
   const [attendance, setAttendance] = useState([]);
+  const [course, setCourse] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedRemarks, setSelectedRemarks] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const studentResponse = await apiClient.get(`/student/${studentId}`);
-        console.log(studentResponse);
         setStudent(studentResponse.data.data);
         let classid = studentResponse.data.data.class_id;
 
@@ -52,6 +50,16 @@ const StudentProfile = () => {
           );
           setAttendance(attendanceResponse.data.data.attendances);
         }
+
+        if (
+          studentResponse.data.data.course_id &&
+          studentResponse.data.data.course_id.length > 0
+        ) {
+          const courseResponse = await apiClient.get(
+            `/course/${studentResponse.data.data.course_id[0]}`
+          );
+          setCourse(courseResponse.data.data);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -59,6 +67,14 @@ const StudentProfile = () => {
 
     fetchData();
   }, [studentId, selectedMonth, selectedYear]);
+
+  if (!student) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        Loading...
+      </div>
+    );
+  }
 
   const generateMonthDates = (year, month) => {
     const daysInMonth = new Date(year, month, 0).getDate();
@@ -88,71 +104,15 @@ const StudentProfile = () => {
   const years = Array.from({ length: 10 }, (_, i) => selectedYear - 5 + i);
 
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <StudentSidebar />
-      <div className="w-full flex flex-col p-8 bg-gray-100 ">
-        <div className="flex w-full justify-center items-center ">
-          <Card className="w-3/5">
-            <CardHeader>
-              <CardTitle className="text-2xl font-semibold">
-                Student Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 ">
-              <div className="flex space-x-4 justify-between items-center">
-                <div>
-                  <h2 className="text-2xl mb-[20px]">
-                    {student?.student_name}
-                  </h2>
-                  <div className="flex items-center  space-x-2 mb-2">
-                    <User size={18} />
-                    <span>
-                      <strong className="font-semibold">Age:</strong>{" "}
-                      {student?.age}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Phone size={18} />
-                    <span>
-                      <strong className="font-semibold">Phone:</strong>{" "}
-                      {student?.phone_num}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Mail size={18} />
-                    <span>
-                      <strong className="font-semibold">Email:</strong>{" "}
-                      {student?.student_email}
-                    </span>
-                  </div>
-                  <div className="flex items-center space-x-2 mb-2">
-                    <MapPin size={18} />
-                    <span>
-                      <strong className="font-semibold">Address:</strong>{" "}
-                      {student?.address}
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <Avatar className="w-40 h-40">
-                    <AvatarImage
-                      src={student?.avatar_url}
-                      alt={student?.student_name}
-                    />
-                    <AvatarFallback>
-                      {student?.student_name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold">Attendance</CardTitle>
-            <div className="flex space-x-4">
+      <div className="flex-1 p-8 bg-gray-100 flex flex-col">
+        <Card className="flex-1 flex flex-col overflow-hidden">
+          <CardHeader className="flex-shrink-0">
+            <CardTitle className="text-xl font-semibold">
+              Attendance History
+            </CardTitle>
+            <div className="flex space-x-4 mt-4">
               <Select
                 value={selectedMonth.toString()}
                 onValueChange={(value) => setSelectedMonth(parseInt(value))}
@@ -188,47 +148,81 @@ const StudentProfile = () => {
               </Select>
             </div>
           </CardHeader>
-          <CardContent>
-            <div className="max-h-[38vh] overflow-y-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className=" w-1/6 text-center">Date</TableHead>
-                    <TableHead className="w-1/3 text-center">Status</TableHead>
-                    <TableHead className="w-2/6">Remarks</TableHead>
-                    <TableHead className="text-center w-1/12">Laptop</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {monthDates.map((date) => {
-                    const attendanceRecord = attendance.find(
-                      (record) => record.date === date
-                    );
-                    return (
-                      <TableRow key={date}>
-                        <TableCell className="text-center">{date}</TableCell>
-                        <TableCell className="text-center">
-                          {attendanceRecord
-                            ? attendanceRecord.status
-                            : "No class in this day / Attendance was not taken"}
-                        </TableCell>
-                        <TableCell>
-                          <span className="w-[300px] truncate">
-                            {attendanceRecord ? attendanceRecord.remarks : ""}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-center w-1/4">
-                          {attendanceRecord
-                            ? attendanceRecord.laptop
-                              ? "Yes"
-                              : "No"
-                            : "---"}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
+          <CardContent className="flex-1 overflow-hidden">
+            <div className="flex flex-col h-full">
+              <div className="overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50">
+                      <TableHead className="text-center w-1/4">Date</TableHead>
+                      <TableHead className="text-center w-1/4">
+                        Status
+                      </TableHead>
+                      <TableHead className="text-center w-1/4">
+                        Remarks
+                      </TableHead>
+                      <TableHead className="text-center w-1/4">
+                        Laptop
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                </Table>
+              </div>
+              <div className="overflow-y-auto flex-1">
+                <Table>
+                  <TableBody>
+                    {monthDates.map((date) => {
+                      const attendanceRecord = attendance.find(
+                        (record) => record.date === date
+                      );
+                      return (
+                        <TableRow key={date}>
+                          <TableCell className="text-center w-1/4">
+                            {date}
+                          </TableCell>
+                          <TableCell className="text-center w-1/4">
+                            {attendanceRecord
+                              ? attendanceRecord.status
+                              : "No Attendance was not Captured"}
+                          </TableCell>
+                          <TableCell className="text-center w-1/4">
+                            <div className="w-[300px] mx-auto truncate">
+                              {attendanceRecord?.remarks && (
+                                <Dialog>
+                                  <DialogTrigger asChild>
+                                    <button
+                                      className="hover:underline focus:outline-none truncate w-full text-left"
+                                      onClick={() =>
+                                        setSelectedRemarks(
+                                          attendanceRecord.remarks
+                                        )
+                                      }
+                                    >
+                                      {attendanceRecord.remarks}
+                                    </button>
+                                  </DialogTrigger>
+                                  <DialogContent>
+                                    <DialogTitle>Full Remarks</DialogTitle>
+                                    <p>{selectedRemarks}</p>
+                                    <DialogClose />
+                                  </DialogContent>
+                                </Dialog>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-center w-1/4">
+                            {attendanceRecord
+                              ? attendanceRecord.laptop
+                                ? "Yes"
+                                : "No"
+                              : "---"}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -237,4 +231,4 @@ const StudentProfile = () => {
   );
 };
 
-export default StudentProfile;
+export default StudentAttendance;
