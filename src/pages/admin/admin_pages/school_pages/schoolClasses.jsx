@@ -185,7 +185,7 @@ const SchoolClasses = () => {
                     Mentors
                   </TableHead>
                   <TableHead className="text-white text-center">
-                    Actions
+                    Action
                   </TableHead>
                 </TableRow>
               </TableHeader>

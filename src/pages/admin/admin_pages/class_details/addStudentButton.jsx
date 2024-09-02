@@ -24,12 +24,16 @@ const AddStudentButton = ({ onAddStudent }) => {
     class_id: "",
     school_id: "",
     course_id: [],
+    profile_picture: null,
   });
   const [errors, setErrors] = useState({});
-
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewStudent((prev) => ({ ...prev, [name]: value }));
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setNewStudent((prev) => ({ ...prev, [name]: files[0] }));
+    } else {
+      setNewStudent((prev) => ({ ...prev, [name]: value }));
+    }
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -52,6 +56,17 @@ const AddStudentButton = ({ onAddStudent }) => {
   const handleSubmit = async () => {
     if (validateForm()) {
       try {
+        const formData = new FormData();
+        Object.keys(newStudent).forEach(key => {
+          if (key === 'profile_picture') {
+            if (newStudent[key]) {
+              formData.append(key, newStudent[key]);
+            }
+          } else {
+            formData.append(key, newStudent[key]);
+          }
+        });
+        console.log("1",newStudent)
         await onAddStudent(newStudent);
         setNewStudent({
           student_name: "",
@@ -86,7 +101,29 @@ const AddStudentButton = ({ onAddStudent }) => {
 
   const renderInputField = (key, value) => {
     if (["class_id", "school_id", "course_id"].includes(key)) {
-      return null; // Don't render input for these fields
+      return null;
+    }
+
+    if (key === "profile_picture") {
+      return (
+        <div key={key}>
+          <Label htmlFor={key} className="text-sm font-medium text-gray-700">
+            Profile Picture
+          </Label>
+          <Input
+            id={key}
+            name={key}
+            type="file"
+            onChange={handleInputChange}
+            accept="image/*"
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${errors[key] ? "border-red-500" : ""
+              }`}
+          />
+          {errors[key] && (
+            <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
+          )}
+        </div>
+      );
     }
 
     return (
@@ -99,12 +136,11 @@ const AddStudentButton = ({ onAddStudent }) => {
         <Input
           id={key}
           name={key}
-          type={key}
+          type={key === "age" ? "number" : "text"}
           value={value}
           onChange={handleInputChange}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${
-            errors[key] ? "border-red-500" : ""
-          }`}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${errors[key] ? "border-red-500" : ""
+            }`}
         />
         {errors[key] && (
           <p className="text-red-500 text-xs mt-1">{errors[key]}</p>

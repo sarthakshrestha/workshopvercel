@@ -15,7 +15,7 @@ const ClassDetails = () => {
   const { classId } = useParams();
   const { toast } = useToast();
   const [classData, setClassData] = useState(null);
-  const [ isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [totalCourse, setTotalCourse] = useState(0);
   const [totalTeacher, setTotalTeacher] = useState(0);
   const [totalStudent, setTotalStudent] = useState(0);
@@ -56,7 +56,11 @@ const ClassDetails = () => {
       };
       console.log(classData.courses);
       console.log(addStudent);
-      const response = await apiClient.post("/student", addStudent);
+      const response = await apiClient.post("/student", addStudent, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      });
       if (response.data.status === "success") {
         toast({
           title: "Success",
