@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import MentorSidebar from "pages/mentors/mentorSidebar";
+import StudentSidebar from "./studentSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
@@ -89,8 +89,8 @@ const StudentProfile = () => {
 
   return (
     <div className="flex">
-      <MentorSidebar />
-      <div className="w-full flex flex-col p-8 bg-gray-100 ml-56 ">
+      <StudentSidebar />
+      <div className="w-full flex flex-col p-8 bg-gray-100 ">
         <div className="flex w-full justify-center items-center ">
           <Card className="w-3/5">
             <CardHeader>
