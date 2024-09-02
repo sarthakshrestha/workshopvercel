@@ -6,9 +6,7 @@ export const SchoolContextProvider = ({ children }) => {
   const [schoolId, setSchoolId] = useState(() => {
     // Try to get the schoolId from localStorage when the component mounts
     const savedSchoolId = localStorage.getItem("schoolId");
-    return savedSchoolId
-      ? JSON.parse(savedSchoolId)
-      : "66c0dae5f0965cf6f1bf21bb";
+    return savedSchoolId ? JSON.parse(savedSchoolId) : null;
   });
 
   useEffect(() => {

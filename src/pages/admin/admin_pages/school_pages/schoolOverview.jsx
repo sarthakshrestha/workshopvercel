@@ -3,6 +3,7 @@ import { useSchoolContext } from "context/SchoolContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Calendar, Users, BookOpen, School } from "lucide-react";
 import { Bar } from "react-chartjs-2";
+import apiClient from "@/utils/axiosInstance";
 import SchoolSidebar from "./schoolSidebar";
 import {
   Chart as ChartJS,
@@ -27,6 +28,25 @@ ChartJS.register(
 const SchoolDashboard = () => {
   const { schoolId } = useSchoolContext();
   const [events, setEvents] = useState([]);
+  const [studentCount, setStudentCount] = useState(0);
+
+  const fetchStudentCount = async () => {
+    try {
+      const response = await apiClient.get(`/student/school/${schoolId}`);
+      if (response.data && response.data.data) {
+        setStudentCount(response.data.data.length);
+        console.log("No. of students ", studentCount);
+      } else {
+        console.warn("No student data received from the server.");
+        setStudentCount(0);
+      }
+    } catch (error) {
+      console.error("Error fetching student count:", error);
+      setStudentCount(0);
+    }
+  };
+
+  fetchStudentCount();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -119,19 +139,7 @@ const SchoolDashboard = () => {
             School Dashboard
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
-                  Total Mentors
-                </CardTitle>
-                <School className="h-6 w-6 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold ">10</div>
-                <div className="text-sm ">Mentors assigned to this school</div>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium ">
@@ -152,7 +160,7 @@ const SchoolDashboard = () => {
                 <Users className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">1,234</div>
+                <div className="text-2xl font-bold">{studentCount}</div>
                 <div className="text-sm">Students Studying to this school</div>
               </CardContent>
             </Card>
@@ -199,14 +207,6 @@ const SchoolDashboard = () => {
                       </div>
                     ))}
                 </div>
-              </CardContent>
-            </Card>
-            <Card className="col-span-2">
-              <CardHeader>
-                <CardTitle>Most Popular Courses</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <Bar data={popularCoursesData} options={options} />
               </CardContent>
             </Card>
           </div>

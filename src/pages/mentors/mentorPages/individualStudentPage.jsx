@@ -262,7 +262,7 @@ const StudentProfile = () => {
                         <TableCell>
                           {attendanceRecord
                             ? attendanceRecord.status
-                            : "No class in this day / Attendance was not Captured"}
+                            : "No class in this day / Attendance was not taken"}
                         </TableCell>
                         <TableCell>
                           {attendanceRecord ? attendanceRecord.remarks : ""}

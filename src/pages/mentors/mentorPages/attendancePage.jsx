@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "@/components/ui/use-toast";
 import { Users } from "lucide-react";
 import TeacherSidebar from "../mentorSidebar";
@@ -42,6 +43,7 @@ const AttendanceComponent = () => {
               id: student.student_id,
               name: student.student_name,
               status: student.status,
+              laptop: student.laptop,
               reason: student.remarks,
             })
           );
@@ -70,6 +72,7 @@ const AttendanceComponent = () => {
           id: student.id,
           name: student.student_name,
           status: "present",
+          laptop: true,
           reason: "",
         }));
         setAttendanceData(initialAttendance);
@@ -118,6 +121,7 @@ const AttendanceComponent = () => {
           student_name: student.name,
           status: student.status,
           remarks: student.reason,
+          laptop: student.laptop,
         })),
       };
 
@@ -140,6 +144,15 @@ const AttendanceComponent = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleCheckbox = (id) => {
+    let toChangeData = attendanceData.find((attendance) => attendance.id == id);
+    let notToChangeData = attendanceData.filter(
+      (attendance) => attendance.id != id
+    );
+    let newChangedData = { ...toChangeData, laptop: !toChangeData.laptop };
+    setAttendanceData([newChangedData, ...notToChangeData]);
   };
 
   return (
@@ -172,6 +185,7 @@ const AttendanceComponent = () => {
                     <th className="p-2 text-left">Name</th>
                     <th className="text-center p-2">Status</th>
                     <th className="text-center p-2">Reason (if Informed)</th>
+                    <th className="text-center p-2">Laptop</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -208,6 +222,12 @@ const AttendanceComponent = () => {
                             placeholderColor="text-gray-200"
                           />
                         )}
+                      </td>
+                      <td className="text-center">
+                        <Checkbox
+                          onClick={(e) => handleCheckbox(student.id)}
+                          checked={student.laptop}
+                        />
                       </td>
                     </tr>
                   ))}
