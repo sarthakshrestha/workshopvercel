@@ -29,16 +29,19 @@ const SchoolDashboard = () => {
   const { schoolId } = useSchoolContext();
   const [events, setEvents] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
+  const [courseCount, setCourseCount] = useState(0);
 
   const fetchStudentCount = async () => {
     try {
       const response = await apiClient.get(`/student/school/${schoolId}`);
+      const courseResponse = await apiClient.get(`/school/${schoolId}`);
       if (response.data && response.data.data) {
         setStudentCount(response.data.data.length);
+        setCourseCount(courseResponse.data.data.course_id.length);
+        console.log("Course Count:", courseCount);
         console.log("No. of students ", studentCount);
       } else {
         console.warn("No student data received from the server.");
-        setStudentCount(0);
       }
     } catch (error) {
       console.error("Error fetching student count:", error);
@@ -148,7 +151,7 @@ const SchoolDashboard = () => {
                 <BookOpen className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">25</div>
+                <div className="text-2xl font-bold">{courseCount}</div>
                 <div className="text-sm">Courses assigned to this school</div>
               </CardContent>
             </Card>
