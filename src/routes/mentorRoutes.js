@@ -8,12 +8,14 @@ import StudentProfile from "pages/mentors/mentorPages/individualStudentPage";
 import ProtectedMentor from "@/utils/protectedMentor";
 import Feedback from "pages/mentors/mentorPages/feedbackPage";
 import AssignmentPage from "pages/mentors/mentorPages/assignmentPage";
+import JournalPage from "pages/mentors/mentorPages/journalPage";
 
 const MentorRoutes = (
   <Routes>
     <Route element={<ProtectedMentor />}>
       <Route path="/mentor/dashboard" element={<TeachersDashboard />} />
       <Route path="/mentor/school" element={<SchoolsPage />} />
+      <Route path="/mentor/journals" element={<JournalPage />} />
       <Route path="/mentor/classes" element={<SchoolClasses />} />
       <Route
         path="/mentor/attendances/:classId"
