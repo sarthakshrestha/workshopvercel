@@ -5,6 +5,7 @@ import StudentDashboard from "pages/student/studentDashboard";
 import ClassesDashboard from "pages/student/studentClasses";
 import StudentAttendance from "pages/student/individualStudentPage";
 import SchoolCalendar from "pages/student/schoolAcademicCalendar";
+import Assignment from "pages/student/assignmentPage";
 
 const StudentRoutes = (
   <Routes>
@@ -29,6 +30,11 @@ const StudentRoutes = (
         key="attendance"
         path="/student/calendar"
         element={<SchoolCalendar />}
+      />
+      <Route
+        key="assignment"
+        path="/student/assignment"
+        element={<Assignment />}
       />
     </Route>
   </Routes>
