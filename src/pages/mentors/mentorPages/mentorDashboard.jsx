@@ -1,33 +1,57 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { School, BookOpen, Users, Calendar } from "lucide-react";
 import profileicon from ".././../../gallery/profile/Profile.jpg";
 import TeacherSidebar from "../mentorSidebar";
 import DailyReflection from "./dailyReflection";
 import Profile from "../../../gallery/Mentor.jpg";
+import apiClient from "config/apiClient";
 
 const MentorDashboard = () => {
   // Dummy data for the cards
-  const cardData = [
+  const [cardData, setCardData] = useState([
     {
       title: "Schools",
-      value: 5,
+      value: 0,
       icon: School,
+      description: "Schools currently teaching",
+    },
+    {
+      title: "Classes",
+      value: 0,
+      icon: BookOpen,
       description: "Classes currently teaching",
     },
     {
-      title: "Courses",
-      value: 8,
-      icon: BookOpen,
-      description: "Courses currently teaching",
-    },
-    {
       title: "Students",
-      value: 150,
+      value: 0,
       icon: Users,
       description: "Students currently teaching",
     },
-  ];
+  ]);
+
+  const mentorId = localStorage.getItem("teacher_id");
+
+  useEffect(() => {
+    // Fetch the data from an API
+    const fetchData = async () => {
+      try {
+        const response = await apiClient.get(`/teacher/classes/${mentorId}`); // Replace with your API endpoint
+        const schoolData = await response.data.data;
+
+        setCardData([
+          { ...cardData[0], value: schoolData.schoolCount },
+          { ...cardData[1], value: schoolData.classCount },
+          { ...cardData[2], value: schoolData.studentCount },
+        ]);
+      } catch (error) {
+        console.error("Failed to fetch dashboard data", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   // Dummy data for events
   const events = [
