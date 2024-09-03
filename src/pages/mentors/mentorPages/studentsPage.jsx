@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye } from "lucide-react";
+import { Eye, MessageSquareShare } from "lucide-react";
 import TeacherSidebar from "../mentorSidebar";
 import { Input } from "@/components/ui/input"; // Add this import
 import apiClient from "config/apiClient";
@@ -100,6 +100,7 @@ const StudentsPage = () => {
                           onClick={() =>
                             navigate(`/mentor/attendance/${student.id}`)
                           }
+                          className="mr-4 bg-zinc-700 text-white hover:bg-zinc-900 hover:text-white"
                         >
                           <Eye className="mr-2 h-4 w-4" />
                           View Attendance
@@ -111,7 +112,7 @@ const StudentsPage = () => {
                             navigate(`/mentor/feedback/${student.id}`)
                           }
                         >
-                          <Eye className="mr-2 h-4 w-4" />
+                          <MessageSquareShare className="mr-2 h-4 w-4" />
                           Give Feedback
                         </Button>
                       </TableCell>

@@ -4,6 +4,7 @@ import apiClient from "config/apiClient";
 
 const JournalPage = () => {
   const [journals, setJournals] = useState([]);
+  const [selectedJournal, setSelectedJournal] = useState(null);
   const mentorId = localStorage.getItem("teacher_id");
 
   useEffect(() => {
@@ -26,6 +27,10 @@ const JournalPage = () => {
     fetchJournals();
   }, [mentorId]);
 
+  const handleJournalClick = (journal) => {
+    setSelectedJournal(journal);
+  };
+
   return (
     <div className="flex min-h-screen bg-blue-100">
       <MentorSidebar />
@@ -33,46 +38,58 @@ const JournalPage = () => {
       <div className="flex-1 p-10 ml-56">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Look Through Your Journals</h1>
+          <h1 className="text-3xl font-bold">
+            Look Through Your Journals{" "}
+            <p className="text-lg mt-2 font-semibold">
+              Click to view your entire journal entry!
+            </p>
+          </h1>
+
           <div className="flex items-center space-x-6">
+            {/* Month Selector (commented out) */}
             {/* <div className="flex items-center">
-                            <label htmlFor="month" className="text-lg font-medium flex items-center mr-2">
-                                <i className="fa fa-calendar mr-2"></i> Month:
-                            </label>
-                            <select
-                                id="month"
-                                name="month"
-                                className="px-4 py-2 rounded-md bg-teal-100 text-gray-700 border-none focus:outline-none"
-                            >
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="April">May</option>
-                                <option value="April">June</option>
-                                <option value="April">July</option>
-                                <option value="April">August</option>
-                                <option value="April">September</option>
-                                <option value="April">October</option>
-                                <option value="April">November</option>
-                                <option value="April">December</option>
-                            </select>
-                            <i className="fa fa-chevron-down ml-2"></i>
-                        </div> */}
+              <label htmlFor="month" className="text-lg font-medium flex items-center mr-2">
+                <i className="fa fa-calendar mr-2"></i> Month:
+              </label>
+              <select
+                id="month"
+                name="month"
+                className="px-4 py-2 rounded-md bg-teal-100 text-gray-700 border-none focus:outline-none"
+              >
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <i className="fa fa-chevron-down ml-2"></i>
+            </div> */}
           </div>
         </header>
 
         {/* Journal Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 font-patrick">
           {journals &&
             journals.length > 0 &&
             journals.map((journal, index) => (
               <div
                 key={index}
-                className="relative bg-teal-500 text-white p-6 rounded-lg shadow-lg"
+                className="relative bg-teal-500 text-white p-6 rounded-lg shadow-lg font-patrick text-3xl h-64 overflow-hidden cursor-pointer"
+                onClick={() => handleJournalClick(journal)}
               >
-                <p className="text-base mb-4">{journal.body}</p>
-                <p className="text-sm font-bold text-teal-200">
+                <p className="text-2xl mb-4 font-patrick truncate">
+                  {journal.body.length > 200
+                    ? `${journal.body.substring(0, 200)}...`
+                    : journal.body}
+                </p>
+                <p className="text-xl font-bold text-teal-200 font-patrick">
                   {journal.day_of_week}, {journal.month} {journal.day},{" "}
                   {journal.year}
                 </p>
@@ -80,6 +97,27 @@ const JournalPage = () => {
               </div>
             ))}
         </div>
+
+        {/* View Journal Modal */}
+        {selectedJournal && (
+          <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+              <h2 className="text-3xl font-bold mb-4 font-patrick mt-6">
+                {selectedJournal.day_of_week}, {selectedJournal.month}{" "}
+                {selectedJournal.day}, {selectedJournal.year}
+              </h2>
+              <p className="text-lg font-patrick mt-6">
+                {selectedJournal.body}
+              </p>
+              <button
+                className="bg-teal-500 text-white px-4 py-2 rounded-md mt-8 mx-auto items-center flex"
+                onClick={() => setSelectedJournal(null)}
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
