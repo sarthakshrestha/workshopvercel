@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { Contact } from "lucide-react";
 
@@ -27,9 +26,10 @@ const AddStudentButton = ({ onAddStudent }) => {
     profile_picture: null,
   });
   const [errors, setErrors] = useState({});
+
   const handleInputChange = (e) => {
     const { name, value, type, files } = e.target;
-    if (type === 'file') {
+    if (type === "file") {
       setNewStudent((prev) => ({ ...prev, [name]: files[0] }));
     } else {
       setNewStudent((prev) => ({ ...prev, [name]: value }));
@@ -57,8 +57,8 @@ const AddStudentButton = ({ onAddStudent }) => {
     if (validateForm()) {
       try {
         const formData = new FormData();
-        Object.keys(newStudent).forEach(key => {
-          if (key === 'profile_picture') {
+        Object.keys(newStudent).forEach((key) => {
+          if (key === "profile_picture") {
             if (newStudent[key]) {
               formData.append(key, newStudent[key]);
             }
@@ -66,7 +66,7 @@ const AddStudentButton = ({ onAddStudent }) => {
             formData.append(key, newStudent[key]);
           }
         });
-        console.log("1",newStudent)
+        console.log("1", newStudent);
         await onAddStudent(newStudent);
         setNewStudent({
           student_name: "",
@@ -76,6 +76,7 @@ const AddStudentButton = ({ onAddStudent }) => {
           class_id: "",
           school_id: "",
           course_id: [],
+          profile_picture: null,
         });
         setIsDialogOpen(false);
         toast({
@@ -99,6 +100,21 @@ const AddStudentButton = ({ onAddStudent }) => {
     }
   };
 
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+    // Reset the student data when the dialog is closed
+    setNewStudent({
+      student_name: "",
+      age: "",
+      phone_num: "",
+      address: "",
+      class_id: "",
+      school_id: "",
+      course_id: [],
+      profile_picture: null,
+    });
+  };
+
   const renderInputField = (key, value) => {
     if (["class_id", "school_id", "course_id"].includes(key)) {
       return null;
@@ -116,9 +132,17 @@ const AddStudentButton = ({ onAddStudent }) => {
             type="file"
             onChange={handleInputChange}
             accept="image/*"
-            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${errors[key] ? "border-red-500" : ""
-              }`}
+            className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${
+              errors[key] ? "border-red-500" : ""
+            }`}
           />
+          {newStudent[key] && (
+            <img
+              src={URL.createObjectURL(newStudent[key])}
+              alt="Profile"
+              className="mt-2 max-w-[200px] max-h-[200px] rounded-md mx-auto"
+            />
+          )}
           {errors[key] && (
             <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
           )}
@@ -139,8 +163,9 @@ const AddStudentButton = ({ onAddStudent }) => {
           type={key === "age" ? "number" : "text"}
           value={value}
           onChange={handleInputChange}
-          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${errors[key] ? "border-red-500" : ""
-            }`}
+          className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-zinc-300 focus:ring focus:ring-zinc-200 focus:ring-opacity-50 ${
+            errors[key] ? "border-red-500" : ""
+          }`}
         />
         {errors[key] && (
           <p className="text-red-500 text-xs mt-1">{errors[key]}</p>
@@ -150,7 +175,15 @@ const AddStudentButton = ({ onAddStudent }) => {
   };
 
   return (
-    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={(open) => {
+        setIsDialogOpen(open);
+        if (!open) {
+          handleDialogClose(); // Call the close handler when dialog is closed
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button className="bg-zinc-800 hover:bg-zinc-900 text-white font-bold py-2 px-4 rounded w-1/3">
           <Contact className="mr-1" />
@@ -163,7 +196,7 @@ const AddStudentButton = ({ onAddStudent }) => {
             Add New Student
           </DialogTitle>
         </DialogHeader>
-        <div className="mt-4 space-y-4">
+        <div className="mt-4 space-y-4 mx-auto ">
           {Object.entries(newStudent).map(([key, value]) =>
             renderInputField(key, value)
           )}
@@ -174,6 +207,12 @@ const AddStudentButton = ({ onAddStudent }) => {
             className="bg-zinc-800 hover:bg-zinc-900 text-white font-bold py-2 px-4 rounded"
           >
             Add Student
+          </Button>
+          <Button
+            onClick={handleDialogClose}
+            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded ml-2"
+          >
+            Close
           </Button>
         </DialogFooter>
       </DialogContent>

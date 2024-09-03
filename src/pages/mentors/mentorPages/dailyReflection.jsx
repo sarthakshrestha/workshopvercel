@@ -7,7 +7,7 @@ import apiClient from "config/apiClient";
 const DailyReflection = () => {
   const teacherId = localStorage.getItem("teacher_id");
   const [reflection, setReflection] = useState({
-    body: "", 
+    body: "",
     mentor_id: teacherId,
   });
 
@@ -22,7 +22,7 @@ const DailyReflection = () => {
     // Add your submit logic here
     const response = await apiClient.post("/journals", reflection); // Replace with your actual API endpoint
     setReflection({
-      body: "", 
+      body: "",
       mentor_id: teacherId,
     });
     console.log("Reflection submitted:", reflection);
@@ -32,9 +32,9 @@ const DailyReflection = () => {
     <Card className="bg-[#70CFCD] h-full">
       <CardContent className="bg-[#70CFCD] mt-5 relative">
         <textarea
-          className="w-full bg-[#70CFCD] h-96 p-2 rounded-md resize-none placeholder:text-3xl placeholder:text-white placeholder:font-patrick"
+          className="w-full bg-[#70CFCD] h-96 p-2 rounded-md resize-none placeholder:text-3xl placeholder:text-white placeholder:font-patrick text-3xl text-white font-patrick"
           placeholder="Use me to reflect everyday"
-          value={reflection.body} // Access the body from the state
+          value={reflection.body}
           onChange={handleReflectionChange}
         />
         <div className="flex justify-between items-center mt-2">

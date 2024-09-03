@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import MentorSidebar from "../mentorSidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Table,
   TableBody,
@@ -16,9 +15,6 @@ import {
   Phone,
   Mail,
   MapPin,
-  BookOpen,
-  Clock,
-  FileText,
 } from "lucide-react";
 import {
   Select,
@@ -28,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import apiClient from "config/apiClient";
+import ProfilePictureAvatar from "./profilePictureAvator";
 
 const StudentProfile = () => {
   const { studentId } = useParams();
@@ -40,7 +37,6 @@ const StudentProfile = () => {
     const fetchData = async () => {
       try {
         const studentResponse = await apiClient.get(`/student/${studentId}`);
-        console.log(studentResponse);
         setStudent(studentResponse.data.data);
         let classid = studentResponse.data.data.class_id;
 
@@ -90,7 +86,7 @@ const StudentProfile = () => {
   return (
     <div className="flex">
       <MentorSidebar />
-      <div className="w-full flex flex-col p-8 bg-gray-100 ml-56">
+      <div className="w-full flex flex-col p-8 bg-gray-100 ml-56 ">
         <div className="flex w-full justify-center items-center ">
           <Card className="w-3/5">
             <CardHeader>
@@ -134,15 +130,10 @@ const StudentProfile = () => {
                   </div>
                 </div>
                 <div>
-                  <Avatar className="w-40 h-40">
-                    <AvatarImage
-                      src={student?.avatar_url}
-                      alt={student?.student_name}
-                    />
-                    <AvatarFallback>
-                      {student?.student_name.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
+                  <ProfilePictureAvatar 
+                    profilePicture={student?.profile_picture}
+                    studentName={student?.student_name}
+                  />
                 </div>
               </div>
             </CardContent>
