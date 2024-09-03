@@ -14,7 +14,7 @@ const AdminRoutes = (
       <Route path="/admin/mentors" element={<MentorsPage />} />
       <Route path="/admin/courses" element={<CoursesPage />} />
       <Route path="/admin/events" element={<EventPage />} />
-      <Route path="/admin/mentor/profile" element={<MentorProfile />} />
+      <Route path="/admin/mentor_profile/:mentorId" element={<MentorProfile />} />
       
     </Route>
   </Routes>

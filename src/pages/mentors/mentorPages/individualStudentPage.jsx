@@ -90,7 +90,7 @@ const StudentProfile = () => {
   return (
     <div className="flex">
       <MentorSidebar />
-      <div className="w-full flex flex-col p-8 bg-gray-100 ">
+      <div className="w-full flex flex-col p-8 bg-gray-100 ml-56">
         <div className="flex w-full justify-center items-center ">
           <Card className="w-3/5">
             <CardHeader>

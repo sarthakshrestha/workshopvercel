@@ -189,7 +189,7 @@ const AttendanceComponent = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {attendanceData.map((student) => (
+                  {attendanceData && attendanceData.length && attendanceData.map((student) => (
                     <tr key={student.id} className="border-t">
                       <td className="p-2">{student.name}</td>
                       <td className="p-2 flex justify-center items-center">

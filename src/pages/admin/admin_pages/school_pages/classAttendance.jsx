@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import apiClient from 'config/apiClient';
 
 const ClassAttendancePage = () => {
   const { classId } = useParams();
@@ -30,7 +31,7 @@ const ClassAttendancePage = () => {
   const fetchAttendanceData = async (selectedDate) => {
     try {
       const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-      const response = await axios.get(`http://127.0.0.1:8000/attendances/class/${classId}/date/${formattedDate}`);
+      const response = await apiClient.get(`/attendances/class/${classId}/date/${formattedDate}`);
       setAttendanceData(response.data.data);
     } catch (error) {
       console.error('Error fetching attendance data:', error);
