@@ -58,8 +58,8 @@ const ClassDetails = () => {
       console.log(addStudent);
       const response = await apiClient.post("/student", addStudent, {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       if (response.data.status === "success") {
         toast({
@@ -464,9 +464,6 @@ const ClassDetails = () => {
                   <p className="text-2xl font-bold text-gray-800">
                     {totalStudent}
                   </p>
-                  <p className="text-gray-600">
-                    Total Students studing in the school
-                  </p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
                   <div className="flex items-center justify-between ">
@@ -478,9 +475,6 @@ const ClassDetails = () => {
                   <p className="text-2xl font-bold text-gray-800">
                     {totalTeacher}
                   </p>
-                  <p className="text-gray-600">
-                    Total Mentors mentoring in the school
-                  </p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 transition-all duration-300 hover:shadow-lg">
                   <div className="flex items-center justify-between ">
@@ -491,9 +485,6 @@ const ClassDetails = () => {
                   </div>
                   <p className="text-2xl font-bold text-gray-800">
                     {totalCourse}
-                  </p>
-                  <p className="text-gray-600">
-                    Total Courses being studied in the school
                   </p>
                 </div>
               </div>
