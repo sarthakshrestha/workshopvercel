@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { School, BookOpen, Users, Calendar } from "lucide-react";
 import profileicon from ".././../../gallery/profile/Profile.jpg";
@@ -6,25 +6,33 @@ import TeacherSidebar from "../mentorSidebar";
 import DailyReflection from "./dailyReflection";
 import Profile from "../../../gallery/Mentor.jpg";
 import apiClient from "config/apiClient";
+import Classes from "assets/Classes.svg";
+import Schools from "assets/School.svg";
+import Students from "assets/Students.svg";
 
 const MentorDashboard = () => {
+  const [teacher, setTeacher] = useState(null);
+
   // Dummy data for the cards
   const [cardData, setCardData] = useState([
     {
-      title: "Schools",
-      value: 0,
-      icon: School,
-      description: "Schools currently teaching",
-    },
-    {
       title: "Classes",
       value: 0,
+      imageSrc: Classes,
       icon: BookOpen,
       description: "Classes currently teaching",
     },
     {
+      title: "Schools",
+      value: 0,
+      icon: School,
+      imageSrc: Schools,
+      description: "Schools currently teaching",
+    },
+    {
       title: "Students",
       value: 0,
+      imageSrc: Students,
       icon: Users,
       description: "Students currently teaching",
     },
@@ -34,14 +42,24 @@ const MentorDashboard = () => {
 
   useEffect(() => {
     // Fetch the data from an API
+    const fetchTeacherData = async () => {
+      try {
+        const response = await apiClient.get(`/teacher/${mentorId}`);
+        setTeacher(response.data.data);
+      } catch (err) {
+        console.err("Failed to fetch teacher data");
+      }
+    };
+
+    fetchTeacherData();
     const fetchData = async () => {
       try {
         const response = await apiClient.get(`/teacher/classes/${mentorId}`); // Replace with your API endpoint
         const schoolData = await response.data.data;
 
         setCardData([
-          { ...cardData[0], value: schoolData.schoolCount },
-          { ...cardData[1], value: schoolData.classCount },
+          { ...cardData[0], value: schoolData.classCount },
+          { ...cardData[1], value: schoolData.schoolCount },
           { ...cardData[2], value: schoolData.studentCount },
         ]);
       } catch (error) {
@@ -51,7 +69,6 @@ const MentorDashboard = () => {
 
     fetchData();
   }, []);
-
 
   // Dummy data for events
   const events = [
@@ -86,12 +103,17 @@ const MentorDashboard = () => {
               alt="Profile Icon"
               className="w-36 h-36 rounded-full mb-2"
             />
+            <p className="font-semibold flex-row">{teacher?.name}</p>
           </div>
           {cardData.map((card, index) => (
             <Card key={index} className="border border-gray-200 mr-5">
-              <div className="flex items-center p-5">
-                <div className="flex-shrink-0 mr-4">
-                  <card.icon className="h-8 w-8 text-muted-foreground" />
+              <div className="flex items-center p-5 mt-5">
+                <div className="flex-shrink-0 mr-4 ">
+                  <img
+                    src={card.imageSrc}
+                    alt={card.title}
+                    className="h-12 w-12"
+                  />
                 </div>
                 <div className="flex-grow text-center pb-4">
                   <div className="text-2xl font-bold mt-3">{card.value}</div>
