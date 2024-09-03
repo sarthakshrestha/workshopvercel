@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { Buffer } from 'buffer';
+import CryptoJS from 'crypto-js';
 
 function SignInPage() {
   const navigate = useNavigate();
-
+  const SECRET_KEY = 'MRgnS4LVB8SvJWu1JexdRGlCOCrKfBQ9';
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,8 +42,8 @@ function SignInPage() {
       });
 
       const { access_token, token_type } = response.data;
-      const encryptedToken = Buffer.from(access_token).toString('base64');
-      Cookies.set("access_token", encryptedToken , { expires: 7 });
+      const encryptedToken = CryptoJS.AES.encrypt(access_token, SECRET_KEY).toString();
+      Cookies.set("access_token", encryptedToken, { expires: 7 });
 
       axiosInstance.defaults.headers.common[
         "Authorization"
