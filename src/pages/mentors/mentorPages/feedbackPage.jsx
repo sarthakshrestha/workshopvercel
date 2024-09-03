@@ -22,9 +22,9 @@ function Feedback() {
   const [newFeedback, setNewFeedback] = useState({
     rating: 0,
     feedback_description: "",
-    feedback_date: new Date().toISOString().split('T')[0],
+    feedback_date: new Date().toISOString().split("T")[0],
     feedback_by: teacherId,
-    feedback_for: studentId
+    feedback_for: studentId,
   });
 
   const [feedbackList, setFeedbackList] = useState([]);
@@ -44,10 +44,10 @@ function Feedback() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await apiClient.post('/feedback', newFeedback);
+      const response = await apiClient.post("/feedback", newFeedback);
       setFeedbackList((prevList) => {
         if (!Array.isArray(prevList)) {
-          console.warn('prevList is not an array, initializing as empty array');
+          console.warn("prevList is not an array, initializing as empty array");
           return [newFeedback];
         }
         return [...prevList, newFeedback];
@@ -55,9 +55,9 @@ function Feedback() {
       setNewFeedback({
         rating: 0,
         feedback_description: "",
-        feedback_date: new Date().toISOString().split('T')[0],
+        feedback_date: new Date().toISOString().split("T")[0],
         feedback_by: teacherId,
-        feedback_for: studentId
+        feedback_for: studentId,
       });
       setIsModalOpen(false);
     } catch (error) {
@@ -70,11 +70,12 @@ function Feedback() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const [studentResponse, teacherResponse, feedbackResponse] = await Promise.all([
-          apiClient.get(`student/${studentId}`),
-          apiClient.get(`teacher/${teacherId}`),
-          apiClient.get(`/feedback/for/${studentId}`)
-        ]);
+        const [studentResponse, teacherResponse, feedbackResponse] =
+          await Promise.all([
+            apiClient.get(`student/${studentId}`),
+            apiClient.get(`teacher/${teacherId}`),
+            apiClient.get(`/feedback/for/${studentId}`),
+          ]);
         setStudent(studentResponse.data.data);
         setTeacher(teacherResponse.data.data);
         setFeedbackList(feedbackResponse.data.data);
@@ -90,14 +91,20 @@ function Feedback() {
   }, [studentId, teacherId]);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="flex bg-gray-100 min-h-screen">
       <MentorSidebar />
       <div className="flex-1 p-10 ml-56">
-        <h2 className="text-3xl font-bold mb-6 text-gray-800">Feedback for {student?.student_name}</h2>
+        <h2 className="text-3xl font-bold mb-6 text-gray-800">
+          Feedback for {student?.student_name}
+        </h2>
 
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogTrigger asChild>
@@ -105,30 +112,46 @@ function Feedback() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle className="text-2xl font-bold">Give Feedback</DialogTitle>
+              <DialogTitle className="text-2xl font-bold">
+                Give Feedback
+              </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Label className="block text-sm font-medium mb-2">Rating</Label>
-                <StarRating rating={newFeedback.rating} onRatingChange={handleRatingChange} />
+                <StarRating
+                  rating={newFeedback.rating}
+                  onRatingChange={handleRatingChange}
+                />
               </div>
               <div>
-                <Label htmlFor="feedback_description" className="block text-sm font-medium mb-2">Comment</Label>
+                <Label
+                  htmlFor="feedback_description"
+                  className="block text-sm font-medium mb-2"
+                >
+                  Comment
+                </Label>
                 <Textarea
                   id="feedback_description"
                   value={newFeedback.feedback_description}
-                  onChange={(e) => handleInputChange("feedback_description", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("feedback_description", e.target.value)
+                  }
                   className="w-full p-2 border rounded"
                 />
               </div>
-              <Button type="submit" className="w-full">Submit Feedback</Button> 
+              <Button type="submit" className="w-full">
+                Submit Feedback
+              </Button>
             </form>
           </DialogContent>
         </Dialog>
 
         <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
-            <CardTitle className="text-2xl font-bold">Feedback History</CardTitle>
+          <CardHeader className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white p-6">
+            <CardTitle className="text-2xl font-bold">
+              Feedback History
+            </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             {feedbackList && feedbackList.length > 0 ? (
@@ -143,26 +166,49 @@ function Feedback() {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                        <div className="w-12 h-12 bg-gradient-to-br from-zinc-700 to-zinc-900 rounded-full flex items-center justify-center text-white font-bold text-lg">
                           {teacher?.name?.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="text-lg font-semibold text-gray-800">{teacher?.name}</h3>
-                          <p className="text-sm text-gray-500">{feedback.feedback_date || new Date().toISOString().split('T')[0]}</p>
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {teacher?.name}
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            {feedback.feedback_date ||
+                              new Date().toISOString().split("T")[0]}
+                          </p>
                         </div>
                       </div>
-                      <StarRating rating={feedback.rating} readonly className="text-yellow-400" />
+                      <StarRating
+                        rating={feedback.rating}
+                        readonly
+                        className="text-yellow-400"
+                      />
                     </div>
-                    <p className="text-gray-700 mt-2 italic">&ldquo;{feedback.feedback_description}&rdquo;</p>
+                    <p className="text-gray-700 mt-2 italic">
+                      &ldquo;{feedback.feedback_description}&rdquo;
+                    </p>
                   </motion.li>
                 ))}
               </ul>
             ) : (
               <div className="flex flex-col items-center justify-center py-12 text-gray-500">
-                <svg className="w-16 h-16 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <svg
+                  className="w-16 h-16 mb-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
                 </svg>
-                <p className="text-xl font-semibold">No feedback available yet</p>
+                <p className="text-xl font-semibold">
+                  No feedback available yet
+                </p>
                 <p className="mt-2">Be the first to provide feedback!</p>
               </div>
             )}

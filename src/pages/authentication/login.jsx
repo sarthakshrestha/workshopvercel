@@ -16,19 +16,27 @@ function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [userType, setUserType] = useState("student");
 
-  const mentorLogin = () => {
-    navigate("/mlogin");
-  };
-
-  const adminLogin = () => {
-    navigate("/admin/login");
-  };
-
-  const studentLogin = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post("/student/login", {
+      let endpoint;
+      switch (userType) {
+        case "student":
+          endpoint = "/student/login";
+          break;
+        case "admin":
+          endpoint = "/admin/login";
+          break;
+        case "mentor":
+          endpoint = "/mentor/login";
+          break;
+        default:
+          throw new Error("Invalid user type");
+      }
+
+      const response = await axiosInstance.post(endpoint, {
         email,
         password,
       });
@@ -37,19 +45,32 @@ function SignInPage() {
       const encryptedToken = Buffer.from(access_token).toString('base64');
       Cookies.set("access_token", encryptedToken , { expires: 7 });
 
-      const decodedToken = jwtDecode(access_token);
-
-      const studentId = decodedToken.id || decodedToken.sub;
-
-      console.log("Student ID:", studentId);
-
-      localStorage.setItem("student_id", studentId);
-
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `${token_type} ${access_token}`;
 
-      navigate("/student");
+      if (userType === "student" || userType === "mentor") {
+        const decodedToken = jwtDecode(access_token);
+        const id = decodedToken.id || decodedToken.sub;
+        localStorage.setItem(`${userType}_id`, id);
+        console.log(
+          `${userType.charAt(0).toUpperCase() + userType.slice(1)} ID:`,
+          id
+        );
+      }
+
+      // Redirect based on user type
+      switch (userType) {
+        case "student":
+          navigate("/student");
+          break;
+        case "admin":
+          navigate("/admin");
+          break;
+        case "mentor":
+          navigate("/mentor/dashboard");
+          break;
+      }
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }
@@ -59,6 +80,14 @@ function SignInPage() {
     navigate("/");
   };
 
+  const handleUserTypeChange = (type) => {
+    setUserType(type);
+    // Clear the form fields when changing user type
+    setEmail("");
+    setPassword("");
+    setError("");
+  };
+
   return (
     <div className="min-h-screen flex">
       {/* Left Half: Placeholder Image */}
@@ -66,7 +95,7 @@ function SignInPage() {
         <img
           src={Blur}
           alt="Placeholder"
-          className="w-full h-full object-cover "
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -78,7 +107,7 @@ function SignInPage() {
             <img
               src={Logo}
               alt="Logo"
-              className="h-auto w-96 "
+              className="h-auto w-96"
               onClick={homeRedirect}
             />
           </div>
@@ -86,23 +115,25 @@ function SignInPage() {
           <h2 className="text-4xl lg:text-4xl font-bold mb-6 text-gray-800 font-sans">
             Sign in{" "}
             <span className="text-regular lg:text-regular font-light mb-6 text-gray-800 font-sans">
-              as a student
+              as a {userType}
             </span>
           </h2>
 
-          <form className="space-y-4" onSubmit={studentLogin}>
-            {/* Email Field */}
+          <form className="space-y-4" onSubmit={handleLogin}>
+            {/* Email/Username Field */}
             <div>
               <Label
-                htmlFor="text"
+                htmlFor="email"
                 className="block font-medium text-gray-700 font-sans text-lg"
               >
-                Student ID
+                {userType === "student" ? "Student ID" : "Email"}
               </Label>
               <Input
-                type="text"
-                id="text"
-                placeholder="Enter your student ID"
+                type={userType === "student" ? "text" : "email"}
+                id="email"
+                placeholder={`Enter your ${
+                  userType === "student" ? "student ID" : "email"
+                }`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 block w-full font-sans border border-gray-200 rounded-md"
@@ -127,6 +158,48 @@ function SignInPage() {
               />
             </div>
 
+            {/* User Type Toggle */}
+            <div className="flex justify-center space-x-4 mb-6">
+              <Button
+                type="button"
+                onClick={() => handleUserTypeChange("student")}
+                className={`${
+                  userType === "student"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                } px-4 py-2 rounded`}
+              >
+                Student
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleUserTypeChange("mentor")}
+                className={`${
+                  userType === "mentor"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                } px-4 py-2 rounded`}
+              >
+                Mentor
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleUserTypeChange("admin")}
+                className={`${
+                  userType === "admin"
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-200"
+                } px-4 py-2 rounded`}
+              >
+                Admin
+              </Button>
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="text-red-600 text-sm mt-2 font-sans">{error}</div>
+            )}
+
             {/* Sign In Button */}
             <Button
               type="submit"
@@ -135,30 +208,14 @@ function SignInPage() {
               Sign In
             </Button>
 
-            {/* Error Message */}
-            {error && (
-              <div className="text-red-600 text-sm mt-2 font-sans">{error}</div>
-            )}
-
             {/* Additional Options */}
             <div className="flex justify-between items-center mt-4 font-sans">
-              <a
-                href="#"
-                className="text-blue-600 hover:underline font-sans"
-                onClick={mentorLogin}
-              >
-                I mentor students.
+              <a href="#" className="text-blue-600 hover:underline font-sans">
+                Forgot Password?
               </a>
-              <a
-                href="#"
-                className="text-blue-600 hover:underline font-sans"
-                onClick={adminLogin}
-              >
-                I manage schools.
-              </a>
-              {/* <a href="#" className="text-blue-600 hover:underline font-sans">
+              <a href="#" className="text-blue-600 hover:underline font-sans">
                 Help
-              </a> */}
+              </a>
             </div>
           </form>
         </div>
