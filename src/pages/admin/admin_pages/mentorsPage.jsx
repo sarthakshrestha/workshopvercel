@@ -230,7 +230,7 @@ const MentorsPage = () => {
         </Dialog>
 
         <div className="pr-4 pl-4">
-          {mentors.length > 0 ? (
+          {mentors && mentors.length > 0 ? (
             <Table className="min-w-full ">
               <TableHeader className="bg-gray-100">
                 <TableRow>
