@@ -39,10 +39,14 @@ const AdminDashboard = () => {
         const studentsResponse = await apiClient.get("/student");
         const schoolsResponse = await apiClient.get("/school");
         const totalCourses = await apiClient.get("/course");
+        const school_course_data = await apiClient.get("/student_per_course");
+        // const course_data = await apiClient.get("/popular_course");
 
         if (
           studentsResponse.data.status === "success" &&
-          schoolsResponse.data.status === "success"
+          schoolsResponse.data.status === "success" &&
+          school_course_data.data.status === "success"
+          // course_data.data.status === "success"
         ) {
           setTotalStudents(
             studentsResponse.data.data ? studentsResponse.data.data.length : 0
@@ -53,45 +57,11 @@ const AdminDashboard = () => {
           setTotalCourses(
             totalCourses.data.data ? totalCourses.data.data.length : 0
           );
+          setSchoolCourseData(school_course_data.data.data);
+          // setPopularCourses(popularCourses.data.data);  
         } else {
           console.error("Error fetching data");
         }
-
-        // Static data for school course registration
-        setSchoolCourseData([
-          {
-            schoolName: "School A",
-            Python: 50,
-            Java: 30,
-            HTML: 20,
-            React: 15,
-            Node: 10,
-          },
-          {
-            schoolName: "School B",
-            Python: 40,
-            Java: 35,
-            HTML: 25,
-            React: 20,
-            Node: 15,
-          },
-          {
-            schoolName: "School C",
-            Python: 60,
-            Java: 25,
-            HTML: 15,
-            React: 30,
-            Node: 20,
-          },
-          {
-            schoolName: "School D",
-            Python: 45,
-            Java: 40,
-            HTML: 30,
-            React: 25,
-            Node: 15,
-          },
-        ]);
 
         // Static data for popular courses
         setPopularCourses([
@@ -135,29 +105,40 @@ const AdminDashboard = () => {
     transition: { duration: 0.8 },
   };
 
+  const colors = [
+    "rgba(75, 192, 192, 0.6)",  // Soft Teal
+    "rgba(54, 162, 235, 0.6)",  // Light Blue
+    "rgba(153, 102, 255, 0.6)", // Lavender
+    "rgba(255, 159, 64, 0.6)",  // Soft Orange
+    "rgba(255, 205, 86, 0.6)",  // Soft Yellow
+    "rgba(201, 203, 207, 0.6)", // Light Gray
+  ];
+  
   const schoolCourseChartData = {
-    labels: schoolCourseData.map((item) => item.schoolName),
-    datasets: ["Python", "Java", "HTML", "React", "Node"].map(
-      (course, index) => ({
-        label: course,
-        data: schoolCourseData.map((item) => item[course]),
-        backgroundColor: `rgba(${Math.random() * 255},${Math.random() * 255},${
-          Math.random() * 255
-        },0.6)`,
-      })
-    ),
+    labels: schoolCourseData && schoolCourseData.length > 0 
+      ? schoolCourseData.map((item) => item.schoolName) 
+      : [],
+    datasets: schoolCourseData && schoolCourseData.length > 0 
+      ? Object.keys(schoolCourseData[0])
+          .filter((key) => key !== "schoolName")
+          .map((course, index) => ({
+            label: course,
+            data: schoolCourseData.map((item) => item[course]),
+            backgroundColor: colors[index % colors.length], // Use predefined colors
+          }))
+      : [],
   };
+  
 
-  const popularCoursesChartData = {
-    labels: popularCourses.map((course) => course.courseName),
-    datasets: [
-      {
-        data: popularCourses.map((course) => course.students),
-        backgroundColor: popularCourses.map((course) => course.color),
-      },
-    ],
-  };
-
+const popularCoursesChartData = {
+  labels: popularCourses.map((course) => course.courseName),
+  datasets: [
+    {
+      data: popularCourses.map((course) => course.students),
+      backgroundColor: popularCourses.map((course, index) => colors[index % colors.length]), // Assign color based on index
+    },
+  ],
+};
   const options = {
     responsive: true,
     maintainAspectRatio: false,
