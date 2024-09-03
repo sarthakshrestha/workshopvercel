@@ -74,19 +74,25 @@ const SchoolCard = ({ school }) => {
     const fetchData = async () => {
       try {
         const classResponse = await apiClient.get(`/class/school/${school.id}`);
+        const courseResponse = await apiClient.get(`/school/${school.id}`);
         const studentsResponse = await apiClient.get(
           `/student/school/${school.id}`
         );
+        console.log(courseResponse);
 
         if (
           classResponse.data.status === "success" &&
-          studentsResponse.data.status === "success"
+          studentsResponse.data.status === "success"&&
+          courseResponse.data.status === "success"
         ) {
           setTotalClass(
             classResponse.data.data ? classResponse.data.data.length : 0
           );
           setTotalStudent(
             studentsResponse.data.data ? studentsResponse.data.data.length : 0
+          );
+          setTotalCourse(
+            courseResponse.data.data && courseResponse.data.data.course_id.length > 0? courseResponse.data.data.course_id.length : 0
           );
         } else {
           console.error("Error fetching data");
@@ -179,7 +185,7 @@ const SchoolCard = ({ school }) => {
               <InfoCard
                 icon={<GraduationCap className="text-purple-500" />}
                 title="Courses"
-                value="10"
+                value={totalCourse}
               />
             </div>
           )}
@@ -213,7 +219,6 @@ const SchoolsPage = () => {
   const fetchSchools = async () => {
     try {
       const response = await apiClient.get("/school");
-      console.log(response);
       setSchoolData(response.data.data);
     } catch (error) {
       console.error("Error fetching schools:", error);
