@@ -1,10 +1,12 @@
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { Buffer } from 'buffer';
 
 // Function to get the role from the token
 export const getRoleFromToken = () => {
-  const token = Cookies.get("access_token");
-  if (token) {
+  const encryptedtoken = Cookies.get("access_token");
+  if (encryptedtoken) {
+    const token = Buffer.from(encryptedtoken, 'base64').toString('ascii');
     const decoded = jwtDecode(token);
     console.log("role from admin", decoded.role);
     return decoded.role;

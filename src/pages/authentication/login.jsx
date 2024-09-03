@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { Buffer } from 'buffer';
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -33,8 +34,8 @@ function SignInPage() {
       });
 
       const { access_token, token_type } = response.data;
-
-      Cookies.set("access_token", access_token, { expires: 7 });
+      const encryptedToken = Buffer.from(access_token).toString('base64');
+      Cookies.set("access_token", encryptedToken , { expires: 7 });
 
       const decodedToken = jwtDecode(access_token);
 

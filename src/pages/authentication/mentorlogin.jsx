@@ -10,6 +10,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { Buffer } from 'buffer';
 
 function MentorLogin() {
   const navigate = useNavigate();
@@ -38,7 +39,8 @@ function MentorLogin() {
 
       localStorage.setItem("teacher_id", teacherId);
 
-      Cookies.set("access_token", access_token, { expires: 7 });
+      const encryptedToken = Buffer.from(access_token).toString('base64');
+      Cookies.set("access_token", encryptedToken , { expires: 7 });
 
       axiosInstance.defaults.headers.common[
         "Authorization"
