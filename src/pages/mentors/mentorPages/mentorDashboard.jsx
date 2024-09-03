@@ -6,13 +6,19 @@ import TeacherSidebar from "../mentorSidebar";
 import DailyReflection from "./dailyReflection";
 import Profile from "../../../gallery/Mentor.jpg";
 import apiClient from "config/apiClient";
+import Classes from "assets/Classes.svg";
+import Schools from "assets/School.svg";
+import Students from "assets/Students.svg";
 
 const MentorDashboard = () => {
+  const [teacher, setTeacher] = useState(null);
+
   // Dummy data for the cards
   const [cardData, setCardData] = useState([
     {
       title: "Classes",
       value: 0,
+      imageSrc: Classes,
       icon: BookOpen,
       description: "Classes currently teaching",
     },
@@ -20,11 +26,13 @@ const MentorDashboard = () => {
       title: "Schools",
       value: 0,
       icon: School,
+      imageSrc: Schools,
       description: "Schools currently teaching",
     },
     {
       title: "Students",
       value: 0,
+      imageSrc: Students,
       icon: Users,
       description: "Students currently teaching",
     },
@@ -34,6 +42,16 @@ const MentorDashboard = () => {
 
   useEffect(() => {
     // Fetch the data from an API
+    const fetchTeacherData = async () => {
+      try {
+        const response = await apiClient.get(`/teacher/${mentorId}`);
+        setTeacher(response.data.data);
+      } catch (err) {
+        console.err("Failed to fetch teacher data");
+      }
+    };
+
+    fetchTeacherData();
     const fetchData = async () => {
       try {
         const response = await apiClient.get(`/teacher/classes/${mentorId}`); // Replace with your API endpoint
@@ -85,12 +103,17 @@ const MentorDashboard = () => {
               alt="Profile Icon"
               className="w-36 h-36 rounded-full mb-2"
             />
+            <p className="font-semibold flex-row">{teacher?.name}</p>
           </div>
           {cardData.map((card, index) => (
             <Card key={index} className="border border-gray-200 mr-5">
-              <div className="flex items-center p-5">
-                <div className="flex-shrink-0 mr-4">
-                  <card.icon className="h-8 w-8 text-muted-foreground" />
+              <div className="flex items-center p-5 mt-5">
+                <div className="flex-shrink-0 mr-4 ">
+                  <img
+                    src={card.imageSrc}
+                    alt={card.title}
+                    className="h-12 w-12"
+                  />
                 </div>
                 <div className="flex-grow text-center pb-4">
                   <div className="text-2xl font-bold mt-3">{card.value}</div>

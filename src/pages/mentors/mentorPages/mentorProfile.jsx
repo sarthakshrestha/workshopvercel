@@ -60,10 +60,10 @@ const IndividualMentor = () => {
             <img
               src={teacher.profile_picture || "/default-avatar.png"}
               alt={teacher.name}
-              className="w-40 h-40 rounded-full mb-6 shadow-md mx-auto"
+              className="w-40 h-40 rounded-full shadow-md mx-auto"
             />
             <CardHeader className="text-[#353535]">
-              <div className="flex mx-auto items-center space-x-4 mt-2">
+              <div className="flex mx-auto items-center space-x-4 ">
                 <div>
                   <CardTitle className="text-3xl mt-5 ">
                     {teacher.name}
