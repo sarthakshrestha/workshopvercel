@@ -27,26 +27,40 @@ ChartJS.register(
 );
 
 const AdminDashboard = () => {
+  const colors = [
+    "rgba(75, 192, 192, 0.8)",  // Soft Teal
+    "rgba(54, 162, 235, 0.8)",  // Light Blue
+    "rgba(153, 102, 255, 0.8)", // Lavender
+    "rgba(255, 159, 64, 0.8)",  // Soft Orange
+    "rgba(255, 205, 86, 0.8)",  // Soft Yellow
+    "rgba(201, 203, 207, 0.8)", // Light Gray
+    "rgba(99, 255, 132, 0.8)",  // Light Green
+    "rgba(255, 99, 132, 0.8)",  // Soft Red
+    "rgba(150, 75, 0, 0.8)",    // Brown
+    "rgba(128, 128, 128, 0.8)", // Medium Gray
+  ];
   const [totalStudents, setTotalStudents] = useState(0);
   const [totalSchools, setTotalSchools] = useState(0);
   const [totalCourses, setTotalCourses] = useState(0);
   const [schoolCourseData, setSchoolCourseData] = useState([]);
   const [popularCourses, setPopularCourses] = useState([]);
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const studentsResponse = await apiClient.get("/student");
         const schoolsResponse = await apiClient.get("/school");
-        const totalCourses = await apiClient.get("/course");
-        const school_course_data = await apiClient.get("/student_per_course");
-        // const course_data = await apiClient.get("/popular_course");
-
+        const totalCoursesResponse = await apiClient.get("/course");
+        const schoolCourseDataResponse = await apiClient.get("/student_per_course");
+        const popularCoursesResponse = await apiClient.get("/popular_courses");
+  
         if (
           studentsResponse.data.status === "success" &&
           schoolsResponse.data.status === "success" &&
-          school_course_data.data.status === "success"
-          // course_data.data.status === "success"
+          totalCoursesResponse.data.status === "success" &&
+          schoolCourseDataResponse.data.status === "success" &&
+          popularCoursesResponse.data.status === "success"
         ) {
           setTotalStudents(
             studentsResponse.data.data ? studentsResponse.data.data.length : 0
@@ -55,80 +69,61 @@ const AdminDashboard = () => {
             schoolsResponse.data.data ? schoolsResponse.data.data.length : 0
           );
           setTotalCourses(
-            totalCourses.data.data ? totalCourses.data.data.length : 0
+            totalCoursesResponse.data.data ? totalCoursesResponse.data.data.length : 0
           );
-          setSchoolCourseData(school_course_data.data.data);
-          // setPopularCourses(popularCourses.data.data);
+          setSchoolCourseData(
+            schoolCourseDataResponse.data.data ? schoolCourseDataResponse.data.data : []
+          );
+          setPopularCourses(
+            popularCoursesResponse.data.data && popularCoursesResponse.data.data.length > 0
+              ? popularCoursesResponse.data.data.map((course, index) => ({
+                  courseName: course.courseName,
+                  students: course.students,
+                  color: colors[index % colors.length], // Assign color from the colors array
+                }))
+              : []
+          );
         } else {
           console.error("Error fetching data");
         }
-
-        // Static data for popular courses
-        setPopularCourses([
-          {
-            courseName: "HTML/CSS",
-            students: 250,
-            color: "rgba(59, 130, 246, 0.8)",
-          },
-          {
-            courseName: "Scratch",
-            students: 150,
-            color: "rgba(16, 185, 129, 0.8)",
-          },
-          {
-            courseName: "Cybersecurity",
-            students: 125,
-            color: "rgba(245, 158, 11, 0.8)",
-          },
-        ]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, []);
-
+  
   const chartAnimation = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.8 },
   };
 
-  const colors = [
-    "rgba(75, 192, 192, 0.6)", // Soft Teal
-    "rgba(54, 162, 235, 0.6)", // Light Blue
-    "rgba(153, 102, 255, 0.6)", // Lavender
-    "rgba(255, 159, 64, 0.6)", // Soft Orange
-    "rgba(255, 205, 86, 0.6)", // Soft Yellow
-    "rgba(201, 203, 207, 0.6)", // Light Gray
-  ];
+
 
   const schoolCourseChartData = {
-    labels:
-      schoolCourseData && schoolCourseData.length > 0
-        ? schoolCourseData.map((item) => item.schoolName)
-        : [],
-    datasets:
-      schoolCourseData && schoolCourseData.length > 0
-        ? Object.keys(schoolCourseData[0])
-            .filter((key) => key !== "schoolName")
-            .map((course, index) => ({
-              label: course,
-              data: schoolCourseData.map((item) => item[course]),
-              backgroundColor: colors[index % colors.length], // Use predefined colors
-            }))
-        : [],
+    labels: schoolCourseData && schoolCourseData.length > 0
+      ? schoolCourseData.map((item) => item.schoolName)
+      : [],
+    datasets: schoolCourseData && schoolCourseData.length > 0
+      ? Object.keys(schoolCourseData[0])
+        .filter((key) => key !== "schoolName")
+        .map((course, index) => ({
+          label: course,
+          data: schoolCourseData.map((item) => item[course]),
+          backgroundColor: colors[index % colors.length], // Use predefined colors
+        }))
+      : [],
   };
+
 
   const popularCoursesChartData = {
     labels: popularCourses.map((course) => course.courseName),
     datasets: [
       {
         data: popularCourses.map((course) => course.students),
-        backgroundColor: popularCourses.map(
-          (course, index) => colors[index % colors.length]
-        ), // Assign color based on index
+        backgroundColor: popularCourses.map((course, index) => colors[index % colors.length]), 
       },
     ],
   };
