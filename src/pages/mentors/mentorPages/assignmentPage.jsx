@@ -359,7 +359,7 @@ function AssignmentPage() {
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 <Card className="h-full flex flex-col">
-                  <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                  <CardHeader className="bg-gradient-to-r from-zinc-700 to-zinc-900 text-white">
                     <CardTitle className="text-xl font-bold">
                       {assignment.title}
                     </CardTitle>

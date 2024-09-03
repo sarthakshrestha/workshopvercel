@@ -5,52 +5,70 @@ import { Toaster } from "@/components/ui/toaster";
 import TeacherSidebar from "../mentorSidebar";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { FaUserGraduate, FaBook, FaChalkboardTeacher } from "react-icons/fa";
+import {
+  FaUserGraduate,
+  FaBook,
+  FaChalkboardTeacher,
+  FaEye,
+  FaClipboardCheck,
+  FaPen,
+} from "react-icons/fa"; // Importing additional icons
 import { motion } from "framer-motion";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card"; // Importing Shadcn Card components
 
 const ClassItem = ({ classData }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white border-l-4 border-black shadow-md p-4 mb-4">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">
-        {classData.class_name}
-      </h3>
-      <div className="grid grid-cols-3 gap-4 text-sm text-gray-600 mb-4">
-        <div className="flex items-center">
-          <FaUserGraduate className="mr-2 w-5 h-5 text-gray-700" />
-          <span>{classData.students?.length || 0} Students</span>
+    <Card className="shadow-md border border-gray-200 mb-4 p-6">
+      <CardHeader>
+        <CardTitle className="text-3xl font-semibold text-gray-800 text-center">
+          {classData.class_name}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-3 text-lg text-gray-600 mb-4 justify-center mt-5">
+          <div className="flex items-center justify-center">
+            <FaUserGraduate className="mr-2 w-6 h-6 text-gray-700" />
+            <span>{classData.students?.length || 0} Students</span>
+          </div>
+          <div className="flex items-center justify-center">
+            <FaBook className="mr-2 w-6 h-6 text-gray-700" />
+            <span>{classData.courses?.length || 0} Courses</span>
+          </div>
+          <div className="flex items-center justify-center">
+            <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
+            <span>{classData.teachers?.length || 0} Mentors</span>
+          </div>
         </div>
-        <div className="flex items-center">
-          <FaBook className="mr-2 w-5 h-5 text-gray-700" />
-          <span>{classData.courses?.length || 0} Courses</span>
-        </div>
-        <div className="flex items-center">
-          <FaChalkboardTeacher className="mr-2 w-6 h-6 text-gray-700" />
-          <span>{classData.teachers?.length || 0} Mentors</span>
-        </div>
-      </div>
-      <div className="flex justify-center items-center">
+      </CardContent>
+      <CardFooter className="flex justify-center gap-2">
         <Button
-          className="underline bg-white hover:bg-white text-black font-medium py-2 px-4 rounded-md transition duration-300"
+          className="bg-zinc-800 text-white hover:bg-zinc-900 transition duration-300 flex items-center"
           onClick={() => navigate("/mentor/students/" + classData.id)}
         >
-          View Students
+          <FaEye className="mr-2" /> View Students
         </Button>
         <Button
-          className="underline bg-white hover:bg-white text-black font-medium py-2 px-4 rounded-md transition duration-300"
+          className="bg-zinc-800 text-white hover:bg-zinc-900 transition duration-300 ml-2 flex items-center"
           onClick={() => navigate("/mentor/attendances/" + classData.id)}
         >
-          Take Attendance
+          <FaClipboardCheck className="mr-2" /> Take Attendance
         </Button>
         <Button
-          className="underline bg-white hover:bg-white text-black font-medium py-2 px-4 rounded-md transition duration-300"
+          className="bg-zinc-800 text-white hover:bg-zinc-900 transition duration-300 ml-2 flex items-center"
           onClick={() => navigate("/mentor/assignment/" + classData.id)}
         >
-          Give Assignment
+          <FaPen className="mr-2" /> Give Assignment
         </Button>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
