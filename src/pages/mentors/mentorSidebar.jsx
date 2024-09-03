@@ -11,6 +11,7 @@ import {
   NotebookText,
   LogOut,
   MessageSquare,
+  UserRoundPen,
 } from "lucide-react";
 import logo from "gallery/images/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +28,10 @@ const MentorSidebar = () => {
   };
   const journals = () => {
     navigate("/mentor/journals");
+  };
+
+  const profile = () => {
+    navigate("/mentor/profile");
   };
 
   // const feedbackClick = () => {
@@ -81,6 +86,14 @@ const MentorSidebar = () => {
             <MessageSquare className="mr-2 h-5 w-5" />
             Feedback
           </Button> */}
+          <Button
+            variant="ghost"
+            className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
+            onClick={(e) => profile()}
+          >
+            <UserRoundPen className="mr-2 h-5 w-5" />
+            Profile
+          </Button>
           <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"

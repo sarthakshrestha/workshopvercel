@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { School, BookOpen, Users, Calendar } from "lucide-react";
 import profileicon from ".././../../gallery/profile/Profile.jpg";
@@ -11,16 +11,16 @@ const MentorDashboard = () => {
   // Dummy data for the cards
   const [cardData, setCardData] = useState([
     {
-      title: "Schools",
-      value: 0,
-      icon: School,
-      description: "Schools currently teaching",
-    },
-    {
       title: "Classes",
       value: 0,
       icon: BookOpen,
       description: "Classes currently teaching",
+    },
+    {
+      title: "Schools",
+      value: 0,
+      icon: School,
+      description: "Schools currently teaching",
     },
     {
       title: "Students",
@@ -40,8 +40,8 @@ const MentorDashboard = () => {
         const schoolData = await response.data.data;
 
         setCardData([
-          { ...cardData[0], value: schoolData.schoolCount },
-          { ...cardData[1], value: schoolData.classCount },
+          { ...cardData[0], value: schoolData.classCount },
+          { ...cardData[1], value: schoolData.schoolCount },
           { ...cardData[2], value: schoolData.studentCount },
         ]);
       } catch (error) {
@@ -51,7 +51,6 @@ const MentorDashboard = () => {
 
     fetchData();
   }, []);
-
 
   // Dummy data for events
   const events = [
