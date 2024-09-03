@@ -42,15 +42,10 @@ const SchoolDashboard = () => {
       const response = await apiClient.get(`/student/school/${schoolId}`);
       const courseResponse = await apiClient.get(`/school/${schoolId}`);
       const classResponse = await apiClient.get(`/class/school/${schoolId}`);
-      if (response.data && response.data.data) {
-        setStudentCount(response.data.data.length);
-        setCourseCount(courseResponse.data.data.course_id.length);
-        setName(courseResponse.data.data.school_name);
-        console.log("Course Response", courseResponse);
-        setClasses(classResponse.data.data.length);
-      } else {
-        console.warn("No student data received from the server.");
-      }
+        setStudentCount( response.data.data?.length || 0);
+        setCourseCount(courseResponse.data.data.course_id?.length || 0);
+        setName(courseResponse.data.data?.school_name || 0);
+        setClasses(classResponse.data.data?.length || 0);
     } catch (error) {
       console.error("Error fetching student count:", error);
       setStudentCount(0);
