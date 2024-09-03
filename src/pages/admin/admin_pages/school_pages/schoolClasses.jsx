@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/table";
 import { FaPlus } from "react-icons/fa";
 import { motion } from "framer-motion";
+import LoadingSpinner from "userDefined_components/loading_spinner/loadingSpinner";
 
 const initialClassState = {
   class_name: "",
@@ -160,83 +161,78 @@ const SchoolClasses = () => {
             </Dialog>
           </div>
 
-          {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="h-12 w-12 border-t-2 border-b-2 rounded-full"
-              />
-            </div>
-          ) : sortedClasses && sortedClasses.length > 0 ? (
-            <Table className="bg-white">
-              <TableHeader className="  text-white hover:text-white">
-                <TableRow className="bg-[#0a0a28] hover:bg-[#0a0a28]">
-                  <TableHead className="text-white text-center ">
-                    Class Name
-                  </TableHead>
-                  <TableHead className="text-white text-center">
-                    Students
-                  </TableHead>
-                  <TableHead className="text-white text-center">
-                    Courses
-                  </TableHead>
-                  <TableHead className="text-white text-center">
-                    Mentors
-                  </TableHead>
-                  <TableHead className="text-white text-center">
-                    Action
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedClasses.map((classItem) => (
-                  <TableRow key={classItem.id}>
-                    <TableCell className="text-center">
-                      {classItem.class_name}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {classItem.students?.length || 0}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {classItem.courses?.length || 0}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      {classItem.teachers?.length || 0}
-                    </TableCell>
-                    <TableCell className="text-center">
-                      <Button
-                        onClick={() => handleViewDetails(classItem.id)}
-                        size="sm"
-                      >
-                        View Details
-                      </Button>
-
-                      <Button
-                        onClick={() => handleViewAttendance(classItem.id)}
-                        variant="outline"
-                        size="sm"
-                        className="ml-2"
-                      >
-                        View Attendance
-                      </Button>
-                    </TableCell>
+          {isLoading ?
+            (
+              <LoadingSpinner />
+            ) : sortedClasses && sortedClasses.length > 0 ? (
+              <Table className="bg-white">
+                <TableHeader className="  text-white hover:text-white">
+                  <TableRow className="bg-[#0a0a28] hover:bg-[#0a0a28]">
+                    <TableHead className="text-white text-center ">
+                      Class Name
+                    </TableHead>
+                    <TableHead className="text-white text-center">
+                      Students
+                    </TableHead>
+                    <TableHead className="text-white text-center">
+                      Courses
+                    </TableHead>
+                    <TableHead className="text-white text-center">
+                      Mentors
+                    </TableHead>
+                    <TableHead className="text-white text-center">
+                      Action
+                    </TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <p>
-                No Classes Found. Start by adding a new class using the 'Add
-                Class' button above.
-              </p>
-            </motion.div>
-          )}
+                </TableHeader>
+                <TableBody>
+                  {sortedClasses.map((classItem) => (
+                    <TableRow key={classItem.id}>
+                      <TableCell className="text-center">
+                        {classItem.class_name}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {classItem.students?.length || 0}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {classItem.courses?.length || 0}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {classItem.teachers?.length || 0}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <Button
+                          onClick={() => handleViewDetails(classItem.id)}
+                          size="sm"
+                        >
+                          View Details
+                        </Button>
+
+                        <Button
+                          onClick={() => handleViewAttendance(classItem.id)}
+                          variant="outline"
+                          size="sm"
+                          className="ml-2"
+                        >
+                          View Attendance
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <p>
+                  No Classes Found. Start by adding a new class using the 'Add
+                  Class' button above.
+                </p>
+              </motion.div>
+            )}
         </main>
       </div>
       <Toaster />
