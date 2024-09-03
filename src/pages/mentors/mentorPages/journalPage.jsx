@@ -38,9 +38,9 @@ const JournalPage = () => {
       <div className="flex-1 p-10 ml-56">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-5xl font-bold font-patrick">
             Look Through Your Journals{" "}
-            <p className="text-lg mt-2 font-semibold">
+            <p className="text-2xl mt-2 font-semibold font-patrick">
               Click to view your entire journal entry!
             </p>
           </h1>
@@ -84,15 +84,19 @@ const JournalPage = () => {
                 className="relative bg-teal-500 text-white p-6 rounded-lg shadow-lg font-patrick text-3xl h-64 overflow-hidden cursor-pointer"
                 onClick={() => handleJournalClick(journal)}
               >
-                <p className="text-2xl mb-4 font-patrick truncate">
-                  {journal.body.length > 200
-                    ? `${journal.body.substring(0, 200)}...`
-                    : journal.body}
-                </p>
-                <p className="text-xl font-bold text-teal-200 font-patrick">
+                {/* Displaying the date at the top */}
+                <p className="text-xl font-bold text-teal-200 font-patrick mb-4">
                   {journal.day_of_week}, {journal.month} {journal.day},{" "}
                   {journal.year}
                 </p>
+
+                {/* Displaying the journal body without truncation */}
+                <p className="text-2xl pb-8 font-patrick">
+                  {journal.body.split(" ").slice(0, 30).join(" ")}
+                  {journal.body.split(" ").length > 30 && " ..."}
+                </p>
+
+                {/* Decorative element */}
                 <div className="absolute bottom-0 right-0 w-8 h-8 bg-teal-600 rounded-br-lg clip-corner"></div>
               </div>
             ))}
