@@ -5,6 +5,8 @@ import { BarChart, Calendar, Users, BookOpen, School } from "lucide-react";
 import { Bar } from "react-chartjs-2";
 import apiClient from "@/utils/axiosInstance";
 import SchoolSidebar from "./schoolSidebar";
+import CurriculumModal from "./curriculumModal";
+import { Button } from "@/components/ui/button";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,6 +32,8 @@ const SchoolDashboard = () => {
   const [events, setEvents] = useState([]);
   const [studentCount, setStudentCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
+  const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
+
   const [name, setName] = useState("");
   const [classes, setClasses] = useState(0);
 
@@ -42,6 +46,7 @@ const SchoolDashboard = () => {
         setStudentCount(response.data.data.length);
         setCourseCount(courseResponse.data.data.course_id.length);
         setName(courseResponse.data.data.school_name);
+        console.log("Course Response", courseResponse);
         setClasses(classResponse.data.data.length);
       } else {
         console.warn("No student data received from the server.");
@@ -94,7 +99,7 @@ const SchoolDashboard = () => {
   };
 
   const popularCoursesData = {
-    labels: ["React", "Node.js", "Python", "Java", "JavaScript"],
+    labels: ["HTML/CSS", "Scratch", "Cybersecurity"],
     datasets: [
       {
         label: "Course Popularity",
@@ -144,8 +149,8 @@ const SchoolDashboard = () => {
           <h1 className="text-4xl font-bold mb-8 text-gray-800 ">
             {name} Dashboard
           </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <CurriculumModal />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-4">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium ">

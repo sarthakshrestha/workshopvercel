@@ -92,8 +92,8 @@ const JournalPage = () => {
 
                 {/* Displaying the journal body without truncation */}
                 <p className="text-2xl pb-8 font-patrick">
-                  {journal.body.split(" ").slice(0, 30).join(" ")}
-                  {journal.body.split(" ").length > 30 && " ..."}
+                  {journal.body.split(" ").slice(0, 20).join(" ")}
+                  {journal.body.split(" ").length > 20 && " ..."}
                 </p>
 
                 {/* Decorative element */}
