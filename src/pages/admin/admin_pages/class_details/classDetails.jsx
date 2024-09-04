@@ -176,12 +176,17 @@ const ClassDetails = () => {
     ];
 
     // Return the updated course IDs
-    return updatedCourseIds;
+    return updatedCourseIds && updatedCourseIds.length > 0 ? updatedCourseIds: [];
   };
+
+  // const updateStudentPromises = classData.students && classData.students.length > 0
+  // ? classData.students.map(async (student) => {
+  //     return apiClient.put(`/student/${student.id}`, 
+  //       {course_id: selectedCourses})
+  //     }): [];
 
   const handleTeacherAPI = async (teacher, schoolInfo) => {
     await apiClient.put(`/teacher/${teacher.id}`, {
-      ...teacher,
       schools: schoolInfo,
     });
   };
@@ -227,7 +232,7 @@ const ClassDetails = () => {
 
         await fetchClassData();
 
-        const updateAddedTeacher = newlySelectedTeacher && newlySelectedTeacher.length > 0 && newlySelectedTeacher.map(
+        const updateAddedTeacher = newlySelectedTeacher && newlySelectedTeacher.length > 0 ? newlySelectedTeacher.map(
           async (teacherId) => {
             const teacherResponse = await apiClient.get(
               `/teacher/${teacherId}`
@@ -261,6 +266,8 @@ const ClassDetails = () => {
                     new_class,
                     updatedCourse
                   );
+
+                  console.log(perSchoolInfo);
 
                   // Update the existing school info instead of filtering and pushing
                   Object.assign(school_info, perSchoolInfo);
@@ -297,9 +304,9 @@ const ClassDetails = () => {
 
             await handleTeacherAPI(teacher, totalSchoolInfo);
           }
-        );
+        ):[];
 
-        const updateRemovedTeacher = newlyRemovedTeacher && newlyRemovedTeacher.length > 0 && newlyRemovedTeacher.map(
+        const updateRemovedTeacher = newlyRemovedTeacher && newlyRemovedTeacher.length > 0 ? newlyRemovedTeacher.map(
           async (teacherId) => {
             const teacherResponse = await apiClient.get(
               `/teacher/${teacherId}`
@@ -345,6 +352,7 @@ const ClassDetails = () => {
                     school_info.classes,
                     updatedCourse
                   );
+                  console.log(perSchoolInfo);
                   Object.assign(school_info, perSchoolInfo);
                 }
                 return true; // Keep this school in the array
@@ -361,7 +369,7 @@ const ClassDetails = () => {
 
             await handleTeacherAPI(teacher, totalSchoolInfo);
           }
-        );
+        ):[];
 
         await Promise.all(updateAddedTeacher);
         await Promise.all(updateRemovedTeacher);
@@ -404,12 +412,19 @@ const ClassDetails = () => {
           throw new Error("Failed to update class data");
         }
 
-        const updateStudentPromises = classData.students && classData.students.length > 0 && classData.students.map((student) =>
-          apiClient.put(`/student/${student.id}`, {
-            ...student,
-            course_id: [...selectedCourses],
-          })
-        );
+
+        // const courseId = selectedCourses && selectedCourses.length > 0
+        // ? selectedCourses.join(",")
+        // : "";
+        // console.log(courseId);
+
+
+        const updateStudentPromises = classData.students && classData.students.length > 0
+        ? classData.students.map(async (student) => {
+            return apiClient.put(`/student/${student.id}`, 
+              {course_id: selectedCourses})
+            }): [];
+
 
         // const updateTeacherPromises = classData.teachers.map(teacher =>
         //     apiClient.put(`/teacher/${teacher.id}`, {
