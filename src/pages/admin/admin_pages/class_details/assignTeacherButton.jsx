@@ -119,14 +119,16 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
           </DialogTitle>
         </DialogHeader>
         <div className="mt-4 max-h-96 overflow-y-auto">
-          {allTeachers.map((teacher) => (
-            <TeacherCard
-              key={teacher.id}
-              teacher={teacher}
-              isAssigned={selectedTeachers.includes(teacher.id)}
-              onToggle={toggleTeacher}
-            />
-          ))}
+          {allTeachers &&
+            allTeachers.length > 0 &&
+            allTeachers.map((teacher) => (
+              <TeacherCard
+                key={teacher.id}
+                teacher={teacher}
+                isAssigned={selectedTeachers.includes(teacher.id)}
+                onToggle={toggleTeacher}
+              />
+            ))}
         </div>
         <DialogFooter className="mt-6">
           <Button
