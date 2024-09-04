@@ -133,7 +133,7 @@ const SchoolCourses = () => {
                 <DialogTitle>Assign Courses</DialogTitle>
               </DialogHeader>
               <div className="mt-4 max-h-96 overflow-y-auto">
-                {allCourses.map((course) => (
+                {allCourses && allCourses.length && allCourses.map((course) => (
                   <CourseCard
                     key={course.id}
                     course={course}

@@ -32,7 +32,7 @@ const ClassDetails = () => {
       setTotalTeacher(response.data.data.teachers?.length || 0);
     } catch (error) {
       console.error("Error fetching class data:", error);
-      // Handle error (e.g., show error message to user)
+      // Handle error (e.g., show error message to user)                              
     } finally {
       setIsLoading(false);
     }
@@ -227,7 +227,7 @@ const ClassDetails = () => {
 
         await fetchClassData();
 
-        const updateAddedTeacher = newlySelectedTeacher.map(
+        const updateAddedTeacher = newlySelectedTeacher && newlySelectedTeacher.length > 0 && newlySelectedTeacher.map(
           async (teacherId) => {
             const teacherResponse = await apiClient.get(
               `/teacher/${teacherId}`
@@ -299,7 +299,7 @@ const ClassDetails = () => {
           }
         );
 
-        const updateRemovedTeacher = newlyRemovedTeacher.map(
+        const updateRemovedTeacher = newlyRemovedTeacher && newlyRemovedTeacher.length > 0 && newlyRemovedTeacher.map(
           async (teacherId) => {
             const teacherResponse = await apiClient.get(
               `/teacher/${teacherId}`
@@ -404,7 +404,7 @@ const ClassDetails = () => {
           throw new Error("Failed to update class data");
         }
 
-        const updateStudentPromises = classData.students.map((student) =>
+        const updateStudentPromises = classData.students && classData.students.length > 0 && classData.students.map((student) =>
           apiClient.put(`/student/${student.id}`, {
             ...student,
             course_id: [...selectedCourses],

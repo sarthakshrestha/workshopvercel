@@ -20,6 +20,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import apiClient from "config/apiClient";
 
 const MentorsPage = () => {
@@ -230,7 +231,7 @@ const MentorsPage = () => {
         </Dialog>
 
         <div className="pr-4 pl-4">
-          {mentors.length > 0 ? (
+          {mentors && mentors.length > 0 ? (
             <Table className="min-w-full ">
               <TableHeader className="bg-gray-100">
                 <TableRow>
@@ -284,7 +285,16 @@ const MentorsPage = () => {
               </TableBody>
             </Table>
           ) : (
-            <p>No mentors found</p>
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <p>
+                  No Mentors Found. Start by adding a new mentor using the 'Add
+                  Mentor' button above.
+                </p>
+              </motion.div>
           )}
         </div>
       </div>

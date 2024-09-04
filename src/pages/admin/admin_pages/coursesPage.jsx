@@ -68,6 +68,7 @@ const CourseCard = ({ course }) => {
 
 const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newCourse, setNewCourse] = useState({
     course_name: "",
     course_content: "",
@@ -100,7 +101,16 @@ const CoursesPage = () => {
   const handleAddCourse = async () => {
     try {
       const response = await apiClient.post("/course", newCourse);
-      setCourses([...courses, response.data.data]);
+      console.log(response);
+      setCourses([...courses, newCourse]);
+      setNewCourse({
+        course_name: "",
+        course_content: "",
+        course_duration: "",
+        description: "",
+        logo: "",
+      });
+      setIsAddDialogOpen(false);
     } catch (error) {
       console.error("Error adding course:", error);
     }
@@ -114,7 +124,7 @@ const CoursesPage = () => {
           Courses
         </h1>
         <div className="mb-8 flex justify-end">
-          <Dialog>
+          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button className="text-white bg-blue-900 hover:bg-blue-800 px-4 py-2 rounded-lg transition duration-300 flex items-center">
                 <Plus className="w-5 h-5 mr-2" />

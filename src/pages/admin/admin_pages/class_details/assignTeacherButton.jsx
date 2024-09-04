@@ -43,7 +43,7 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
   const fetchAllTeachers = useCallback(async () => {
     try {
       const teacherData = await apiClient.get("/teacher");
-      setAllTeachers(teacherData.data.data);
+      setAllTeachers(teacherData?teacherData.data.data:[]);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast({
@@ -119,7 +119,7 @@ const AssignTeacherButton = ({ onAssignTeacher, class_data }) => {
           </DialogTitle>
         </DialogHeader>
         <div className="mt-4 max-h-96 overflow-y-auto">
-          {allTeachers.map((teacher) => (
+          {allTeachers && allTeachers.length && allTeachers.allTeachers.map((teacher) => (
             <TeacherCard
               key={teacher.id}
               teacher={teacher}
