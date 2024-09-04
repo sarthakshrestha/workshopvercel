@@ -13,6 +13,7 @@ import {
   AlertCircle,
 } from "lucide-react";
 import MentorSidebar from "../mentorSidebar";
+import ProfilePictureAvatar  from "./profilePictureAvator"
 
 const IndividualMentor = () => {
   const mentorId = localStorage.getItem("teacher_id");
@@ -57,11 +58,10 @@ const IndividualMentor = () => {
 
         <Card className="shadow-lg mx-auto w-full md:w-96 lg:w-1/2 bg-[#C0D1EE]">
           <CardContent className="p-6">
-            <img
-              src={teacher.profile_picture || "/default-avatar.png"}
-              alt={teacher.name}
-              className="w-40 h-40 rounded-full shadow-md mx-auto"
-            />
+            <ProfilePictureAvatar 
+                    profilePicture={teacher.profile_picture}
+                    studentName={teacher.name}
+                  />
             <CardHeader className="text-[#353535]">
               <div className="flex mx-auto items-center space-x-4 ">
                 <div>

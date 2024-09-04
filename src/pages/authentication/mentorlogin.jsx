@@ -30,17 +30,17 @@ function MentorLogin() {
         email,
         password,
       });
-
+      console.log("doing")
       const { access_token, token_type } = response.data;
-
+      console.log("doing1")
       const decodedToken = jwtDecode(access_token);
-
+      console.log("doing2")
       const teacherId = decodedToken.id || decodedToken.sub;
-
+      console.log("doing3")
       console.log("Teacher ID:", teacherId);
 
       localStorage.setItem("teacher_id", teacherId);
-
+      console.log("doing4")
       const encryptedToken = CryptoJS.AES.encrypt(access_token, SECRET_KEY).toString();
       Cookies.set("access_token", encryptedToken, { expires: 7 });
 
