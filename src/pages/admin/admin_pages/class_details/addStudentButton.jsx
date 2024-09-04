@@ -22,6 +22,7 @@ const AddStudentButton = ({ onAddStudent }) => {
     address: "",
     class_id: "",
     school_id: "",
+    studentId: "",
     course_id: [],
     profile_picture: null,
   });
@@ -41,7 +42,13 @@ const AddStudentButton = ({ onAddStudent }) => {
     let formIsValid = true;
     let errors = {};
 
-    const requiredFields = ["student_name", "age", "phone_num", "address"];
+    const requiredFields = [
+      "student_name",
+      "age",
+      "phone_num",
+      "address",
+      "studentId",
+    ];
     for (const field of requiredFields) {
       if (!newStudent[field].trim()) {
         formIsValid = false;
@@ -109,6 +116,7 @@ const AddStudentButton = ({ onAddStudent }) => {
       address: "",
       class_id: "",
       school_id: "",
+      studentId: "",
       course_id: [],
       profile_picture: null,
     });
