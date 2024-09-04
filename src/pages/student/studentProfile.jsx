@@ -9,6 +9,8 @@ import { Edit, Save } from "lucide-react";
 import { baseURL } from "@/utils/axiosInstance";
 import StudentSidebar from "./studentSidebar";
 import Arpit from "../../gallery/members/Arpit1.png";
+import ProfilePictureAvatar from "pages/mentors/mentorPages/profilePictureAvator";
+import DisplayProfile from "userDefined_components/profileimage/ProfileImage";
 
 const StudentsProfile = () => {
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const StudentsProfile = () => {
     phone_num: "",
     student_email: "",
     address: "",
+    studentId: "",
   });
 
   useEffect(() => {
@@ -40,85 +43,29 @@ const StudentsProfile = () => {
         school_id: data.school_id,
         course_id: data.course_id,
         class_id: data.class_id,
+        studentId: data.studentId,
       });
     } catch (error) {
       console.error("Error fetching student data:", error);
     }
   };
 
-  const handleSave = async () => {
-    try {
-      await axios.put(`${baseURL}/student/${studentData.id}`, studentData);
-      setIsEditing(false);
-      fetchStudentData();
-    } catch (error) {
-      console.error("Error updating student data:", error);
-    }
-  };
-
-  const handleEdit = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const renderReadOnlyFields = () => (
-    <>
-      <div className="space-y-2">
-        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm text-[#7B7B7B] ml-6">Age</p>
-          <p className="text-xl ml-6">{studentData.age}</p>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm ml-6 text-[#7B7B7B]">Phone Number</p>
-          <p className="text-xl ml-6">{studentData.phone_num}</p>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <div className="bg-[#F3F4F6] p-4 rounded-lg w-full">
-          <p className="text-sm ml-6 text-[#7B7B7B]">Student ID</p>
-          <p className="text-xl ml-6">{studentData.student_email}</p>
-        </div>
-      </div>
-    </>
-  );
-
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex h-screen bg-[#EAEFFB]">
       <StudentSidebar />
-      <div className="flex-1 flex flex-col items-center justify-center p-8">
-        <Avatar className="h-auto w-36 border-4 border-white shadow-lg mb-[-5rem]">
-          <AvatarImage src={Arpit} alt="Student Avatar" />
-          <AvatarFallback className="text-2xl bg-[#C0D1EE] text-blue-800">
-            {studentData.student_name
-              .split(" ")
-              .map((n) => n[0])
-              .join("")}
-          </AvatarFallback>
-        </Avatar>
-        <Card className="w-full max-w-xl shadow-xl rounded-xl overflow-hidden bg-[#C0D1EE] p-9">
-          <CardHeader className="text-[#353535]">
-            <div className="flex mx-auto items-center space-x-4 mt-2">
-              <div>
-                <CardTitle className="text-3xl mt-5 ">
-                  {studentData.student_name}
-                </CardTitle>
-              </div>
-            </div>
-            <div className="flex mx-auto items-center space-x-4 ">
-              <div>
-                <CardTitle className="text-lg mt-1 text-[#686868]">
-                  {studentData.address}
-                </CardTitle>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent className="p-6 mx-auto flex">
-            <div className="space-y-6 flex flex-col items-stretch w-full">
-              {renderReadOnlyFields()}
-            </div>
-          </CardContent>
-        </Card>
+      <div className="flex-1 flex flex-col items-center p-8">
+        <h1 className="text-7xl font-semibold mt-4">
+          {studentData.student_name}
+        </h1>
+        <h2 className="text-lg mt-5 text-[#607496]">{studentData.studentId}</h2>
+        <h2 className="text-lg mt-2 text-[#607496]">{studentData.address}</h2>
+        <h2 className="text-lg mt-2 text-[#607496]">{studentData.phone_num}</h2>
+        <div className="mt-9">
+          <DisplayProfile
+            profilePicture={studentData?.profile_picture}
+            studentName={studentData?.student_name}
+          />
+        </div>
       </div>
     </div>
   );

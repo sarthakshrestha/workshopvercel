@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import apiClient from "config/apiClient";
 
-const ProfilePictureAvatar = ({ profilePicture, studentName }) => {
+const DisplayProfile = ({ profilePicture, studentName }) => {
   const [profilePictureUrl, setProfilePictureUrl] = useState(null);
 
   useEffect(() => {
@@ -32,14 +31,25 @@ const ProfilePictureAvatar = ({ profilePicture, studentName }) => {
     };
   }, [profilePicture]);
 
+  const fallbackContent = studentName
+    ? studentName.charAt(0).toUpperCase()
+    : "";
+
   return (
-    <Avatar className="w-40 h-40 rounded-none">
-      <AvatarImage src={profilePictureUrl} alt={studentName} />
-      <AvatarFallback>
-        {studentName ? studentName.charAt(0) : ""}
-      </AvatarFallback>
-    </Avatar>
+    <div className="w-96 h-96 relative overflow-hidden bg-gray-800">
+      {profilePictureUrl ? (
+        <img
+          src={profilePictureUrl}
+          alt={`${studentName}'s profile picture`}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-gray-500">
+          {fallbackContent}
+        </div>
+      )}
+    </div>
   );
 };
 
-export default ProfilePictureAvatar;
+export default DisplayProfile;
