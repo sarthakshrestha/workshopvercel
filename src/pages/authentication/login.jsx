@@ -52,7 +52,7 @@ function SignInPage() {
         "Authorization"
       ] = `${token_type} ${access_token}`;
 
-      if (userType === "student" || userType === "mentor") {
+      if (userType === "student" || userType === "teacher") {
         const decodedToken = jwtDecode(access_token);
         const id = decodedToken.id || decodedToken.sub;
         localStorage.setItem(`${userType}_id`, id);
@@ -178,7 +178,7 @@ function SignInPage() {
                 type="button"
                 onClick={() => handleUserTypeChange("mentor")}
                 className={`${
-                  userType === "mentor"
+                  userType === "teacher"
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200"
                 } px-4 py-2 rounded`}
