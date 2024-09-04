@@ -29,7 +29,7 @@ function SignInPage() {
         case "admin":
           endpoint = "/admin/login";
           break;
-        case "mentor":
+        case "teacher":
           endpoint = "/mentor/login";
           break;
         default:
@@ -70,7 +70,7 @@ function SignInPage() {
         case "admin":
           navigate("/admin");
           break;
-        case "mentor":
+        case "teacher":
           navigate("/mentor/dashboard");
           break;
       }
@@ -176,7 +176,7 @@ function SignInPage() {
               </Button>
               <Button
                 type="button"
-                onClick={() => handleUserTypeChange("mentor")}
+                onClick={() => handleUserTypeChange("teacher")}
                 className={`${
                   userType === "teacher"
                     ? "bg-blue-600 text-white"
