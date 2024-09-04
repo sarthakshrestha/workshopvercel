@@ -12,7 +12,7 @@ import CryptoJS from "crypto-js";
 
 function SignInPage() {
   const navigate = useNavigate();
-  const SECRET_KEY = "MRgnS4LVB8SvJWu1JexdRGlCOCrKfBQ9";
+  const SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

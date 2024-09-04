@@ -102,7 +102,6 @@ const AddStudentButton = ({ onAddStudent }) => {
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
-    // Reset the student data when the dialog is closed
     setNewStudent({
       student_name: "",
       age: "",
@@ -203,16 +202,16 @@ const AddStudentButton = ({ onAddStudent }) => {
         </div>
         <DialogFooter className="mt-6">
           <Button
-            onClick={handleSubmit}
-            className="bg-zinc-800 hover:bg-zinc-900 text-white font-bold py-2 px-4 rounded"
-          >
-            Add Student
-          </Button>
-          <Button
             onClick={handleDialogClose}
             className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded ml-2"
           >
             Close
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+          >
+            Add Student
           </Button>
         </DialogFooter>
       </DialogContent>
