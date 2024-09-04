@@ -10,12 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  User,
-  Phone,
-  Mail,
-  MapPin,
-} from "lucide-react";
+import { User, Phone, Mail, MapPin } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -88,7 +83,7 @@ const StudentProfile = () => {
       <MentorSidebar />
       <div className="w-full flex flex-col p-8 bg-gray-100 ml-56 ">
         <div className="flex w-full justify-center items-center ">
-          <Card className="w-3/5">
+          <Card className="w-full">
             <CardHeader>
               <CardTitle className="text-2xl font-semibold">
                 Student Information
@@ -130,7 +125,7 @@ const StudentProfile = () => {
                   </div>
                 </div>
                 <div>
-                  <ProfilePictureAvatar 
+                  <ProfilePictureAvatar
                     profilePicture={student?.profile_picture}
                     studentName={student?.student_name}
                   />

@@ -33,7 +33,7 @@ const ProfilePictureAvatar = ({ profilePicture, studentName }) => {
   }, [profilePicture]);
 
   return (
-    <Avatar className="w-40 h-40 rounded-none">
+    <Avatar className="w-auto h-32 rounded-none">
       <AvatarImage src={profilePictureUrl} alt={studentName} />
       <AvatarFallback>
         {studentName ? studentName.charAt(0) : ""}
