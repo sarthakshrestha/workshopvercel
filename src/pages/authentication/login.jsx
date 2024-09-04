@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/utils/axiosInstance";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import CryptoJS from "crypto-js";
 
 function SignInPage() {
   const navigate = useNavigate();
-
+  const SECRET_KEY = process.env.REACT_APP_SECRET_KEY;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,7 +29,7 @@ function SignInPage() {
         case "admin":
           endpoint = "/admin/login";
           break;
-        case "mentor":
+        case "teacher":
           endpoint = "/mentor/login";
           break;
         default:
@@ -41,14 +42,17 @@ function SignInPage() {
       });
 
       const { access_token, token_type } = response.data;
-
-      Cookies.set("access_token", access_token, { expires: 7 });
+      const encryptedToken = CryptoJS.AES.encrypt(
+        access_token,
+        SECRET_KEY
+      ).toString();
+      Cookies.set("access_token", encryptedToken, { expires: 7 });
 
       axiosInstance.defaults.headers.common[
         "Authorization"
       ] = `${token_type} ${access_token}`;
 
-      if (userType === "student" || userType === "mentor") {
+      if (userType === "student" || userType === "teacher") {
         const decodedToken = jwtDecode(access_token);
         const id = decodedToken.id || decodedToken.sub;
         localStorage.setItem(`${userType}_id`, id);
@@ -66,7 +70,7 @@ function SignInPage() {
         case "admin":
           navigate("/admin");
           break;
-        case "mentor":
+        case "teacher":
           navigate("/mentor/dashboard");
           break;
       }
@@ -172,9 +176,9 @@ function SignInPage() {
               </Button>
               <Button
                 type="button"
-                onClick={() => handleUserTypeChange("mentor")}
+                onClick={() => handleUserTypeChange("teacher")}
                 className={`${
-                  userType === "mentor"
+                  userType === "teacher"
                     ? "bg-blue-600 text-white"
                     : "bg-gray-200"
                 } px-4 py-2 rounded`}

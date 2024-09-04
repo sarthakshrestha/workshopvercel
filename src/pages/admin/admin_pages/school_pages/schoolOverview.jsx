@@ -33,7 +33,6 @@ const SchoolDashboard = () => {
   const [studentCount, setStudentCount] = useState(0);
   const [courseCount, setCourseCount] = useState(0);
   const [isCurriculumModalOpen, setIsCurriculumModalOpen] = useState(false);
-
   const [name, setName] = useState("");
   const [classes, setClasses] = useState(0);
 

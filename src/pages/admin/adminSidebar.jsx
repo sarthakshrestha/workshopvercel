@@ -87,14 +87,14 @@ const AdminSidebar = () => {
             <GraduationCap className="mr-2 h-5 w-5" />
             Programs
           </Button>
-          <Button
+          {/* <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"
             onClick={events}
           >
             <Calendar className="mr-2 h-5 w-5" />
             Events
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             className="w-full justify-start mb-2 text-sm hover:bg-[#203457] hover:text-white transition-all duration-300 ease-in-out"

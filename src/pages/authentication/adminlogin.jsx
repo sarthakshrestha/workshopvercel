@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 import axiosInstance from "@/utils/axiosInstance"; // Make sure to import your axios instance
 import Cookies from "js-cookie";
 import { isAdmin } from "./util";
+import CryptoJS from 'crypto-js';
 
 function AdminLogin() {
   const navigate = useNavigate();
-
+  const SECRET_KEY = 'MRgnS4LVB8SvJWu1JexdRGlCOCrKfBQ9';
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -28,7 +29,8 @@ function AdminLogin() {
 
       const { access_token, token_type } = response.data;
       // Save access token in cookies
-      Cookies.set("access_token", access_token, { expires: 7 }); // Expires in 7 days, adjust as needed
+      const encryptedToken = CryptoJS.AES.encrypt(access_token, SECRET_KEY).toString();
+      Cookies.set("access_token", encryptedToken, { expires: 7 });
 
       // Set the default Authorization header for future requests
       axiosInstance.defaults.headers.common[
