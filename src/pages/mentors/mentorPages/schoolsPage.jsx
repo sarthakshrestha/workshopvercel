@@ -90,11 +90,6 @@ const SchoolsPage = () => {
               key={school.id}
               className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
             >
-              <img
-                src="https://scontent.fktm6-1.fna.fbcdn.net/v/t39.30808-6/301556657_552172356705687_6651398778484881163_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Zv9KCYGhd58Q7kNvgFk1KGx&_nc_ht=scontent.fktm6-1.fna&oh=00_AYB8kcD7X5C4pEx-TXmmkcfinmkqPVUXymTYb8Ec9L805w&oe=66DC9709"
-                alt={school.school_name}
-                className="w-full h-48 object-cover"
-              />
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <School className="h-5 w-5 text-blue-500" />

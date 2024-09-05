@@ -50,7 +50,7 @@ const AddStudentButton = ({ onAddStudent }) => {
       "studentId",
     ];
     for (const field of requiredFields) {
-      if (!newStudent[field].trim()) {
+      if (!newStudent[field]?.trim()) {
         formIsValid = false;
         errors[field] = `${field.replace("_", " ")} is required`;
       }
