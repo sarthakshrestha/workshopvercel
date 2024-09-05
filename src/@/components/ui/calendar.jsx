@@ -13,11 +13,13 @@ function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
         showOutsideDays={showOutsideDays}
         className={cn("p-3 border-white w-full", className)}
         classNames={{
-          months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
+          months:
+            "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 w-full",
           month: "space-y-4 w-full",
           caption:
             "flex justify-center pt-1 relative items-center w-full text-center",
-          caption_label: "text-sm font-medium w-full flex justify-end mr-[-8vh]",
+          caption_label:
+            "text-sm font-medium w-full flex justify-end mr-[-8vh]",
           nav: "space-x-1 flex items-center w-full justify-between",
           nav_button: cn(
             buttonVariants({ variant: "outline" }),

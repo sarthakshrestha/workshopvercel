@@ -1,13 +1,13 @@
-const { hover } = require('@testing-library/user-event/dist/hover');
+const { hover } = require("@testing-library/user-event/dist/hover");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './app/**/*.{js,jsx}',
-    './src/**/*.{js,jsx}',
+    "./pages/**/*.{js,jsx}",
+    "./components/**/*.{js,jsx}",
+    "./app/**/*.{js,jsx}",
+    "./src/**/*.{js,jsx}",
   ],
   prefix: "",
   theme: {
@@ -19,6 +19,10 @@ module.exports = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+        patrick: ["Patrick Hand", "cursive"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -53,20 +57,20 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        joinButton:{
+        joinButton: {
           DEFAULT: "#A1A172",
-          hover: "#8F8F5E"
+          hover: "#8F8F5E",
         },
-        homeText:{
+        homeText: {
           DEFAULT: "#3E5148",
-          hover: "#8F8F5E"
+          hover: "#8F8F5E",
         },
-        sectionBackground:{
-          DEFAULT: "#EEEAE4"
+        sectionBackground: {
+          DEFAULT: "#EEEAE4",
         },
-        navBar:{
-          DEFAULT:"#2F3C3A",
-          foreground:"#FFFFFF"
+        navBar: {
+          DEFAULT: "#2F3C3A",
+          foreground: "#FFFFFF",
         },
       },
       borderRadius: {
@@ -91,4 +95,4 @@ module.exports = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-}
+};
