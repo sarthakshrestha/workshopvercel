@@ -23,7 +23,7 @@ const AddStudentButton = ({ onAddStudent }) => {
     class_id: "",
     school_id: "",
     studentId: "",
-    course_id: [],
+    course_id: "",
     profile_picture: null,
   });
   const [errors, setErrors] = useState({});
@@ -82,7 +82,7 @@ const AddStudentButton = ({ onAddStudent }) => {
           address: "",
           class_id: "",
           school_id: "",
-          course_id: [],
+          course_id: "",
           profile_picture: null,
         });
         setIsDialogOpen(false);
@@ -117,7 +117,7 @@ const AddStudentButton = ({ onAddStudent }) => {
       class_id: "",
       school_id: "",
       studentId: "",
-      course_id: [],
+      course_id: "",
       profile_picture: null,
     });
   };

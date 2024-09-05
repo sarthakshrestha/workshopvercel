@@ -102,7 +102,7 @@ const CoursesPage = () => {
     try {
       const response = await apiClient.post("/course", newCourse);
       console.log(response);
-      setCourses([...courses, newCourse]);
+      setCourses(courses ? [...courses, newCourse] : [newCourse]);
       setNewCourse({
         course_name: "",
         course_content: "",

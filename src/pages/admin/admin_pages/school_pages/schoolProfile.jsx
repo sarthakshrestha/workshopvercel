@@ -79,7 +79,7 @@ const SchoolProfile = () => {
     setLoading(true);
     try {
       await apiClient.delete(`/school/${schoolId}`);
-      navigate("/admin/schools");
+      navigate("/admin");
     } catch (err) {
       console.error("Error deleting school:", err);
       setError("Failed to delete school");

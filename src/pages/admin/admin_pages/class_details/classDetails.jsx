@@ -44,15 +44,16 @@ const ClassDetails = () => {
 
   const handleAddStudent = async (newStudent) => {
     try {
+      const courseId = classData.courses &&
+        classData.courses.length > 0 ?
+        classData.courses.map((course) => course.id) : [];
       const addStudent = {
         ...newStudent,
         school_id: classData.school_id,
         class_id: classId,
-        course_id:
-          (classData.courses &&
-            classData.courses.length > 0 &&
-            classData.courses.map((course) => course.id)) ||
-          [],
+        course_id: courseId && courseId.length > 0
+          ? courseId.join(",")
+          : ""
       };
       console.log(classData.courses);
       console.log(addStudent);
@@ -90,7 +91,7 @@ const ClassDetails = () => {
         console.log(updatedClassData);
 
         setClassData(updatedClassData);
-        setTotalStudent(updatedClassData.students.length);
+        setTotalStudent(updatedClassData.students?.length || 0);
         // Optionally, you can also send a PUT request to the class endpoint to update the class data on the server
         await apiClient.put(`/class/${classId}`, updatedClassData);
         fetchClassData(); // Re-fetch class data to update the student list
@@ -116,6 +117,7 @@ const ClassDetails = () => {
     // Implement your deletion logic here
     try {
       const response = await apiClient.delete(`/student/${studentId}`);
+      console.log(response);
       if (response.data.status === "success") {
         toast({
           title: "Success",
@@ -124,13 +126,25 @@ const ClassDetails = () => {
         // Update the class data after deleting the student
         const updatedClassData = {
           ...classData,
+          courses: [
+            ...(classData.courses && classData.courses.length > 0
+              ? classData.courses.map((course) => course.id)
+              : ""),
+          ],
+          teachers: [
+            ...(classData.teachers && classData.teachers.length > 0
+              ? classData.teachers.map((teacher) => teacher.id)
+              : ""),
+          ],
+
           students: classData.students.filter(
             (student) => student.id !== studentId
           ),
         };
+        console.log(updatedClassData);
         await apiClient.put(`/class/${classId}`, updatedClassData);
         setClassData(updatedClassData);
-        setTotalStudent(updatedClassData.students.length);
+        setTotalStudent(updatedClassData.students?.length || 0);
       } else {
         toast({
           title: "Error",
@@ -176,7 +190,7 @@ const ClassDetails = () => {
     ];
 
     // Return the updated course IDs
-    return updatedCourseIds && updatedCourseIds.length > 0 ? updatedCourseIds: [];
+    return updatedCourseIds && updatedCourseIds.length > 0 ? updatedCourseIds : [];
   };
 
   // const updateStudentPromises = classData.students && classData.students.length > 0
@@ -304,7 +318,7 @@ const ClassDetails = () => {
 
             await handleTeacherAPI(teacher, totalSchoolInfo);
           }
-        ):[];
+        ) : [];
 
         const updateRemovedTeacher = newlyRemovedTeacher && newlyRemovedTeacher.length > 0 ? newlyRemovedTeacher.map(
           async (teacherId) => {
@@ -369,7 +383,7 @@ const ClassDetails = () => {
 
             await handleTeacherAPI(teacher, totalSchoolInfo);
           }
-        ):[];
+        ) : [];
 
         await Promise.all(updateAddedTeacher);
         await Promise.all(updateRemovedTeacher);
@@ -420,10 +434,10 @@ const ClassDetails = () => {
 
 
         const updateStudentPromises = classData.students && classData.students.length > 0
-        ? classData.students.map(async (student) => {
-            return apiClient.put(`/student/${student.id}`, 
-              {course_id: selectedCourses})
-            }): [];
+          ? classData.students.map(async (student) => {
+            return apiClient.put(`/student/${student.id}`,
+              { course_id: selectedCourses })
+          }) : [];
 
 
         // const updateTeacherPromises = classData.teachers.map(teacher =>
